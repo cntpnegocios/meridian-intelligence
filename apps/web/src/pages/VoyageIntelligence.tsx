@@ -3,6 +3,7 @@ import { PageHeader } from '../components/ui/PageHeader';
 import { MetricCard } from '../components/ui/MetricCard';
 import { Badge } from '../components/ui/Badge';
 import { Ship } from 'lucide-react';
+import { MapCockpit } from "../components/ui/MapCockpit";
 
 export function VoyageIntelligence() {
   return (
@@ -13,17 +14,8 @@ export function VoyageIntelligence() {
         status="demo"
       />
       <div className="p-8 flex flex-col gap-6 flex-1 overflow-auto">
-        <section className="p-8 border border-border-default rounded-xl institutional-gradient flex flex-col items-center">
-          <small className="text-brand-primary tracking-widest font-bold mb-4">CONNECTED MODULE</small>
-          <h2 className="text-3xl font-bold mb-2">Santos → Rotterdam</h2>
-          <p className="text-text-muted mb-8">Port-to-port voyage intelligence prepared for AIS/S-AIS integration.</p>
-          <div className="text-xl flex items-center gap-4">
-            <span className="font-semibold">Santos 🇧🇷</span>
-            <span className="text-brand-primary opacity-60 tracking-widest flex items-center">
-              ━━━━━━━ <Ship size={24} className="mx-4 text-brand-secondary opacity-100" /> ━━━━━━━
-            </span>
-            <span className="font-semibold">Rotterdam 🇳🇱</span>
-          </div>
+        <section className="mb-6">
+          <MapCockpit />
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
