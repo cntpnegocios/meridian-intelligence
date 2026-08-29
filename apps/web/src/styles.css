@@ -1,25 +1,72 @@
 @import "tailwindcss";
 
 @theme {
+  /* Brand */
   --color-brand-primary: #59bdb8;
   --color-brand-secondary: #77cfca;
+  --color-brand-dim: #3d8a87;
+
+  /* Surfaces */
   --color-bg-base: #07131f;
   --color-bg-panel: #091923;
   --color-bg-sidebar: #08111a;
+  --color-bg-elevated: #0d2030;
+
+  /* Borders */
   --color-border-subtle: #1b2b39;
   --color-border-default: #1d3341;
+  --color-border-strong: #2a4558;
+
+  /* Text */
   --color-text-base: #eaf1f6;
   --color-text-muted: #8da2b1;
+  --color-text-dim: #4a6478;
+
+  /* Accents */
   --color-accent-demo: #d7b76c;
   --color-accent-demo-bg: #5d4f2e;
+  --color-accent-success: #34d399;
+  --color-accent-warning: #fbbf24;
+  --color-accent-danger: #f87171;
+  --color-accent-info: #60a5fa;
+  --color-accent-purple: #a78bfa;
 }
 
 @layer base {
-  body {
-    @apply bg-bg-base text-text-base min-w-[1100px] font-sans antialiased;
+  /* App shell — enforce minimum width */
+  .app-shell-body {
+    @apply min-w-[1100px];
   }
+
+  body {
+    @apply bg-bg-base text-text-base font-sans antialiased;
+  }
+
+  /* Smooth scrolling for landing page anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Tabular numbers for data tables */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+}
+
+/* Landing page — allow narrower viewport */
+.landing-page {
+  @apply min-h-screen;
 }
 
 .institutional-gradient {
   background: linear-gradient(115deg, #0b1d2a, #091620);
 }
+
+/* Focus ring consistent with brand */
+*:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+

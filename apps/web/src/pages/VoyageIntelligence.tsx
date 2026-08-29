@@ -1,8 +1,6 @@
-import React from 'react';
 import { PageHeader } from '../components/ui/PageHeader';
 import { MetricCard } from '../components/ui/MetricCard';
 import { Badge } from '../components/ui/Badge';
-import { Ship } from 'lucide-react';
 import { MapCockpit } from "../components/ui/MapCockpit";
 
 export function VoyageIntelligence() {
