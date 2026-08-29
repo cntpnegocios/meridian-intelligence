@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #59bdb8;
+  --color-brand-secondary: #77cfca;
+  --color-bg-base: #07131f;
+  --color-bg-panel: #091923;
+  --color-bg-sidebar: #08111a;
+  --color-border-subtle: #1b2b39;
+  --color-border-default: #1d3341;
+  --color-text-base: #eaf1f6;
+  --color-text-muted: #8da2b1;
+  --color-accent-demo: #d7b76c;
+  --color-accent-demo-bg: #5d4f2e;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-base text-text-base min-w-[1100px] font-sans antialiased;
+  }
+}
+
+.institutional-gradient {
+  background: linear-gradient(115deg, #0b1d2a, #091620);
+}
