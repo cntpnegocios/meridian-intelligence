@@ -1,0 +1,131 @@
+{
+  "nav": {
+    "portals": "Portais",
+    "data": "Dados",
+    "evidence": "Evidências",
+    "access": "Acessar Plataforma"
+  },
+  "hero": {
+    "badge": "GREEN CORRIDOR INTELLIGENCE · SANTOS → ROTTERDAM",
+    "title1": "Inteligência marítima que ",
+    "titleProve": "prova",
+    "title2": ", não apenas ",
+    "titleDeclare": "declara",
+    "title3": ".",
+    "subtitle": "Plataforma de MRV marítimo com rastreamento AIS satélite, validação SAR independente, cálculo EU ETS/FuelEU e cadeia de custódia imutável por SHA-256.",
+    "btnAccess": "Acessar Plataforma",
+    "btnVerify": "Ver Viagem Verificada"
+  },
+  "stats": {
+    "route": "Santos → Rotterdam",
+    "routeSub": "Corredor piloto monitorado",
+    "models": "Modelos de IA",
+    "modelsSub": "via Blink AI Gateway",
+    "trust": "Confiança SHA-256",
+    "trustSub": "Evidence registrada e verificada",
+    "portals": "Portais dedicados",
+    "portalsSub": "Por stakeholder maritimo"
+  },
+  "problem": {
+    "label": "O Problema",
+    "title1": "Declaração de emissões sem ",
+    "titleHighlight": "evidência verificável",
+    "title2": " é greenwashing.",
+    "lead": "Reguladores europeus exigem MRV auditável. Embarcadores exigem Scope 3 rastreável. Portos precisam de dados para acesso a corredores verdes. O mercado não aceita mais PDF.",
+    "p1_title": "Dados AIS manipulados ou perdidos",
+    "p1_sub": "Posição não verificável",
+    "p2_title": "Cálculo EU ETS manual e não auditado",
+    "p2_sub": "€65/tCO₂ · exposição crescente",
+    "p3_title": "FuelEU — penalidade €2.400/t",
+    "p3_sub": "Risco regulatório 2025+",
+    "p4_title": "Certificado verde sem hash",
+    "p4_sub": "Invalida cadeia ESG",
+    "high": "ALTO",
+    "critical": "CRÍTICO",
+    "medium": "MÉDIO"
+  },
+  "cycle": {
+    "label": "Como Funciona",
+    "title": "O ciclo completo de inteligência marítima",
+    "c1": "MEDIR",
+    "c2": "CALCULAR",
+    "c3": "COMPENSAR",
+    "c4": "PROVAR",
+    "c5": "PUBLICAR"
+  },
+  "portals": {
+    "label": "5 Portais Dedicados",
+    "title": "Um sistema, cinco perspectivas de negócio",
+    "lead": "Cada stakeholder vê exatamente o que precisa. A mesma evidência rastreável, apresentada no contexto correto.",
+    "access": "Acessar",
+    "p1_role": "Operador / Armador",
+    "p1_title": "Control Tower",
+    "p1_desc": "Frota, emissões EU ETS, FuelEU compliance, Green Corridors e Evidence Vault em uma interface unificada.",
+    "p2_role": "Embarcador / Shipper",
+    "p2_title": "Cargo Intelligence",
+    "p2_desc": "CO₂ por carregamento, atribuição Scope 3 Cat. 4, Certificado Verde ISO 14083 e rastreabilidade de booking.",
+    "p3_role": "Porto / Autoridade",
+    "p3_title": "Port Intelligence",
+    "p3_desc": "Monitor de tráfego em tempo real, geofence ativo, ranking de navios por EEOI e emissões declaradas.",
+    "p4_role": "Regulador / EMSA",
+    "p4_title": "Audit Trail",
+    "p4_desc": "Evidence Vault somente-leitura com registros SHA-256, trilha de auditoria e exportação EU MRV.",
+    "p5_role": "Público / Auditores ESG",
+    "p5_title": "Transparency Portal",
+    "p5_desc": "Página de viagem verificada, pública, sem login. Anti-greenwashing. QR code para supply chains."
+  },
+  "data": {
+    "label": "Fontes de Dados",
+    "title": "Hierarquia de evidência, não inferência",
+    "lead": "API oficial primeiro. Dados observados antes de declarados. Modelo de IA como intérprete, nunca como fonte.",
+    "disclaimer": "A arquitetura distingue explicitamente: LIVE · DEMO · STALE · UNAVAILABLE. Nenhuma inferência de LLM substitui dado verificado.",
+    "s1_type": "Satellite AIS",
+    "s1_desc": "Posição, velocidade, identidade — cobertura global",
+    "s2_type": "SAR Radar",
+    "s2_desc": "Validação independente de posição via radar orbital",
+    "s3_type": "Oceanografia",
+    "s3_desc": "Correntes, ondas, temperatura — contexto de performance",
+    "s4_type": "Declarações Oficiais",
+    "s4_desc": "Consumo de combustível reportado — base regulatória",
+    "s5_type": "IA — 200+ Modelos",
+    "s5_desc": "Interpretação, sumarização e análise — server-side only"
+  },
+  "ai": {
+    "badge": "BLINK AI GATEWAY · 200+ MODELOS",
+    "title1": "IA que interpreta evidência. ",
+    "titleHighlight": "Nunca inventa.",
+    "lead": "O Blink AI Gateway conecta o backend a mais de 200 modelos de linguagem. Todas as chamadas são server-side. A chave de API nunca chega ao navegador. Outputs são sempre marcados como MODEL_OPINION.",
+    "f1_title": "Interpretação Regulatória",
+    "f1_desc": "EU MRV / FuelEU / EU ETS em linguagem operacional",
+    "f2_title": "Análise de Anomalia AIS",
+    "f2_desc": "Explicação de desvio de posição ou emissão",
+    "f3_title": "Resumo de Corredor Verde",
+    "f3_desc": "Performance de rota Santos → Rotterdam",
+    "f4_title": "Classificação de Evidência",
+    "f4_desc": "FATO · INFERÊNCIA · CÁLCULO · ESTIMATIVA"
+  },
+  "evidence": {
+    "label": "Evidence Vault",
+    "title": "Cada declaração tem uma prova.",
+    "lead": "SHA-256 imutável. Parser version registrado. AIS observations contadas. SAR validations documentadas. Nenhum campo em branco."
+  },
+  "compliance": {
+    "label": "Conformidade",
+    "title": "Construído sobre frameworks regulatórios reais",
+    "lead": "Nenhuma referência regulatória inventada. Todas as normas são rastreáveis ao texto oficial publicado pela Comissão Europeia, IMO e ISO.",
+    "disclaimer": "O Meridian Intelligence é Integrado de ponta-a-ponta com o MeridianMRV Core. Dados são promovidos via fluxo de revisão humana. O sistema nunca grava diretamente no core."
+  },
+  "cta": {
+    "badge": "DEMO DISPONÍVEL — SANTOS → ROTTERDAM",
+    "title": "Prove o que você declara.",
+    "lead": "Acesse os cinco portais, explore o Evidence Vault e veja a cadeia completa de inteligência marítima funcionando.",
+    "btnAccess": "Entrar na Plataforma",
+    "btnVerify": "Ver Evidência Pública"
+  },
+  "footer": {
+    "sub": "Green Corridor Intelligence Programme",
+    "power": "Desenvolvido com Spire S-AIS · Copernicus · Blink AI Gateway",
+    "isolated": "Totalmente integrado ao MeridianMRV Core",
+    "demo": "Copyright © 2026 Meridian Intelligence. Todos os direitos reservados."
+  }
+}

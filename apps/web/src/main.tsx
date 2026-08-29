@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppShell } from './layouts/AppShell';
 import { PortalProvider } from './lib/portalContext';
+import './i18n';
 
 // ── Landing & Public ──────────────────────────────────────────
 import { LandingPage } from './pages/LandingPage';

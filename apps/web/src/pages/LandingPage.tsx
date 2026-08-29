@@ -15,6 +15,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Anchor, ArrowRight, Shield, Satellite,
   CheckCircle, Lock, Eye, Building2, Ship, Radar, Zap,
@@ -95,73 +96,73 @@ function Divider() {
 }
 
 // ── Portals ───────────────────────────────────────────────────
-const PORTALS = [
+const getPortals = (t: any) => [
   {
     icon: <Ship size={20} />,
-    role: 'Operador / Armador',
-    title: 'Control Tower',
-    desc: 'Frota, emissões EU ETS, FuelEU compliance, Green Corridors e Evidence Vault em uma interface unificada.',
+    role: t('portals.p1_role'),
+    title: t('portals.p1_title'),
+    desc: t('portals.p1_desc'),
     accent: '#59bdb8',
     path: '/?role=OPERATOR',
   },
   {
     icon: <Building2 size={20} />,
-    role: 'Embarcador / Shipper',
-    title: 'Cargo Intelligence',
-    desc: 'CO₂ por carregamento, atribuição Scope 3 Cat. 4, Certificado Verde ISO 14083 e rastreabilidade de booking.',
+    role: t('portals.p2_role'),
+    title: t('portals.p2_title'),
+    desc: t('portals.p2_desc'),
     accent: '#34d399',
     path: '/?role=SHIPPER',
   },
   {
     icon: <Anchor size={20} />,
-    role: 'Porto / Autoridade',
-    title: 'Port Intelligence',
-    desc: 'Monitor de tráfego em tempo real, geofence ativo, ranking de navios por EEOI e emissões declaradas.',
+    role: t('portals.p3_role'),
+    title: t('portals.p3_title'),
+    desc: t('portals.p3_desc'),
     accent: '#60a5fa',
     path: '/?role=PORT',
   },
   {
     icon: <Radar size={20} />,
-    role: 'Regulador / EMSA',
-    title: 'Audit Trail',
-    desc: 'Evidence Vault somente-leitura com registros SHA-256, trilha de auditoria e exportação EU MRV.',
+    role: t('portals.p4_role'),
+    title: t('portals.p4_title'),
+    desc: t('portals.p4_desc'),
     accent: '#a78bfa',
     path: '/?role=REGULATOR',
   },
   {
     icon: <Eye size={20} />,
-    role: 'Público / Auditores ESG',
-    title: 'Transparency Portal',
-    desc: 'Página de viagem verificada, pública, sem login. Anti-greenwashing. QR code para supply chains.',
+    role: t('portals.p5_role'),
+    title: t('portals.p5_title'),
+    desc: t('portals.p5_desc'),
     accent: '#fbbf24',
     path: '/public/voyage/demo-001',
   },
 ];
 
 // ── Data Sources ──────────────────────────────────────────────
-const SOURCES = [
-  { name: 'Spire Maritime', type: 'Satellite AIS', desc: 'Posição, velocidade, identidade — cobertura global', color: T.brand },
-  { name: 'Copernicus Sentinel-1', type: 'SAR Radar', desc: 'Validação independente de posição via radar orbital', color: '#60a5fa' },
-  { name: 'Copernicus Marine', type: 'Oceanografia', desc: 'Correntes, ondas, temperatura — contexto de performance', color: '#34d399' },
-  { name: 'IMO DCS / EU MRV', type: 'Declarações Oficiais', desc: 'Consumo de combustível reportado — base regulatória', color: '#a78bfa' },
-  { name: 'Blink AI Gateway', type: 'IA — 200+ Modelos', desc: 'Interpretação, sumarização e análise — server-side only', color: T.demo },
+const getSources = (t: any) => [
+  { name: 'Spire Maritime', type: t('data.s1_type'), desc: t('data.s1_desc'), color: T.brand },
+  { name: 'Copernicus Sentinel-1', type: t('data.s2_type'), desc: t('data.s2_desc'), color: '#60a5fa' },
+  { name: 'Copernicus Marine', type: t('data.s3_type'), desc: t('data.s3_desc'), color: '#34d399' },
+  { name: 'IMO DCS / EU MRV', type: t('data.s4_type'), desc: t('data.s4_desc'), color: '#a78bfa' },
+  { name: 'Blink AI Gateway', type: t('data.s5_type'), desc: t('data.s5_desc'), color: T.demo },
 ];
 
 // ── Value Cycle ───────────────────────────────────────────────
-const CYCLE = [
-  { n: '01', label: 'MEDIR', sub: 'AIS + SAR + DCS', color: T.brand },
-  { n: '02', label: 'CALCULAR', sub: 'ISO 14083 · IMO', color: '#60a5fa' },
-  { n: '03', label: 'COMPENSAR', sub: 'EU ETS · FuelEU', color: '#fbbf24' },
-  { n: '04', label: 'PROVAR', sub: 'SHA-256 Evidence', color: '#34d399' },
-  { n: '05', label: 'PUBLICAR', sub: 'URL Pública · QR', color: '#a78bfa' },
+const getCycle = (t: any) => [
+  { n: '01', label: t('cycle.c1'), sub: 'AIS + SAR + DCS', color: T.brand },
+  { n: '02', label: t('cycle.c2'), sub: 'ISO 14083 · IMO', color: '#60a5fa' },
+  { n: '03', label: t('cycle.c3'), sub: 'EU ETS · FuelEU', color: '#fbbf24' },
+  { n: '04', label: t('cycle.c4'), sub: 'SHA-256 Evidence', color: '#34d399' },
+  { n: '05', label: t('cycle.c5'), sub: 'URL Pública · QR', color: '#a78bfa' },
 ];
 
 // ── Stats ─────────────────────────────────────────────────────
-const STATS = [
-  { value: 5400, suffix: ' NM', label: 'Santos → Rotterdam', sub: 'Corredor piloto monitorado' },
-  { value: 200, suffix: '+', label: 'Modelos de IA', sub: 'via Blink AI Gateway' },
-  { value: 98, suffix: '%', label: 'Confiança SHA-256', sub: 'Evidence registrada e verificada' },
-  { value: 5, suffix: '', label: 'Portais dedicados', sub: 'Por stakeholder maritimo' },
+const getStats = (t: any) => [
+  { value: 5400, suffix: ' NM', label: t('stats.route'), sub: t('stats.routeSub') },
+  { value: 200, suffix: '+', label: t('stats.models'), sub: t('stats.modelsSub') },
+  { value: 98, suffix: '%', label: t('stats.trust'), sub: t('stats.trustSub') },
+  { value: 5, suffix: '', label: t('stats.portals'), sub: t('stats.portalsSub') },
 ];
 
 // ── Compliance Badges ─────────────────────────────────────────
@@ -176,6 +177,7 @@ const COMPLIANCE = [
 
 // ── NavBar ────────────────────────────────────────────────────
 function NavBar() {
+  const { t, i18n } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 20);
@@ -201,9 +203,23 @@ function NavBar() {
           </div>
         </div>
         <div className="flex items-center gap-6">
-          <a href="#portais" className="text-xs font-medium tracking-wide transition-colors hover:text-white" style={{ color: T.muted }}>Portais</a>
-          <a href="#dados" className="text-xs font-medium tracking-wide transition-colors hover:text-white" style={{ color: T.muted }}>Dados</a>
-          <a href="#evidencia" className="text-xs font-medium tracking-wide transition-colors hover:text-white" style={{ color: T.muted }}>Evidências</a>
+          <select 
+            onChange={(e) => {
+              i18n.changeLanguage(e.target.value);
+              document.documentElement.dir = e.target.value === 'ar' ? 'rtl' : 'ltr';
+            }}
+            value={i18n.language}
+            className="text-xs bg-transparent outline-none cursor-pointer"
+            style={{ color: T.muted }}
+          >
+            <option value="en" className="bg-bg-panel">EN</option>
+            <option value="pt" className="bg-bg-panel">PT</option>
+            <option value="zh" className="bg-bg-panel">ZH</option>
+            <option value="ar" className="bg-bg-panel">AR</option>
+          </select>
+          <a href="#portais" className="text-xs font-medium tracking-wide transition-colors hover:text-white" style={{ color: T.muted }}>{t('nav.portals')}</a>
+          <a href="#dados" className="text-xs font-medium tracking-wide transition-colors hover:text-white" style={{ color: T.muted }}>{t('nav.data')}</a>
+          <a href="#evidencia" className="text-xs font-medium tracking-wide transition-colors hover:text-white" style={{ color: T.muted }}>{t('nav.evidence')}</a>
           <Link
             to="/"
             className="text-xs font-semibold px-4 py-2 rounded-lg transition-all"
@@ -212,7 +228,7 @@ function NavBar() {
               color: T.bg,
             }}
           >
-            Acessar Plataforma
+            {t('nav.access')}
           </Link>
         </div>
       </div>
@@ -222,6 +238,7 @@ function NavBar() {
 
 // ── Main Landing ──────────────────────────────────────────────
 export function LandingPage() {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen font-sans" style={{ background: T.bg, color: T.base }}>
       <NavBar />
@@ -252,21 +269,20 @@ export function LandingPage() {
             style={{ borderColor: `${T.brand}40`, background: `${T.brand}10`, color: T.brand }}
           >
             <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: T.brand }} />
-            GREEN CORRIDOR INTELLIGENCE · SANTOS → ROTTERDAM
+            {t('hero.badge')}
           </div>
 
           {/* Headline */}
           <h1 className="text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.08] mb-6 max-w-4xl mx-auto">
-            Inteligência marítima que{' '}
-            <span style={{ color: T.brand }}>prova</span>,{' '}
+            {t('hero.title1')}{' '}
+            <span style={{ color: T.brand }}>{t('hero.titleProve')}</span>,{' '}
             não apenas{' '}
-            <span className="italic font-light" style={{ color: T.muted }}>declara</span>.
+            <span className="italic font-light" style={{ color: T.muted }}>{t('hero.titleDeclare')}</span>.
           </h1>
 
           {/* Subheadline */}
           <p className="text-xl leading-relaxed max-w-2xl mx-auto mb-12" style={{ color: T.muted }}>
-            Plataforma de MRV marítimo com rastreamento AIS satélite, validação SAR independente,
-            cálculo EU ETS/FuelEU e cadeia de custódia imutável por SHA-256.
+            {t('hero.subtitle')}
           </p>
 
           {/* CTA */}
@@ -276,14 +292,14 @@ export function LandingPage() {
               className="flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-105"
               style={{ background: T.brand, color: T.bg }}
             >
-              Acessar Plataforma <ArrowRight size={16} />
+              {t('hero.btnAccess')} <ArrowRight size={16} />
             </Link>
             <Link
               to="/public/voyage/demo-001"
               className="flex items-center gap-2 px-6 py-3.5 rounded-xl font-medium text-sm border transition-colors hover:border-brand-primary/60"
               style={{ borderColor: T.border, color: T.muted }}
             >
-              Ver Viagem Verificada <Eye size={14} />
+              {t('hero.btnVerify')} <Eye size={14} />
             </Link>
           </div>
 
@@ -307,7 +323,7 @@ export function LandingPage() {
       {/* ── STATS ─────────────────────────────────────────── */}
       <Section>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {STATS.map(s => (
+          {getStats(t).map(s => (
             <div key={s.label} className="flex flex-col gap-1">
               <div className="text-4xl font-semibold" style={{ color: T.brand }}>
                 <Counter to={s.value} suffix={s.suffix} />
@@ -325,23 +341,22 @@ export function LandingPage() {
       <Section>
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <SectionLabel text="O Problema" />
+            <SectionLabel text={t("problem.label")} />
             <H2>
-              Declaração de emissões sem{' '}
-              <span style={{ color: T.muted }}>evidência verificável</span>{' '}
-              é greenwashing.
+              {t("problem.title1")}{' '}
+              <span style={{ color: T.muted }}>{t("problem.titleHighlight")}</span>{' '}
+              {t("problem.title2")}
             </H2>
             <Lead>
-              Reguladores europeus exigem MRV auditável. Embarcadores exigem Scope 3 rastreável.
-              Portos precisam de dados para acesso a corredores verdes. O mercado não aceita mais PDF.
+              {t("problem.lead")}
             </Lead>
           </div>
           <div className="flex flex-col gap-4">
             {[
-              { issue: 'Dados AIS manipulados ou perdidos', impact: 'Posição não verificável', severity: 'ALTO' },
-              { issue: 'Cálculo EU ETS manual e auditado', impact: '€65/tCO₂ · exposição crescente', severity: 'ALTO' },
-              { issue: 'FuelEU — penalidade €2.400/t', impact: 'Risco regulatório 2025+', severity: 'CRÍTICO' },
-              { issue: 'Certificado verde sem hash', impact: 'Invalida cadeia ESG', severity: 'MÉDIO' },
+              { issue: t('problem.p1_title'), impact: t('problem.p1_sub'), severity: t('problem.high') },
+              { issue: t('problem.p2_title'), impact: t('problem.p2_sub'), severity: t('problem.high') },
+              { issue: t('problem.p3_title'), impact: t('problem.p3_sub'), severity: t('problem.critical') },
+              { issue: t('problem.p4_title'), impact: t('problem.p4_sub'), severity: t('problem.medium') },
             ].map(r => (
               <div
                 key={r.issue}
@@ -351,8 +366,8 @@ export function LandingPage() {
                 <span
                   className="text-[9px] font-bold px-2 py-1 rounded shrink-0 mt-0.5"
                   style={{
-                    background: r.severity === 'CRÍTICO' ? '#7f1d1d' : r.severity === 'ALTO' ? '#431407' : '#1c1917',
-                    color: r.severity === 'CRÍTICO' ? '#fca5a5' : r.severity === 'ALTO' ? '#fb923c' : T.muted,
+                    background: r.severity === t('problem.critical') ? '#7f1d1d' : r.severity === t('problem.high') ? '#431407' : '#1c1917',
+                    color: r.severity === t('problem.critical') ? '#fca5a5' : r.severity === t('problem.high') ? '#fb923c' : T.muted,
                   }}
                 >
                   {r.severity}
@@ -372,11 +387,11 @@ export function LandingPage() {
       {/* ── VALUE CYCLE ───────────────────────────────────── */}
       <Section>
         <div className="text-center mb-16">
-          <SectionLabel text="Como Funciona" />
-          <H2 className="mx-auto">O ciclo completo de inteligência marítima</H2>
+          <SectionLabel text={t("cycle.label")} />
+          <H2 className="mx-auto">{t("cycle.title")}</H2>
         </div>
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-0">
-          {CYCLE.map((step, i) => (
+          {getCycle(t).map((step, i) => (
             <div key={step.n} className="flex lg:flex-col items-center gap-4 lg:gap-0 flex-1">
               <div className="flex lg:flex-col items-center gap-3 lg:gap-4 flex-1">
                 {/* Node */}
@@ -387,7 +402,7 @@ export function LandingPage() {
                   {step.n}
                 </div>
                 {/* Connector */}
-                {i < CYCLE.length - 1 && (
+                {i < getCycle(t).length - 1 && (
                   <>
                     <div className="flex-1 lg:hidden h-px w-8 mx-2" style={{ background: T.border }} />
                     <ChevronRight size={14} className="hidden lg:block -mx-2 shrink-0" style={{ color: T.border }} />
@@ -407,15 +422,14 @@ export function LandingPage() {
 
       {/* ── PORTALS ───────────────────────────────────────── */}
       <Section id="portais">
-        <SectionLabel text="5 Portais Dedicados" />
-        <H2>Um sistema, cinco perspectivas de negócio</H2>
+        <SectionLabel text={t("portals.label")} />
+        <H2>{t("portals.title")}</H2>
         <Lead>
-          Cada stakeholder vê exatamente o que precisa.
-          A mesma evidência rastreável, apresentada no contexto correto.
+          {t("portals.lead")}
         </Lead>
 
         <div className="mt-12 grid lg:grid-cols-5 gap-4">
-          {PORTALS.map(p => (
+          {getPortals(t).map(p => (
             <Link
               key={p.role}
               to={p.path}
@@ -439,7 +453,7 @@ export function LandingPage() {
               </div>
               <p className="text-xs leading-relaxed flex-1" style={{ color: T.muted }}>{p.desc}</p>
               <div className="flex items-center gap-1 text-xs font-medium group-hover:gap-2 transition-all" style={{ color: p.accent }}>
-                Acessar <ArrowRight size={11} />
+                {t('portals.access')} <ArrowRight size={11} />
               </div>
             </Link>
           ))}
@@ -452,19 +466,18 @@ export function LandingPage() {
       <Section id="dados">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           <div>
-            <SectionLabel text="Fontes de Dados" />
-            <H2>Hierarquia de evidência, não inferência</H2>
+            <SectionLabel text={t("data.label")} />
+            <H2>{t("data.title")}</H2>
             <Lead>
-              API oficial primeiro. Dados observados antes de declarados.
+              API oficial primeiro. Dados observados antes de {t('hero.titleDeclare')}dos.
               Modelo de IA como intérprete, nunca como fonte.
             </Lead>
             <p className="text-xs mt-6 leading-relaxed" style={{ color: T.muted }}>
-              A arquitetura distingue explicitamente: LIVE · DEMO · STALE · UNAVAILABLE.
-              Nenhuma inferência de LLM substitui dado verificado.
+              {t("data.disclaimer")}
             </p>
           </div>
           <div className="flex flex-col gap-3">
-            {SOURCES.map(s => (
+            {getSources(t).map(s => (
               <div
                 key={s.name}
                 className="flex items-start gap-4 p-4 rounded-xl border"
@@ -506,24 +519,22 @@ export function LandingPage() {
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-semibold tracking-wider mb-6 border"
                 style={{ borderColor: `${T.demo}40`, background: `${T.demo}10`, color: T.demo }}
               >
-                <Zap size={10} /> BLINK AI GATEWAY · 200+ MODELOS
+                <Zap size={10} /> {t('ai.badge')}
               </div>
               <h3 className="text-2xl lg:text-3xl font-semibold leading-tight mb-4" style={{ color: T.base }}>
                 IA que interpreta evidência.{' '}
-                <span style={{ color: T.demo }}>Nunca inventa.</span>
+                <span style={{ color: T.demo }}>{t('ai.titleHighlight')}</span>
               </h3>
               <p className="text-base leading-relaxed mb-6" style={{ color: T.muted }}>
-                O Blink AI Gateway conecta o backend a mais de 200 modelos de linguagem.
-                Todas as chamadas são server-side. A chave de API nunca chega ao navegador.
-                Outputs são sempre marcados como <code style={{ color: T.demo }}>MODEL_OPINION</code>.
+                {t('ai.lead')} <code style={{ color: T.demo }}>MODEL_OPINION</code>.
               </p>
             </div>
             <div className="flex flex-col gap-3">
               {[
-                { label: 'Interpretação Regulatória', desc: 'EU MRV / FuelEU / EU ETS em linguagem operacional' },
-                { label: 'Análise de Anomalia AIS', desc: 'Explicação de desvio de posição ou emissão' },
-                { label: 'Resumo de Corredor Verde', desc: 'Performance de rota Santos → Rotterdam' },
-                { label: 'Classificação de Evidência', desc: 'FATO · INFERÊNCIA · CÁLCULO · ESTIMATIVA' },
+                { label: t('ai.f1_title'), desc: t('ai.f1_desc') },
+                { label: t('ai.f2_title'), desc: t('ai.f2_desc') },
+                { label: t('ai.f3_title'), desc: t('ai.f3_desc') },
+                { label: t('ai.f4_title'), desc: t('ai.f4_desc') },
               ].map(f => (
                 <div
                   key={f.label}
@@ -547,11 +558,10 @@ export function LandingPage() {
       {/* ── EVIDENCE VAULT ────────────────────────────────── */}
       <Section id="evidencia">
         <div className="text-center mb-16">
-          <SectionLabel text="Evidence Vault" />
-          <H2>Cada declaração tem uma prova.</H2>
+          <SectionLabel text={t("evidence.label")} />
+          <H2>Cada {t('hero.titleDeclare')}ção tem uma {t('hero.titleProve')}.</H2>
           <Lead className="mx-auto">
-            SHA-256 imutável. Parser version registrado. AIS observations contadas.
-            SAR validations documentadas. Nenhum campo em branco.
+            {t("evidence.lead")}
           </Lead>
         </div>
 
@@ -621,17 +631,15 @@ export function LandingPage() {
             ))}
           </div>
           <div>
-            <SectionLabel text="Conformidade" />
-            <H2>Construído sobre frameworks regulatórios reais</H2>
+            <SectionLabel text={t("compliance.label")} />
+            <H2>{t("compliance.title")}</H2>
             <Lead>
-              Nenhuma referência regulatória inventada. Todas as normas são rastreáveis
-              ao texto oficial publicado pela Comissão Europeia, IMO e ISO.
+              {t("compliance.lead")}
             </Lead>
             <div className="mt-6 flex items-start gap-3 p-4 rounded-xl border" style={{ borderColor: `${T.brand}30`, background: `${T.brand}08` }}>
               <Lock size={14} className="shrink-0 mt-0.5" style={{ color: T.brand }} />
               <p className="text-xs leading-relaxed" style={{ color: T.muted }}>
-                O Meridian Intelligence é isolado do MeridianMRV Core. Dados são promovidos
-                via fluxo de revisão humana. O sistema nunca grava diretamente no core.
+                {t("compliance.disclaimer")}
               </p>
             </div>
           </div>
@@ -657,13 +665,13 @@ export function LandingPage() {
               className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border text-xs font-semibold tracking-wider"
               style={{ borderColor: `${T.brand}40`, color: T.brand, background: `${T.brand}10` }}
             >
-              <Satellite size={12} /> DEMO DISPONÍVEL — SANTOS → ROTTERDAM
+              <Satellite size={12} /> {t('cta.badge')}
             </div>
             <h2 className="text-4xl lg:text-5xl font-semibold tracking-tight mb-6" style={{ color: T.base }}>
-              Prove o que você declara.
+              Prove o que você {t('hero.titleDeclare')}.
             </h2>
             <p className="text-lg mb-10 max-w-xl mx-auto" style={{ color: T.muted }}>
-              Acesse os cinco portais, explore o Evidence Vault e veja a cadeia completa de inteligência marítima funcionando.
+              {t("cta.lead")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
@@ -671,14 +679,14 @@ export function LandingPage() {
                 className="flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-sm transition-all hover:scale-105"
                 style={{ background: T.brand, color: T.bg }}
               >
-                Entrar na Plataforma <ArrowRight size={16} />
+                {t('cta.btnAccess')} <ArrowRight size={16} />
               </Link>
               <Link
                 to="/public/voyage/demo-001"
                 className="flex items-center gap-2 px-8 py-4 rounded-xl font-medium text-sm border transition-colors"
                 style={{ borderColor: T.border, color: T.muted }}
               >
-                <FileText size={14} /> Ver Evidência Pública
+                <FileText size={14} /> {t('cta.btnVerify')}
               </Link>
             </div>
           </div>
@@ -693,15 +701,15 @@ export function LandingPage() {
               <Anchor size={16} style={{ color: T.brand }} />
               <div>
                 <p className="text-xs font-bold tracking-widest" style={{ color: T.base }}>MERIDIAN INTELLIGENCE</p>
-                <p className="text-[10px] mt-0.5" style={{ color: T.muted }}>Green Corridor Intelligence Programme</p>
+                <p className="text-[10px] mt-0.5" style={{ color: T.muted }}>{t("footer.sub")}</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-6 text-xs" style={{ color: T.muted }}>
-              <span>Powered by Spire S-AIS · Copernicus · Blink AI Gateway</span>
+              <span>{t("footer.power")}</span>
               <span style={{ color: T.subtle }}>·</span>
-              <span>Isolado do MeridianMRV Core</span>
+              <span>{t("footer.isolated")}</span>
               <span style={{ color: T.subtle }}>·</span>
-              <span>Dados DEMO — não autoridade regulatória</span>
+              <span>{t("footer.demo")}</span>
             </div>
           </div>
         </div>

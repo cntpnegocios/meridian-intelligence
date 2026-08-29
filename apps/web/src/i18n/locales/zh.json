@@ -1,0 +1,131 @@
+{
+  "nav": {
+    "portals": "门户",
+    "data": "数据",
+    "evidence": "证据",
+    "access": "访问平台"
+  },
+  "hero": {
+    "badge": "绿色走廊情报 · 桑托斯 → 鹿特丹",
+    "title1": "海事智能不仅仅是",
+    "titleDeclare": "声明",
+    "title2": "，更是",
+    "titleProve": "证明",
+    "title3": "。",
+    "subtitle": "基于卫星AIS跟踪、独立的SAR验证、EU ETS/FuelEU计算和不可篡改的SHA-256监管链的海事MRV平台。",
+    "btnAccess": "访问平台",
+    "btnVerify": "查看已验证航次"
+  },
+  "stats": {
+    "route": "桑托斯 → 鹿特丹",
+    "routeSub": "受监控的试点走廊",
+    "models": "AI 模型",
+    "modelsSub": "通过 Blink AI Gateway",
+    "trust": "SHA-256 信任",
+    "trustSub": "记录并验证的证据",
+    "portals": "专属门户",
+    "portalsSub": "按海事利益相关方"
+  },
+  "problem": {
+    "label": "面临的问题",
+    "title1": "缺乏",
+    "titleHighlight": "可验证证据",
+    "title2": "的排放声明属于“漂绿”行为。",
+    "lead": "欧洲监管机构要求可审计的MRV。托运人需要可追溯的范围3。港口需要获取绿色走廊数据。市场不再接受PDF文件。",
+    "p1_title": "被篡改或丢失的AIS数据",
+    "p1_sub": "位置无法验证",
+    "p2_title": "手动且未经审计的EU ETS计算",
+    "p2_sub": "65欧元/吨CO₂ · 风险不断增加",
+    "p3_title": "FuelEU — 2,400欧元/吨罚款",
+    "p3_sub": "2025年后的监管风险",
+    "p4_title": "无哈希值的绿色证书",
+    "p4_sub": "使ESG链无效",
+    "high": "高风险",
+    "critical": "严重",
+    "medium": "中等"
+  },
+  "cycle": {
+    "label": "工作原理",
+    "title": "完整的海事智能周期",
+    "c1": "测量",
+    "c2": "计算",
+    "c3": "抵消",
+    "c4": "证明",
+    "c5": "发布"
+  },
+  "portals": {
+    "label": "5 个专属门户",
+    "title": "一个系统，五种业务视角",
+    "lead": "每个利益相关方都能看到他们需要的内容。在正确的上下文中呈现相同的可追溯证据。",
+    "access": "访问",
+    "p1_role": "运营商 / 船东",
+    "p1_title": "控制塔",
+    "p1_desc": "在统一界面中查看船队、EU ETS排放、FuelEU合规性、绿色走廊和证据库。",
+    "p2_role": "托运人",
+    "p2_title": "货物情报",
+    "p2_desc": "按订单统计的CO₂、范围3类别4归属、ISO 14083绿色证书和订单可追溯性。",
+    "p3_role": "港口 / 当局",
+    "p3_title": "港口情报",
+    "p3_desc": "实时交通监控、活动地理围栏、基于EEOI的船舶排名和声明的排放量。",
+    "p4_role": "监管机构 / EMSA",
+    "p4_title": "审计跟踪",
+    "p4_desc": "带有SHA-256日志、审计跟踪和EU MRV导出的只读证据库。",
+    "p5_role": "公众 / ESG审计员",
+    "p5_title": "透明度门户",
+    "p5_desc": "无需登录的公开且已验证的航次页面。反“漂绿”。用于供应链的二维码。"
+  },
+  "data": {
+    "label": "数据源",
+    "title": "证据优先，而非推断",
+    "lead": "官方API优先。观测数据优于声明数据。AI模型作为解释器，绝不作为数据源。",
+    "disclaimer": "该架构明确区分：实时 (LIVE) · 演示 (DEMO) · 过期 (STALE) · 不可用 (UNAVAILABLE)。任何LLM推断都不能取代已验证的数据。",
+    "s1_type": "卫星 AIS",
+    "s1_desc": "位置、速度、身份 — 全球覆盖",
+    "s2_type": "SAR 雷达",
+    "s2_desc": "通过轨道雷达进行独立的位置验证",
+    "s3_type": "海洋学",
+    "s3_desc": "洋流、海浪、温度 — 性能环境",
+    "s4_type": "官方声明",
+    "s4_desc": "报告的燃油消耗 — 监管基准",
+    "s5_type": "AI — 200+ 模型",
+    "s5_desc": "解释、摘要和分析 — 仅限服务器端"
+  },
+  "ai": {
+    "badge": "BLINK AI GATEWAY · 200+ 模型",
+    "title1": "解释证据的AI。",
+    "titleHighlight": "绝不捏造。",
+    "lead": "Blink AI Gateway 将后端连接到 200 多个语言模型。所有调用都在服务器端进行。API 密钥绝不会到达浏览器。输出结果始终标记为 MODEL_OPINION。",
+    "f1_title": "监管解释",
+    "f1_desc": "以操作语言解释 EU MRV / FuelEU / EU ETS",
+    "f2_title": "AIS 异常分析",
+    "f2_desc": "解释位置或排放的偏差",
+    "f3_title": "绿色走廊摘要",
+    "f3_desc": "桑托斯 → 鹿特丹 航线性能",
+    "f4_title": "证据分类",
+    "f4_desc": "事实 · 推断 · 计算 · 估计"
+  },
+  "evidence": {
+    "label": "证据库",
+    "title": "每项声明都有证据。",
+    "lead": "不可篡改的 SHA-256。已注册的解析器版本。AIS 观测计数。SAR 验证记录。没有空白字段。"
+  },
+  "compliance": {
+    "label": "合规性",
+    "title": "建立在真实的监管框架之上",
+    "lead": "没有捏造的监管参考。所有标准均可追溯到欧盟委员会、IMO 和 ISO 发布的官方文本。",
+    "disclaimer": "Meridian Intelligence 与 MeridianMRV Core 隔离。数据通过人工审查流程进行推广。系统绝不直接写入 Core。"
+  },
+  "cta": {
+    "badge": "提供演示 — 桑托斯 → 鹿特丹",
+    "title": "证明您的声明。",
+    "lead": "访问五个门户，探索证据库，并了解完整的海事智能链的运作。",
+    "btnAccess": "进入平台",
+    "btnVerify": "查看公开证据"
+  },
+  "footer": {
+    "sub": "绿色走廊情报计划",
+    "power": "由 Spire S-AIS · Copernicus · Blink AI Gateway 提供支持",
+    "isolated": "与 MeridianMRV Core 完全集成",
+    "demo": "版权所有 © 2026 Meridian Intelligence. 保留所有权利。"
+  }
+}
