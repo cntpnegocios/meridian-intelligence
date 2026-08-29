@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
-import Map from 'maplibre-gl';
 import DeckGL from '@deck.gl/react';
-import { ScatterplotLayer, ArcLayer, PolygonLayer } from '@deck.gl/layers';
+import { ScatterplotLayer, ArcLayer } from '@deck.gl/layers';
 import { Map as MapLibreMap } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 

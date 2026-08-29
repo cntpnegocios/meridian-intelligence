@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from datetime import datetime, timezone
 from app.core.config import settings
-from app.api.endpoints import vessels, voyages, evidence
+from app.api.endpoints import vessels, voyages, evidence, ports, corridors
 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.VERSION)
 
@@ -9,6 +9,8 @@ app = FastAPI(title=settings.PROJECT_NAME, version=settings.VERSION)
 app.include_router(vessels.router, prefix=f"{settings.API_V1_STR}/vessels", tags=["vessels"])
 app.include_router(voyages.router, prefix=f"{settings.API_V1_STR}/voyages", tags=["voyages"])
 app.include_router(evidence.router, prefix=f"{settings.API_V1_STR}/evidence", tags=["evidence"])
+app.include_router(ports.router, prefix=f"{settings.API_V1_STR}/ports", tags=["ports"])
+app.include_router(corridors.router, prefix=f"{settings.API_V1_STR}/corridors", tags=["corridors"])
 
 @app.get("/api/health")
 def health():
