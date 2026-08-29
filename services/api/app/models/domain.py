@@ -63,19 +63,30 @@ class VoyageLeg(Base):
     distance_status = Column(Enum(DataGovernanceStatus), default=DataGovernanceStatus.UNAVAILABLE)
     created_at = Column(DateTime, server_default=text("now()"))
 
+class AISCollectionType(str, enum.Enum):
+    SATELLITE = "SATELLITE"
+    TERRESTRIAL = "TERRESTRIAL"
+    UNAVAILABLE = "UNAVAILABLE"
+
 class AISObservation(Base):
     __tablename__ = "ais_observations"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     vessel_id = Column(UUID(as_uuid=True), ForeignKey("vessels.id"))
+    mmsi = Column(String(20))
     observed_at = Column(DateTime, nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
     sog_knots = Column(Float)
     cog_degrees = Column(Float)
+    heading = Column(Float)
+    navigation_status = Column(String(50))
+    collection_type = Column(Enum(AISCollectionType), default=AISCollectionType.UNAVAILABLE)
+    position_accuracy = Column(Boolean, default=False)
     provider = Column(String, nullable=False)
     confidence = Column(Enum(ConfidenceLevel), default=ConfidenceLevel.UNAVAILABLE)
     data_status = Column(Enum(DataGovernanceStatus), default=DataGovernanceStatus.MEASURED)
     ingestion_job_id = Column(String)
+    evidence_id = Column(UUID(as_uuid=True), ForeignKey("evidence.id"))
     created_at = Column(DateTime, server_default=text("now()"))
 
 class Evidence(Base):
@@ -88,6 +99,7 @@ class Evidence(Base):
     parser_name = Column(String)
     parser_version = Column(String)
     extraction_method = Column(String)
+    observation_type = Column(String(50))
     confidence = Column(Enum(ConfidenceLevel), default=ConfidenceLevel.UNAVAILABLE)
     raw_object_key = Column(String)
     human_validation_status = Column(String, default="PENDING")
