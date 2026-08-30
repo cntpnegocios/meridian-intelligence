@@ -21,6 +21,7 @@ import { ShipperPortal } from './pages/ShipperPortal';
 import { PortDashboard } from './pages/PortDashboard';
 import { EvidenceVault } from './pages/EvidenceVault';
 import { SourceRegistry } from './pages/SourceRegistry';
+import AdminSettings from './pages/AdminSettings';
 
 import './styles.css';
 
@@ -50,6 +51,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 <Route path="port"                   element={<PortDashboard />} />
                 <Route path="evidence-vault"         element={<EvidenceVault />} />
                 <Route path="source-registry"        element={<SourceRegistry />} />
+                <Route path="admin"                  element={<AdminSettings />} />
               </Routes>
             </AppShell>
           } />

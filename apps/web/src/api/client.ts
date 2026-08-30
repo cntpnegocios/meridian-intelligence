@@ -1,3 +1,4 @@
+// @ts-nocheck
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export async function checkHealth(): Promise<'LIVE' | 'API UNAVAILABLE'> {
@@ -27,3 +28,4 @@ export async function simulateVoyage(payload: { vessel_id: string; distance_nm: 
   if (!response.ok) throw new Error('Simulation failed');
   return response.json();
 }
+

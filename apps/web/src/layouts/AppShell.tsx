@@ -19,6 +19,7 @@ const NAV_ITEMS: NavItem[] = [
   { name: 'Port Dashboard',      icon: <Anchor size={18} />,   path: '/app/port',                roles: ['PORT'] },
   { name: 'Evidence Vault',      icon: <Archive size={18} />,  path: '/app/evidence-vault',      roles: ['OPERATOR','REGULATOR'] },
   { name: 'Source Registry',     icon: <Database size={18} />, path: '/app/source-registry',     roles: ['OPERATOR','REGULATOR'] },
+  { name: 'Configurações',       icon: <Anchor size={18} />,   path: '/app/admin',               roles: ['OPERATOR','REGULATOR'] },
   { name: 'Public Voyage',       icon: <Eye size={18} />,      path: '/public/voyage/demo-001',  roles: ['PUBLIC'] },
 ];
 

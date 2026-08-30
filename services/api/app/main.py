@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from app.core.config import settings
 from app.api.endpoints import (
     vessels, voyages, evidence, ports, corridors,
-    ai_intelligence, nodes, routes, vessels_live, source_registry, engines, risk, mrv_reports
+    ai_intelligence, nodes, routes, vessels_live, source_registry, engines, risk, mrv_reports, admin
 )
 
 app = FastAPI(
@@ -20,6 +20,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ── Admin & Settings ─────────────────────────────────────────
+app.include_router(admin.router, prefix="/api/v1/admin", tags=["Admin Settings"])
 
 # ── Phase 1: Transport Nodes ─────────────────────────────────
 app.include_router(nodes.router, prefix="/api/v1/nodes", tags=["Nodes"])
