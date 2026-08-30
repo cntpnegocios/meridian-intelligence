@@ -15,9 +15,8 @@ export default function Onboarding() {
     setLoading(true);
     // Simula validação Enterprise SSO 
     setTimeout(() => {
-      // Define a conta corporativa (Tenant Isolation B2B Phase 13 mock)
-      setRole('OPERATOR');
-      navigate('/app/');
+      // Define o direcionamento para a "segunda tela" (Hub de ambientes)
+      navigate('/hub');
     }, 1200);
   };
 
