@@ -77,37 +77,37 @@ export function AccessibilityWidget() {
               <div className="grid grid-cols-2 gap-2">
                 <button 
                   onClick={() => setVisionMode('default')}
-                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'default' ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'default' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary font-bold ring-1 ring-brand-primary/50' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
                 >
                   Standard
                 </button>
                 <button 
                   onClick={() => setVisionMode('high-contrast')}
-                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'high-contrast' ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'high-contrast' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary font-bold ring-1 ring-brand-primary/50' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
                 >
                   High Contrast
                 </button>
                 <button 
                   onClick={() => setVisionMode('grayscale')}
-                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'grayscale' ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'grayscale' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary font-bold ring-1 ring-brand-primary/50' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
                 >
                   Monochrome
                 </button>
                 <button 
                   onClick={() => setVisionMode('protanopia')}
-                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'protanopia' ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'protanopia' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary font-bold ring-1 ring-brand-primary/50' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
                 >
                   Protanopia
                 </button>
                 <button 
                   onClick={() => setVisionMode('deuteranopia')}
-                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'deuteranopia' ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'deuteranopia' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary font-bold ring-1 ring-brand-primary/50' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
                 >
                   Deuteranopia
                 </button>
                 <button 
                   onClick={() => setVisionMode('tritanopia')}
-                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'tritanopia' ? 'bg-brand-primary text-white border-brand-primary' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+                  className={`p-2 text-xs rounded border transition-colors ${visionMode === 'tritanopia' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary font-bold ring-1 ring-brand-primary/50' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
                 >
                   Tritanopia
                 </button>
@@ -122,7 +122,7 @@ export function AccessibilityWidget() {
               <div className="space-y-2">
                 <button 
                   onClick={() => setTextMode(textMode === 'large-text' ? 'default' : 'large-text')}
-                  className={`w-full flex items-center justify-between p-3 rounded-lg border transition-colors ${textMode === 'large-text' ? 'bg-brand-primary/10 border-brand-primary text-brand-primary' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+                  className={`w-full flex items-center justify-between p-3 rounded-lg border transition-colors ${textMode === 'large-text' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary font-bold ring-1 ring-brand-primary/50' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
                 >
                   <span className="text-sm font-medium">Large Text</span>
                   <ZoomIn size={16} />
@@ -130,7 +130,7 @@ export function AccessibilityWidget() {
                 
                 <button 
                   onClick={() => setTextMode(textMode === 'dyslexic' ? 'default' : 'dyslexic')}
-                  className={`w-full flex items-center justify-between p-3 rounded-lg border transition-colors ${textMode === 'dyslexic' ? 'bg-brand-primary/10 border-brand-primary text-brand-primary' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+                  className={`w-full flex items-center justify-between p-3 rounded-lg border transition-colors ${textMode === 'dyslexic' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary font-bold ring-1 ring-brand-primary/50' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
                 >
                   <span className="text-sm font-medium">Dyslexia Friendly</span>
                   <Activity size={16} />
@@ -138,7 +138,7 @@ export function AccessibilityWidget() {
 
                 <button 
                   onClick={() => setTextMode(textMode === 'spaced' ? 'default' : 'spaced')}
-                  className={`w-full flex items-center justify-between p-3 rounded-lg border transition-colors ${textMode === 'spaced' ? 'bg-brand-primary/10 border-brand-primary text-brand-primary' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
+                  className={`w-full flex items-center justify-between p-3 rounded-lg border transition-colors ${textMode === 'spaced' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary font-bold ring-1 ring-brand-primary/50' : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}`}
                 >
                   <span className="text-sm font-medium">Wide Spacing</span>
                   <Type size={16} />
@@ -161,3 +161,4 @@ export function AccessibilityWidget() {
     </>
   );
 }
+
