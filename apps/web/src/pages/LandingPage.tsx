@@ -39,7 +39,7 @@ export default function LandingPage() {
           <div className="flex-1">
             {/* Hero Headline - Editorial Serif */}
             <h1 className="text-[64px] md:text-[92px] font-libre-caslon-text leading-[1.2] tracking-[-0.011em] text-ink-black mb-6">
-              Meet <span className="text-forest-grove">Grace</span>.<br />
+              Meet <span className="text-forest-grove">Meridian Trace</span>.<br />
               The AI for MRV.
             </h1>
             
@@ -103,5 +103,6 @@ export default function LandingPage() {
     </div>
   );
 }
+
 
 
