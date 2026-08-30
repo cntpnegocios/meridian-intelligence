@@ -76,6 +76,20 @@ class VoyageSimulationRequest(BaseModel):
     vessel_id: UUID
     distance_nm: float
     target_speed_knots: Optional[float] = None
+    regulatory_scope_percent: float = 100.0 # 100 for intra-EU, 50 for extra-EU
+
+class RegulatoryResult(BaseModel):
+    eu_ets_cost_eur: float
+    eu_ets_chargeable_co2: float
+    fueleu_ghg_intensity: float
+    fueleu_compliant: bool
+    fueleu_penalty_eur: float
+    total_regulatory_cost_eur: float
+
+class EvidenceProof(BaseModel):
+    hash: str
+    timestamp: str
+    methodology: str
 
 class VoyageSimulationResponse(BaseModel):
     vessel_imo: str
@@ -91,3 +105,5 @@ class VoyageSimulationResponse(BaseModel):
     energy_consumed_mj: float
     ttw_co2_tonnes: float
     fuel_cost_usd: float
+    regulatory: RegulatoryResult
+    evidence: EvidenceProof

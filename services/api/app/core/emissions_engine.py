@@ -7,7 +7,7 @@ LHV_MJ_KG = {
     "HFO": 40.2,
     "MGO": 42.7,
     "LNG": 48.0,
-    "Methanol": 19.9
+    "Methanol": 19.9, "Bio-Methanol": 19.9
 }
 
 # TTW (Tank-to-Wake) CO2 emission factors (t-CO2 / t-Fuel) - IMO Standards
@@ -16,7 +16,7 @@ TTW_CO2_FACTORS = {
     "HFO": 3.114,
     "MGO": 3.206,
     "LNG": 2.750,
-    "Methanol": 1.375
+    "Methanol": 1.375, "Bio-Methanol": 1.375
 }
 
 # Base Specific Fuel Oil Consumption (SFOC) at optimal load in g/kWh
@@ -26,7 +26,7 @@ BASE_SFOC_G_KWH = {
     "HFO": 175.0,
     "MGO": 180.0,
     "LNG": 155.0,
-    "Methanol": 360.0 # Higher mass consumption due to lower LHV
+    "Methanol": 360.0, "Bio-Methanol": 360.0 # Higher mass consumption due to lower LHV
 }
 
 # Estimated Global Average Fuel Prices (USD / tonne) - Dynamic in a real system
@@ -35,7 +35,7 @@ FUEL_PRICES_USD = {
     "HFO": 510.0,
     "MGO": 780.0,
     "LNG": 540.0,
-    "Methanol": 820.0
+    "Methanol": 820.0, "Bio-Methanol": 1200.0
 }
 
 class EmissionsEngine:
