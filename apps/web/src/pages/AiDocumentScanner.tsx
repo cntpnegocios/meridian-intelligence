@@ -93,9 +93,9 @@ Signature: __________`;
             )}
           </button>
 
-          <div className="mt-4 p-4 bg-mist-gray border border-ink-black/10 rounded-lg text-left w-full">
+          <div className="mt-4 p-4 bg-mist-gray border border-ink-black/10/10 rounded-lg text-left w-full">
             <span className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-2 block">Texto Sujo Simulado (Câmera)</span>
-            <pre className="text-xs text-slate-mid font-mono overflow-hidden whitespace-pre-wrap">
+            <pre className="text-xs text-graphite font-medium font-mono overflow-hidden whitespace-pre-wrap">
               {DEMO_OCR_TEXT}
             </pre>
           </div>
@@ -134,27 +134,27 @@ Signature: __________`;
             {result && (
               <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 
-                <div className="flex justify-between items-center pb-4 border-b border-ink-black/10">
-                  <div className="text-sm text-slate-mid">Nível de Confiança da IA</div>
+                <div className="flex justify-between items-center pb-4 border-b border-ink-black/10/10">
+                  <div className="text-sm text-graphite font-medium">Nível de Confiança da IA</div>
                   <div className={`text-xl font-bold font-mono ${result.ocr_confidence > 90 ? 'text-forest-grove' : 'text-amber-400'}`}>
                     {result.ocr_confidence}%
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10">
+                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10/10">
                     <div className="text-xs text-slate-500 mb-1">Combustível Detectado</div>
                     <div className="font-mono text-ink-black text-lg">{result.fuel_type}</div>
                   </div>
-                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10">
+                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10/10">
                     <div className="text-xs text-slate-500 mb-1">Quantidade Entregue</div>
                     <div className="font-mono text-amber-400 text-lg font-bold">{result.quantity_mt.toLocaleString('pt-BR')} MT</div>
                   </div>
-                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10">
+                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10/10">
                     <div className="text-xs text-slate-500 mb-1">Enxofre (Sulfur)</div>
                     <div className="font-mono text-ink-black text-lg">{result.sulfur_content_pct} %</div>
                   </div>
-                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10">
+                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10/10">
                     <div className="text-xs text-slate-500 mb-1">Porto de Origem</div>
                     <div className="font-mono text-ink-black text-lg">{result.bunker_port}</div>
                   </div>
@@ -174,4 +174,5 @@ Signature: __________`;
     </div>
   );
 }
+
 

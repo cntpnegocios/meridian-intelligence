@@ -42,7 +42,7 @@ export default function FinOpsDashboard() {
 
       {/* KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-bg-panel border border-border-default rounded-xl p-6 shadow-sm">
+        <div className="bg-bg-panel border border-border-default rounded-xl p-6 shadow-[0_0_1px_rgba(0,0,0,0.35),0_1px_2px_rgba(0,0,0,0.1)_inset]">
           <div className="text-text-muted text-sm font-medium mb-2 flex justify-between">
             Passivo ETS Total Acumulado
             <TrendingUp className="h-4 w-4 text-forest-grove" />
@@ -53,7 +53,7 @@ export default function FinOpsDashboard() {
           <div className="text-xs text-text-muted mt-2">Baseado na cotação EUA atual</div>
         </div>
         
-        <div className="bg-bg-panel border border-border-default rounded-xl p-6 shadow-sm">
+        <div className="bg-bg-panel border border-border-default rounded-xl p-6 shadow-[0_0_1px_rgba(0,0,0,0.35),0_1px_2px_rgba(0,0,0,0.1)_inset]">
           <div className="text-text-muted text-sm font-medium mb-2 flex justify-between">
             Faturas Abertas (ERP)
             <FileText className="h-4 w-4 text-brand-primary" />
@@ -62,7 +62,7 @@ export default function FinOpsDashboard() {
           <div className="text-xs text-text-muted mt-2">Aguardando liquidação / Hedging</div>
         </div>
 
-        <div className="bg-bg-panel border border-border-default rounded-xl p-6 shadow-sm">
+        <div className="bg-bg-panel border border-border-default rounded-xl p-6 shadow-[0_0_1px_rgba(0,0,0,0.35),0_1px_2px_rgba(0,0,0,0.1)_inset]">
           <div className="text-text-muted text-sm font-medium mb-2 flex justify-between">
             Custo Global de Carbono (EUA)
             <Building2 className="h-4 w-4 text-blue-400" />
@@ -135,4 +135,5 @@ export default function FinOpsDashboard() {
     </div>
   );
 }
+
 
