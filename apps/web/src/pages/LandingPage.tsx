@@ -280,6 +280,7 @@ export default function LandingPage() {
               <li><Link to="/login" className="hover:text-forest-grove transition-colors flex items-center gap-2"><ArrowRight size={14} className="text-forest-grove"/> Shipper Intelligence</Link></li>
               <li><Link to="/login" className="hover:text-forest-grove transition-colors flex items-center gap-2"><ArrowRight size={14} className="text-forest-grove"/> Tax FinOps Engine</Link></li>
               <li><Link to="/login" className="hover:text-forest-grove transition-colors flex items-center gap-2"><ArrowRight size={14} className="text-forest-grove"/> Evidence Vault (DLT)</Link></li>
+              <li><Link to="/api-docs" className="hover:text-forest-grove text-forest-grove font-bold transition-colors flex items-center gap-2"><ArrowRight size={14} className="text-forest-grove"/> Developer API Gateway</Link></li>
             </ul>
           </div>
           
@@ -323,4 +324,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
 
