@@ -1,15 +1,17 @@
-# Ignore backend — deployed separately (Railway/Render)
-services/
-api/
-scripts/
-database/
+# Ignore ONLY root-level backend folders (leading / = root-anchored)
+/services/
+/api/
+/scripts/
+/database/
 
-# Python artifacts
+# Python artifacts (anywhere)
 __pycache__/
 *.pyc
 *.pyo
-.env
 *.egg-info/
+
+# Secrets
+.env
 
 # Dev files
 *.log
