@@ -6,7 +6,7 @@ import { PortalProvider } from './lib/portalContext';
 import './i18n';
 
 // ── Landing & Public ──────────────────────────────────────────
-import { LandingPage } from './pages/LandingPage';
+import Onboarding from './pages/Onboarding';
 import { PublicVoyagePage } from './pages/PublicVoyagePage';
 
 // ── App Pages ─────────────────────────────────────────────────
@@ -30,7 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           {/* ── ROOT → Landing Page (always first) ── */}
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<Onboarding />} />
 
           {/* ── Public voyage — no auth, no shell ── */}
           <Route path="/public/voyage/:id" element={<PublicVoyagePage />} />
