@@ -1,92 +1,85 @@
-"""Vessels Live endpoint — Phase 3: AIS vessel positions (DEMO until real AIS key provided)."""
 from datetime import datetime, timezone
-from fastapi import APIRouter
+from typing import List, Dict, Any
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from sqlalchemy import text
+from app.db.session import get_db
+from app.schemas.api_models import AISObservationBase
+from app.models.domain import AISObservation, Vessel
 
 router = APIRouter()
 
-# DEMO vessels — real IMO numbers, realistic positions on Santos→Rotterdam route
-# When AIS_PROVIDER_IMPL env var is set to 'spire' or 'kpler', swap this with live adapter
-_DEMO_VESSELS = [
-    {
-        "mmsi": "636019825", "imo": "9839637", "name": "SANTA BARBARA",
-        "type": "Container", "flag": "LR",
-        "lat": 1.3521, "lon": -25.1234,
-        "sog": 14.2, "cog": 352.1, "heading": 350,
-        "status": "UNDERWAY", "data_quality": "DEMO",
-        "route": "Santos → Rotterdam",
-        "source": "DEMO_AIS",
-    },
-    {
-        "mmsi": "255805929", "imo": "9321483", "name": "MSC ROTTERDAM",
-        "type": "Container", "flag": "PT",
-        "lat": 36.1408, "lon": -6.4215,
-        "sog": 18.5, "cog": 45.3, "heading": 44,
-        "status": "UNDERWAY", "data_quality": "DEMO",
-        "route": "Santos → Rotterdam",
-        "source": "DEMO_AIS",
-    },
-    {
-        "mmsi": "235102581", "imo": "9403065", "name": "MAERSK SANTOS",
-        "type": "Container", "flag": "GB",
-        "lat": -23.9744, "lon": -46.2936,
-        "sog": 0.0, "cog": 0.0, "heading": 270,
-        "status": "MOORED", "data_quality": "DEMO",
-        "route": "Port of Santos",
-        "source": "DEMO_AIS",
-    },
-    {
-        "mmsi": "246218000", "imo": "9778791", "name": "CMA CGM BRAZIL",
-        "type": "Container", "flag": "NL",
-        "lat": 51.8850, "lon": 4.2867,
-        "sog": 0.0, "cog": 0.0, "heading": 90,
-        "status": "MOORED", "data_quality": "DEMO",
-        "route": "Port of Rotterdam",
-        "source": "DEMO_AIS",
-    },
-    {
-        "mmsi": "548763000", "imo": "9876543", "name": "EVER GIVEN II",
-        "type": "Container", "flag": "PA",
-        "lat": 29.9702, "lon": 32.5498,
-        "sog": 8.1, "cog": 155.0, "heading": 155,
-        "status": "UNDERWAY", "data_quality": "DEMO",
-        "route": "Rotterdam → Singapore",
-        "source": "DEMO_AIS",
-    },
-]
+@router.post("/webhook")
+def receive_ais_ping(ping: AISObservationBase, db: Session = Depends(get_db)):
+    """
+    Webhook to receive live satellite pings (e.g. from Spire/MarineTraffic).
+    Stores the ping in the evidence-grade ais_observations table.
+    """
+    # Verify vessel exists
+    vessel = db.query(Vessel).filter(Vessel.id == ping.vessel_id).first()
+    if not vessel:
+        raise HTTPException(status_code=404, detail="Vessel not found in registry")
 
-
-def _with_timestamp(vessels: list) -> list:
-    ts = datetime.now(timezone.utc).isoformat()
-    return [{**v, "timestamp_utc": ts} for v in vessels]
+    obs = AISObservation(**ping.model_dump())
+    db.add(obs)
+    db.commit()
+    db.refresh(obs)
+    return {"status": "success", "recorded_id": obs.id}
 
 
 @router.get("/live")
-def get_live_vessels():
-    """Return vessel AIS positions. DEMO data until live AIS provider is configured."""
+def get_live_vessels(db: Session = Depends(get_db)):
+    """
+    Returns the latest known position for all active vessels directly from PostGIS.
+    """
+    query = text("""
+        SELECT DISTINCT ON (v.id) 
+            v.id, v.imo_number, v.name, v.flag, v.vessel_type,
+            a.latitude, a.longitude, a.sog_knots, a.cog_degrees, a.observed_at
+        FROM vessels v
+        INNER JOIN ais_observations a ON v.id = a.vessel_id
+        ORDER BY v.id, a.observed_at DESC
+    """)
+    
+    result = db.execute(query)
+    vessels = []
+    for row in result:
+        vessels.append({
+            "vessel_id": str(row[0]),
+            "imo": row[1],
+            "name": row[2],
+            "type": row[4],
+            "lat": float(row[5]),
+            "lon": float(row[6]),
+            "sog": float(row[7]) if row[7] else 0.0,
+            "cog": float(row[8]) if row[8] else 0.0,
+            "timestamp_utc": row[9].isoformat()
+        })
+
     return {
-        "data_quality": "DEMO",
-        "note": "Live AIS requires Spire or Kpler API key — set AIS_PROVIDER_IMPL env var",
-        "count": len(_DEMO_VESSELS),
-        "vessels": _with_timestamp(_DEMO_VESSELS),
+        "data_quality": "LIVE",
+        "count": len(vessels),
+        "vessels": vessels,
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
     }
 
 
 @router.get("/geojson")
-def get_vessels_geojson():
+def get_vessels_geojson(db: Session = Depends(get_db)):
     """Return vessel positions as GeoJSON FeatureCollection for deck.gl."""
-    vessels = _with_timestamp(_DEMO_VESSELS)
-    features = [
-        {
+    live_data = get_live_vessels(db)
+    features = []
+    
+    for v in live_data["vessels"]:
+        features.append({
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [v["lon"], v["lat"]]},
             "properties": v,
-        }
-        for v in vessels
-    ]
+        })
+        
     return {
         "type": "FeatureCollection",
         "features": features,
-        "data_quality": "DEMO",
+        "data_quality": "LIVE",
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
     }
