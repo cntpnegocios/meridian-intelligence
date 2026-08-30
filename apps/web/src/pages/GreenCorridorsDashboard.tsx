@@ -3,7 +3,7 @@ import { MapCockpit } from "../components/ui/MapCockpit";
 import { fetchVesselByImo, simulateVoyage } from "../api/client";
 
 export default function GreenCorridorsDashboard() {
-  const [activeScenario, setActiveScenario] = useState("Santos-Rotterdam");
+  
   const [isLoading, setIsLoading] = useState(false);
   const [conventionalData, setConventionalData] = useState<any>(null);
   const [greenData, setGreenData] = useState<any>(null);
