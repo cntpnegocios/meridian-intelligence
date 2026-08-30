@@ -42,8 +42,8 @@ export default function Onboarding() {
           
           {/* Aviso de Demo Aberta */}
           <div className="mb-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-start gap-3">
-            <Info className="h-5 w-5 text-blue-400 shrink-0 mt-0.5" />
-            <div className="text-sm text-blue-200">
+            <Info className="h-5 w-5 text-forest-grove shrink-0 mt-0.5" />
+            <div className="text-sm text-graphite">
               <strong className="text-blue-100">Interactive Demo Mode</strong><br/>
               As credenciais de demonstração já estão preenchidas. Clique em Sign In para acessar os ambientes.
             </div>
@@ -123,4 +123,5 @@ export default function Onboarding() {
     </div>
   );
 }
+
 
