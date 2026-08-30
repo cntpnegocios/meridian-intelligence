@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { Anchor, ShieldCheck, Globe2, Cpu, ArrowRight } from 'lucide-react';
 

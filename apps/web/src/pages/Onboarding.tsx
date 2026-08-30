@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Anchor, ArrowRight, ShieldCheck, KeyRound, Building } from 'lucide-react';
-import { usePortal } from '../lib/portalContext';
+
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { setRole } = usePortal();
+  
   
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);

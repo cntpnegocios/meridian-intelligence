@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ScanText, UploadCloud, FileCheck, AlertCircle, FileSearch, CheckCircle2 } from 'lucide-react';
 
 export default function AiDocumentScanner() {
