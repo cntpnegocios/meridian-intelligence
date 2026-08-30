@@ -16,7 +16,7 @@ export default function PortalHub() {
     {
       role: 'OPERATOR' as PortalRole,
       title: 'Operator Control Tower',
-      description: 'Fleet management, EU ETS & FuelEU compliance, live emissions tracking.',
+      description: 'Minimize ETS tax exposure. Automate EU MRV reporting and unlock real-time fleet decarbonization ROI.',
       icon: <Ship className="h-10 w-10 text-blue-400" />,
       color: 'border-blue-500/30 hover:border-blue-400',
       bg: 'bg-blue-500/10 hover:bg-blue-500/20'
@@ -24,7 +24,7 @@ export default function PortalHub() {
     {
       role: 'SHIPPER' as PortalRole,
       title: 'Shipper Intelligence',
-      description: 'CO2 per cargo, Scope 3 reporting, ESG certificates, booking tracking.',
+      description: 'Generate audited Scope 3 certificates. Prove zero-carbon supply chains to premium buyers.',
       icon: <Building2 className="h-10 w-10 text-forest-grove" />,
       color: 'border-emerald-500/30 hover:border-emerald-400',
       bg: 'bg-forest-grove/10 hover:bg-forest-grove/20'
@@ -40,7 +40,7 @@ export default function PortalHub() {
     {
       role: 'REGULATOR' as PortalRole,
       title: 'Regulatory & Audit',
-      description: 'MRV audit trails, SHA-256 verifications, fraud detection AI.',
+      description: 'Cryptographic proof of emissions. Detect BDN fraud instantly with AI-powered forensic auditing.',
       icon: <ShieldCheck className="h-10 w-10 text-amber-400" />,
       color: 'border-amber-500/30 hover:border-amber-400',
       bg: 'bg-amber-500/10 hover:bg-amber-500/20'
@@ -100,5 +100,6 @@ export default function PortalHub() {
     </div>
   );
 }
+
 
 
