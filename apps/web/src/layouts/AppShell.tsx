@@ -8,18 +8,18 @@ import { useState, type ReactNode } from 'react';
 type NavItem = { name: string; icon: ReactNode; path: string; roles: PortalRole[] };
 
 const NAV_ITEMS: NavItem[] = [
-  { name: 'Overview',           icon: <Scale size={18} />,    path: '/',                   roles: ['OPERATOR','SHIPPER','PORT','REGULATOR'] },
-  { name: 'Voyage Intelligence', icon: <Route size={18} />,   path: '/voyage-intelligence', roles: ['OPERATOR','PORT'] },
-  { name: 'Maritime Intelligence',icon: <Ship size={18} />,   path: '/maritime-intelligence',roles: ['OPERATOR'] },
-  { name: 'Regulatory Radar',   icon: <Radar size={18} />,    path: '/regulatory-radar',   roles: ['OPERATOR','REGULATOR'] },
-  { name: 'EU ETS',             icon: <Scale size={18} />,    path: '/eu-ets',              roles: ['OPERATOR','SHIPPER','REGULATOR'] },
-  { name: 'FuelEU',             icon: <Waves size={18} />,    path: '/fueleu',              roles: ['OPERATOR','REGULATOR'] },
-  { name: 'Green Corridors',    icon: <Globe2 size={18} />,   path: '/green-corridors',    roles: ['OPERATOR','PORT'] },
-  { name: 'Shipper Portal',     icon: <Building2 size={18} />,path: '/shipper',             roles: ['SHIPPER'] },
-  { name: 'Port Dashboard',     icon: <Anchor size={18} />,   path: '/port',                roles: ['PORT'] },
-  { name: 'Evidence Vault',     icon: <Archive size={18} />,  path: '/evidence-vault',      roles: ['OPERATOR','REGULATOR'] },
-  { name: 'Source Registry',    icon: <Database size={18} />, path: '/source-registry',     roles: ['OPERATOR','REGULATOR'] },
-  { name: 'Public Voyage',      icon: <Eye size={18} />,      path: '/public/voyage/demo-001', roles: ['PUBLIC'] },
+  { name: 'Overview',            icon: <Scale size={18} />,     path: '/app/',                   roles: ['OPERATOR','SHIPPER','PORT','REGULATOR'] },
+  { name: 'Voyage Intelligence', icon: <Route size={18} />,    path: '/app/voyage-intelligence', roles: ['OPERATOR','PORT'] },
+  { name: 'Maritime Intelligence',icon: <Ship size={18} />,    path: '/app/maritime-intelligence',roles: ['OPERATOR'] },
+  { name: 'Regulatory Radar',    icon: <Radar size={18} />,    path: '/app/regulatory-radar',   roles: ['OPERATOR','REGULATOR'] },
+  { name: 'EU ETS',              icon: <Scale size={18} />,    path: '/app/eu-ets',              roles: ['OPERATOR','SHIPPER','REGULATOR'] },
+  { name: 'FuelEU',              icon: <Waves size={18} />,    path: '/app/fueleu',              roles: ['OPERATOR','REGULATOR'] },
+  { name: 'Green Corridors',     icon: <Globe2 size={18} />,   path: '/app/green-corridors',    roles: ['OPERATOR','PORT'] },
+  { name: 'Shipper Portal',      icon: <Building2 size={18} />,path: '/app/shipper',             roles: ['SHIPPER'] },
+  { name: 'Port Dashboard',      icon: <Anchor size={18} />,   path: '/app/port',                roles: ['PORT'] },
+  { name: 'Evidence Vault',      icon: <Archive size={18} />,  path: '/app/evidence-vault',      roles: ['OPERATOR','REGULATOR'] },
+  { name: 'Source Registry',     icon: <Database size={18} />, path: '/app/source-registry',     roles: ['OPERATOR','REGULATOR'] },
+  { name: 'Public Voyage',       icon: <Eye size={18} />,      path: '/public/voyage/demo-001',  roles: ['PUBLIC'] },
 ];
 
 // ── Role Switcher ─────────────────────────────────────────────
@@ -88,7 +88,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* Nav */}
         <nav className="flex flex-col gap-1">
           {visibleNav.map((item) => {
-            const isActive = location.pathname === item.path;
+            const isActive = item.path === '/app/'
+              ? location.pathname === '/app/' || location.pathname === '/app'
+              : location.pathname.startsWith(item.path);
             return (
               <Link
                 key={item.path}

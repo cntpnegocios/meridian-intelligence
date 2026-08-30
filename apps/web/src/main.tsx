@@ -29,27 +29,27 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <PortalProvider>
       <BrowserRouter>
         <Routes>
-          {/* ── Landing — public, no shell ── */}
-          <Route path="/landing" element={<LandingPage />} />
+          {/* ── ROOT → Landing Page (always first) ── */}
+          <Route path="/" element={<LandingPage />} />
 
-          {/* ── Public voyage page — no auth, no shell ── */}
+          {/* ── Public voyage — no auth, no shell ── */}
           <Route path="/public/voyage/:id" element={<PublicVoyagePage />} />
 
           {/* ── App shell — all authenticated routes ── */}
-          <Route path="/*" element={
+          <Route path="/app/*" element={
             <AppShell>
               <Routes>
-                <Route path="/"                      element={<Overview />} />
-                <Route path="/voyage-intelligence"   element={<VoyageIntelligence />} />
-                <Route path="/maritime-intelligence" element={<MaritimeIntelligence />} />
-                <Route path="/regulatory-radar"      element={<RegulatoryRadar />} />
-                <Route path="/eu-ets"                element={<EuEtsCalculator />} />
-                <Route path="/fueleu"                element={<FuelEuScore />} />
-                <Route path="/green-corridors"       element={<GreenCorridorsDashboard />} />
-                <Route path="/shipper"               element={<ShipperPortal />} />
-                <Route path="/port"                  element={<PortDashboard />} />
-                <Route path="/evidence-vault"        element={<EvidenceVault />} />
-                <Route path="/source-registry"       element={<SourceRegistry />} />
+                <Route index                          element={<Overview />} />
+                <Route path="voyage-intelligence"    element={<VoyageIntelligence />} />
+                <Route path="maritime-intelligence"  element={<MaritimeIntelligence />} />
+                <Route path="regulatory-radar"       element={<RegulatoryRadar />} />
+                <Route path="eu-ets"                 element={<EuEtsCalculator />} />
+                <Route path="fueleu"                 element={<FuelEuScore />} />
+                <Route path="green-corridors"        element={<GreenCorridorsDashboard />} />
+                <Route path="shipper"                element={<ShipperPortal />} />
+                <Route path="port"                   element={<PortDashboard />} />
+                <Route path="evidence-vault"         element={<EvidenceVault />} />
+                <Route path="source-registry"        element={<SourceRegistry />} />
               </Routes>
             </AppShell>
           } />

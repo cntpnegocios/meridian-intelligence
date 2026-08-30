@@ -221,7 +221,7 @@ function NavBar() {
           <a href="#dados" className="text-xs font-medium tracking-wide transition-colors hover:text-white" style={{ color: T.muted }}>{t('nav.data')}</a>
           <a href="#evidencia" className="text-xs font-medium tracking-wide transition-colors hover:text-white" style={{ color: T.muted }}>{t('nav.evidence')}</a>
           <Link
-            to="/"
+            to="/app/"
             className="text-xs font-semibold px-4 py-2 rounded-lg transition-all"
             style={{
               background: T.brand,
@@ -288,7 +288,7 @@ export function LandingPage() {
           {/* CTA */}
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <Link
-              to="/"
+              to="/app/"
               className="flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-105"
               style={{ background: T.brand, color: T.bg }}
             >
@@ -675,7 +675,7 @@ export function LandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                to="/"
+                to="/app/"
                 className="flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-sm transition-all hover:scale-105"
                 style={{ background: T.brand, color: T.bg }}
               >
