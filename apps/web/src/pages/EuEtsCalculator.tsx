@@ -32,6 +32,71 @@ interface RouteCalcResponse {
   route_type: string;
 }
 
+const MAJOR_PORTS = [
+  { code: 'BRSSZ', name: 'Santos, Brazil' },
+  { code: 'BRRIO', name: 'Rio de Janeiro, Brazil' },
+  { code: 'BRPNG', name: 'Paranaguá, Brazil' },
+  { code: 'BRSUA', name: 'Suape, Brazil' },
+  { code: 'BRSSO', name: 'São Sebastião, Brazil' },
+  { code: 'NLRTM', name: 'Rotterdam, Netherlands' },
+  { code: 'GBLGP', name: 'London Gateway, UK' },
+  { code: 'GBSOU', name: 'Southampton, UK' },
+  { code: 'DEHAM', name: 'Hamburg, Germany' },
+  { code: 'BEANR', name: 'Antwerp, Belgium' },
+  { code: 'ESPBC', name: 'Barcelona, Spain' },
+  { code: 'FRLEH', name: 'Le Havre, France' },
+  { code: 'AEJEA', name: 'Jebel Ali, UAE' },
+  { code: 'SGSIN', name: 'Singapore' },
+  { code: 'USNYC', name: 'New York, USA' }
+];
+
+const PortAutocomplete = ({ value, onChange, placeholder, label }: { value: string, onChange: (val: string) => void, placeholder: string, label: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const filtered = useMemo(() => {
+    if (!value) return [];
+    return MAJOR_PORTS.filter(p => 
+      p.code.toLowerCase().includes(value.toLowerCase()) || 
+      p.name.toLowerCase().includes(value.toLowerCase())
+    );
+  }, [value]);
+
+  return (
+    <div className="relative">
+      <label className="mb-1 block text-xs font-medium text-text-muted">{label}</label>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value.toUpperCase());
+          setIsOpen(true);
+        }}
+        onFocus={() => setIsOpen(true)}
+        onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+        className="w-full rounded-lg border border-border-default bg-bg-base px-3 py-2 text-text-base placeholder-text-muted focus:border-brand-primary focus:outline-none text-sm uppercase"
+        placeholder={placeholder}
+      />
+      {isOpen && filtered.length > 0 && (
+        <ul className="absolute z-50 w-full mt-1 max-h-48 overflow-y-auto rounded-lg border border-border-default bg-bg-panel shadow-2xl">
+          {filtered.map(port => (
+            <li 
+              key={port.code}
+              onMouseDown={() => {
+                onChange(port.code);
+                setIsOpen(false);
+              }}
+              className="cursor-pointer px-3 py-2 text-sm text-text-base hover:bg-brand-primary/10 hover:text-brand-primary border-b border-border-default/50 last:border-0"
+            >
+              <div className="font-mono text-[11px] font-bold text-brand-primary mb-0.5">{port.code}</div>
+              <div className="text-[12px] text-text-muted">{port.name}</div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
 export function EuEtsCalculator() {
   const [distance, setDistance] = useState<string>('4200');
   const [cargo, setCargo] = useState<string>('45000');
@@ -153,28 +218,18 @@ export function EuEtsCalculator() {
                     )}
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="mb-1 block text-xs font-medium text-text-muted">Origin Port (UN/LOCODE)</label>
-                      <input
-                        type="text"
-                        value={originCode}
-                        onChange={(e) => setOriginCode(e.target.value)}
-                        className="w-full rounded-lg border border-border-default bg-bg-base px-3 py-2 text-text-base placeholder-text-muted focus:border-brand-primary focus:outline-none text-sm uppercase"
-                        placeholder="e.g. BRSSZ"
-                        maxLength={6}
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1 block text-xs font-medium text-text-muted">Destination Port (UN/LOCODE)</label>
-                      <input
-                        type="text"
-                        value={destCode}
-                        onChange={(e) => setDestCode(e.target.value)}
-                        className="w-full rounded-lg border border-border-default bg-bg-base px-3 py-2 text-text-base placeholder-text-muted focus:border-brand-primary focus:outline-none text-sm uppercase"
-                        placeholder="e.g. NLRTM"
-                        maxLength={6}
-                      />
-                    </div>
+                                        <PortAutocomplete 
+                      label="Origin Port (UN/LOCODE)"
+                      placeholder="e.g. BRSSZ"
+                      value={originCode}
+                      onChange={setOriginCode}
+                    />
+                    <PortAutocomplete 
+                      label="Destination Port (UN/LOCODE)"
+                      placeholder="e.g. NLRTM"
+                      value={destCode}
+                      onChange={setDestCode}
+                    />
                   </div>
                   <div className="mt-2 flex items-center gap-3">
                     <button
@@ -417,3 +472,5 @@ export function EuEtsCalculator() {
     </div>
   );
 }
+
+
