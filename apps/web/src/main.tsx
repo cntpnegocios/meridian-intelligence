@@ -12,6 +12,7 @@ import PortalHub from './pages/PortalHub';
 import RegulatoryFramework from './pages/RegulatoryFramework';
 import LegalPage from './pages/LegalPage';
 import ApiDocs from './pages/ApiDocs';
+import EuMrvReport from './pages/EuMrvReport';
 import { PublicVoyagePage } from './pages/PublicVoyagePage';
 
 // ── App Pages ─────────────────────────────────────────────────
@@ -47,6 +48,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
           {/* ── Public voyage — no auth, no shell ── */}
           <Route path="/public/voyage/:id" element={<PublicVoyagePage />} />
+          <Route path="/mrv-report/:id" element={<EuMrvReport />} />
 
           {/* ── App shell — all authenticated routes ── */}
           <Route path="/app/*" element={
@@ -74,6 +76,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </PortalProvider>
   </React.StrictMode>
 );
+
 
 
 
