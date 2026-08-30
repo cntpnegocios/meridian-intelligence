@@ -48,7 +48,7 @@ export function AccessibilityWidget() {
       {/* Floating Button (Added white border to stand out on dark footer) */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-[9999] p-3 bg-brand-primary text-white rounded-full border-2 border-white shadow-[0_4px_15px_rgba(0,0,0,0.3)] hover:bg-[#096b4b] hover:scale-110 transition-all focus:outline-none focus:ring-4 focus:ring-brand-primary/30"
+        className="fixed bottom-6 right-6 z-[9999] p-3 bg-[#0b835c] text-white rounded-full border-2 border-white shadow-[0_4px_15px_rgba(0,0,0,0.3)] hover:bg-[#096b4b] hover:scale-110 transition-all focus:outline-none focus:ring-4 focus:ring-brand-primary/30"
         aria-label="Open Accessibility Menu"
       >
         <Accessibility size={28} />
@@ -161,4 +161,5 @@ export function AccessibilityWidget() {
     </>
   );
 }
+
 
