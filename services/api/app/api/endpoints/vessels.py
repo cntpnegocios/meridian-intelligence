@@ -21,6 +21,13 @@ def read_vessel(vessel_id: UUID, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Vessel not found")
     return vessel
 
+@router.get("/by-imo/{imo_number}", response_model=VesselResponse)
+def read_vessel_by_imo(imo_number: str, db: Session = Depends(get_db)):
+    vessel = db.query(Vessel).filter(Vessel.imo_number == imo_number).first()
+    if not vessel:
+        raise HTTPException(status_code=404, detail="Vessel with IMO not found")
+    return vessel
+
 @router.post("/", response_model=VesselResponse, status_code=201)
 def create_vessel(vessel_in: VesselBase, db: Session = Depends(get_db)):
     vessel = Vessel(**vessel_in.model_dump())
