@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from app.core.config import settings
 from app.api.endpoints import (
     vessels, voyages, evidence, ports, corridors,
-    ai_intelligence, nodes, routes, vessels_live, source_registry, engines, risk
+    ai_intelligence, nodes, routes, vessels_live, source_registry, engines, risk, mrv_reports
 )
 
 app = FastAPI(
@@ -39,6 +39,9 @@ app.include_router(evidence.router,        prefix=f"{settings.API_V1_STR}/eviden
 app.include_router(ports.router,           prefix=f"{settings.API_V1_STR}/ports",          tags=["ports"])
 app.include_router(corridors.router,       prefix=f"{settings.API_V1_STR}/corridors",      tags=["corridors"])
 app.include_router(ai_intelligence.router, prefix=f"{settings.API_V1_STR}/ai",             tags=["ai"])
+
+# ── Phase 14: MRV Report Engine ──────────────────────────────
+app.include_router(mrv_reports.router, prefix="/api/v1/mrv", tags=["EU MRV Reporting"])
 
 # ── Phase 9: Source Registry ─────────────────────────────────
 app.include_router(source_registry.router, prefix=f"{settings.API_V1_STR}/source-registry", tags=["source-registry"])
