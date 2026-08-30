@@ -1,201 +1,156 @@
-import { useState, useEffect } from "react";
-import { MapCockpit } from "../components/ui/MapCockpit";
-import { fetchVesselByImo, simulateVoyage } from "../api/client";
+import React, { useState } from 'react';
+import { Globe2, ArrowRight, ShieldCheck, Ship, Plane, Leaf, Zap, BarChart3 } from 'lucide-react';
 
-export default function GreenCorridorsDashboard() {
-  
-  const [isLoading, setIsLoading] = useState(false);
-  const [conventionalData, setConventionalData] = useState<any>(null);
-  const [greenData, setGreenData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const runSimulation = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      // 1. Fetch ships by IMO
-      const emma = await fetchVesselByImo("9321483"); // Emma Maersk (VLSFO)
-      const laura = await fetchVesselByImo("9944546"); // Laura Maersk (Bio-Methanol)
-
-      // 2. Run simulation side-by-side
-      const dist = 5400.0;
-      const scope = 100.0;
-      
-      const convRes = await simulateVoyage({
-        vessel_id: emma.id,
-        distance_nm: dist,
-        target_speed_knots: 25.5,
-        regulatory_scope_percent: scope
-      });
-      
-      const greenRes = await simulateVoyage({
-        vessel_id: laura.id,
-        distance_nm: dist,
-        target_speed_knots: 17.4, // Eco speed
-        regulatory_scope_percent: scope
-      });
-
-      setConventionalData(convRes);
-      setGreenData(greenRes);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Run on mount
-  useEffect(() => {
-    runSimulation();
-  }, []);
-
-  const formatMoney = (val: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
-  const formatEur = (val: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(val);
+export function GreenCorridorsDashboard() {
+  const [activeTab, setActiveTab] = useState<'SEA' | 'AIR'>('SEA');
 
   return (
-    <div className="flex h-screen bg-neutral-950 text-neutral-100 font-sans">
-      
-      {/* Sidebar - Financial Twin */}
-      <aside className="w-[450px] border-r border-neutral-800 flex flex-col shrink-0 z-10 bg-neutral-950">
-        <div className="p-5 border-b border-neutral-800">
-          <h1 className="text-xl font-semibold text-forest-grove tracking-tight">Green Corridors</h1>
-          <p className="text-xs text-neutral-400 mt-1">Investment & Regulatory Twin (Phase 9)</p>
-        </div>
-        
-        <div className="p-5 flex-1 overflow-y-auto">
-          <div className="flex justify-between items-center mb-4">
-             <h2 className="text-xs uppercase tracking-wider text-neutral-500 font-semibold">Corridor Economics</h2>
-             <button 
-                onClick={runSimulation}
-                disabled={isLoading}
-                className="px-3 py-1 bg-neutral-800 hover:bg-neutral-700 text-xs rounded border border-neutral-700 disabled:opacity-50"
-             >
-                {isLoading ? "Running Physics..." : "Re-simulate"}
-             </button>
+    <div className="p-8 max-w-[1400px] mx-auto animate-fade-in">
+      {/* HEADER */}
+      <div className="flex justify-between items-end border-b border-ink-black/10 pb-4 mb-8">
+        <div>
+          <div className="flex items-center gap-2 text-[12px] font-semibold text-forest-grove tracking-wider uppercase mb-2">
+            <span className="w-2 h-2 rounded-full bg-forest-grove animate-pulse"></span> Multi-Modal Network
           </div>
+          <h1 className="text-[28px] font-semibold text-ink-black font-libre-caslon-text">Global Green Corridors</h1>
+        </div>
+        <div className="flex gap-4">
+          <button 
+            onClick={() => setActiveTab('SEA')}
+            className={px-6 py-2 rounded-full text-sm font-semibold transition-all  + (activeTab === 'SEA' ? 'bg-ink-black text-pure-white shadow-md' : 'bg-pure-white text-graphite border border-ink-black/10 hover:bg-mist-gray')}
+          >
+            Sea Corridors
+          </button>
+          <button 
+            onClick={() => setActiveTab('AIR')}
+            className={px-6 py-2 rounded-full text-sm font-semibold transition-all  + (activeTab === 'AIR' ? 'bg-ink-black text-pure-white shadow-md' : 'bg-pure-white text-graphite border border-ink-black/10 hover:bg-mist-gray')}
+          >
+            Air Corridors (SAF)
+          </button>
+        </div>
+      </div>
 
-          {error && <div className="text-red-400 text-xs mb-4 p-2 bg-red-900/20 rounded border border-red-900">{error}</div>}
-
-          {conventionalData && greenData && (
-            <div className="space-y-6">
-              
-              {/* Route Summary */}
-              <div className="bg-neutral-900 p-4 rounded-lg border border-neutral-800">
-                <div className="flex justify-between items-end mb-2">
-                  <div className="text-sm font-medium">Santos → Rotterdam</div>
-                  <div className="text-xs text-neutral-500">5,400 NM</div>
-                </div>
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                  <div>
-                     <div className="text-[10px] text-neutral-500 uppercase tracking-wider">Conventional</div>
-                     <div className="text-xs text-neutral-300 truncate">{conventionalData.vessel_name}</div>
-                     <div className="text-xs text-neutral-500">VLSFO • {conventionalData.speed_knots} kts</div>
-                  </div>
-                  <div>
-                     <div className="text-[10px] text-forest-grove uppercase tracking-wider">Green Corridor</div>
-                     <div className="text-xs text-neutral-300 truncate">{greenData.vessel_name}</div>
-                     <div className="text-xs text-neutral-500">Methanol • {greenData.speed_knots} kts</div>
-                  </div>
-                </div>
+      {activeTab === 'SEA' && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
+          {/* Corridor Profile */}
+          <div className="lg:col-span-2 bg-pure-white rounded-[20px] p-6 border border-ink-black/10 shadow-[0_0_1px_rgba(0,0,0,0.35),0_1px_2px_rgba(0,0,0,0.1)_inset]">
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <div className="text-[10px] font-semibold text-forest-grove border border-forest-grove/30 bg-forest-grove/5 px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-3">Live Pilot</div>
+                <h2 className="text-[22px] font-bold text-ink-black flex items-center gap-2"><Ship size={24} className="text-forest-grove" /> Brazil – UK / EU Sea Corridor</h2>
+                <p className="text-graphite text-sm mt-1">Agri-food and commodity flows. High EU ETS / FuelEU exposure.</p>
               </div>
-
-              {/* Comparison Table */}
-              <div className="bg-neutral-900 rounded-lg border border-neutral-800 overflow-hidden">
-                <table className="w-full text-xs text-right">
-                  <thead>
-                    <tr className="border-b border-neutral-800 text-neutral-500 bg-neutral-950/50">
-                      <th className="p-3 font-medium text-left">Metric</th>
-                      <th className="p-3 font-medium text-neutral-400">Baseline</th>
-                      <th className="p-3 font-medium text-forest-grove">Green</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-neutral-800/50">
-                    <tr className="hover:bg-neutral-800/20">
-                      <td className="p-3 text-left text-neutral-400">TTW CO₂e</td>
-                      <td className="p-3 font-mono">{conventionalData.ttw_co2_tonnes.toLocaleString()} t</td>
-                      <td className="p-3 font-mono text-forest-grove">{greenData.ttw_co2_tonnes.toLocaleString()} t</td>
-                    </tr>
-                    <tr className="hover:bg-neutral-800/20">
-                      <td className="p-3 text-left text-neutral-400">Fuel Cost</td>
-                      <td className="p-3 font-mono text-red-400/80">{formatMoney(conventionalData.fuel_cost_usd)}</td>
-                      <td className="p-3 font-mono text-red-400/80">{formatMoney(greenData.fuel_cost_usd)}</td>
-                    </tr>
-                    <tr className="hover:bg-neutral-800/20">
-                      <td className="p-3 text-left text-neutral-400">EU ETS Cost</td>
-                      <td className="p-3 font-mono text-amber-500/80">{formatEur(conventionalData.regulatory.eu_ets_cost_eur)}</td>
-                      <td className="p-3 font-mono text-forest-grove">{formatEur(greenData.regulatory.eu_ets_cost_eur)}</td>
-                    </tr>
-                    <tr className="hover:bg-neutral-800/20">
-                      <td className="p-3 text-left text-neutral-400">FuelEU Penalty</td>
-                      <td className="p-3 font-mono text-amber-500/80">{formatEur(conventionalData.regulatory.fueleu_penalty_eur)}</td>
-                      <td className="p-3 font-mono text-forest-grove">Compliant</td>
-                    </tr>
-                    <tr className="bg-neutral-800/30 font-medium">
-                      <td className="p-3 text-left">Total (Fuel + Reg)</td>
-                      <td className="p-3 font-mono text-lg">{formatMoney(conventionalData.fuel_cost_usd + (conventionalData.regulatory.total_regulatory_cost_eur * 1.1))}</td>
-                      <td className="p-3 font-mono text-lg text-forest-grove">{formatMoney(greenData.fuel_cost_usd + (greenData.regulatory.total_regulatory_cost_eur * 1.1))}</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className="text-right">
+                <div className="text-xs text-graphite font-medium uppercase tracking-wider">Engine</div>
+                <div className="text-sm font-bold text-ink-black">Pace-X (Greensee + CCV)</div>
               </div>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="p-4 bg-mist-gray rounded-xl border border-ink-black/5">
+                <div className="text-xs text-graphite mb-1 uppercase tracking-wider font-medium">Measure</div>
+                <div className="text-xl font-bold text-ink-black">12,450 tCO2e</div>
+                <div className="text-xs text-forest-grove mt-1">Baseline Established</div>
+              </div>
+              <div className="p-4 bg-mist-gray rounded-xl border border-ink-black/5">
+                <div className="text-xs text-graphite mb-1 uppercase tracking-wider font-medium">Optimise (Methanol)</div>
+                <div className="text-xl font-bold text-ink-black">-34% EEOI Gap</div>
+                <div className="text-xs text-forest-grove mt-1">FuelEU Compliant</div>
+              </div>
+              <div className="p-4 bg-mist-gray rounded-xl border border-ink-black/5">
+                <div className="text-xs text-graphite mb-1 uppercase tracking-wider font-medium">Forecast & Monetise</div>
+                <div className="text-xl font-bold text-ink-black">€840k Liability</div>
+                <div className="text-xs text-forest-grove mt-1">Fully Hedged via Trace</div>
+              </div>
+            </div>
+            
+            <div className="h-2 w-full bg-mist-gray rounded-full overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.1)_inset]">
+              <div className="h-full bg-forest-grove shadow-[0_1px_2px_rgba(0,0,0,0.25)_inset]" style={{width: '66%'}}></div>
+            </div>
+            <div className="flex justify-between mt-2 text-xs text-graphite font-medium">
+              <span>Current Trajectory</span>
+              <span>IMO 2030 Target (Met)</span>
+            </div>
+          </div>
 
-              {/* TCO Highlights */}
-              {conventionalData && greenData && (
-                <div className="bg-emerald-900/10 border border-emerald-900/30 p-4 rounded-lg">
-                  <h3 className="text-xs font-semibold text-forest-grove uppercase tracking-wider mb-2">Investor Summary</h3>
-                  <p className="text-sm text-neutral-300 leading-relaxed">
-                    By switching to the Bio-Methanol Green Corridor, despite higher raw fuel costs, regulatory savings (ETS/FuelEU) yield a net reduction in Total Cost of Ownership (TCO).
-                  </p>
-                  <div className="mt-3 grid grid-cols-2 gap-2">
-                     <div className="bg-neutral-900/50 p-2 rounded">
-                        <div className="text-[10px] text-neutral-500">CO2e Reduction</div>
-                        <div className="text-sm font-semibold text-forest-grove">
-                          -{((1 - (greenData.ttw_co2_tonnes / conventionalData.ttw_co2_tonnes)) * 100).toFixed(1)}%
-                        </div>
-                     </div>
-                     <div className="bg-neutral-900/50 p-2 rounded">
-                        <div className="text-[10px] text-neutral-500">Evidence Vault</div>
-                        <div className="text-[9px] font-mono text-neutral-600 truncate" title={greenData.evidence.hash}>
-                          {greenData.evidence.hash.substring(0, 16)}...
-                        </div>
-                     </div>
+          {/* Evidence Layer */}
+          <div className="bg-pure-white rounded-[20px] p-6 border border-ink-black/10 shadow-[0_0_1px_rgba(0,0,0,0.35),0_1px_2px_rgba(0,0,0,0.1)_inset] flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <ShieldCheck size={20} className="text-forest-grove" />
+                <h3 className="text-[16px] font-bold text-ink-black">MeridianMRV Evidence</h3>
+              </div>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-forest-grove/10 flex items-center justify-center shrink-0 mt-0.5"><Zap size={12} className="text-forest-grove" /></div>
+                  <div>
+                    <div className="text-sm font-semibold text-ink-black">DLT Provenance</div>
+                    <div className="text-xs text-graphite">Immutable record of EU ETS allocation.</div>
                   </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-forest-grove/10 flex items-center justify-center shrink-0 mt-0.5"><Leaf size={12} className="text-forest-grove" /></div>
+                  <div>
+                    <div className="text-sm font-semibold text-ink-black">EUDR & Biodiversity</div>
+                    <div className="text-xs text-graphite">Biofuel feedstock (B30) verified zero-deforestation.</div>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-forest-grove/10 flex items-center justify-center shrink-0 mt-0.5"><BarChart3 size={12} className="text-forest-grove" /></div>
+                  <div>
+                    <div className="text-sm font-semibold text-ink-black">Scope 3 Insetting</div>
+                    <div className="text-xs text-graphite">123Carbon-ready attribute registry.</div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <button className="w-full mt-6 py-3 border border-ink-black/20 rounded-full text-sm font-semibold text-ink-black hover:bg-mist-gray transition-colors">
+              View Audit Trail
+            </button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'AIR' && (
+        <div className="grid grid-cols-1 gap-6 animate-fade-in opacity-90">
+          <div className="bg-pure-white rounded-[20px] p-8 border border-ink-black/10 shadow-[0_0_1px_rgba(0,0,0,0.35),0_1px_2px_rgba(0,0,0,0.1)_inset] relative overflow-hidden">
+             <div className="absolute top-8 right-8 bg-ink-black text-pure-white text-[10px] uppercase tracking-widest px-3 py-1 rounded-full font-semibold">
+              Strategic Extension / Q4 2026
+            </div>
+            <div className="flex items-center gap-3 mb-2">
+              <Plane size={28} className="text-forest-grove" />
+              <h2 className="text-[24px] font-bold text-ink-black">Brazil – UAE Air Cargo Corridor</h2>
+            </div>
+            <p className="text-graphite text-sm max-w-2xl mb-8">
+              Food security, cargo demand, Gulf aviation hubs and investment appetite. Integrating Sustainable Aviation Fuel (SAF) Book & Claim mechanics powered by the Pace-X and MeridianMRV engine.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="border border-ink-black/10 p-5 rounded-2xl bg-mist-gray/30">
+                <div className="w-10 h-10 bg-pure-white rounded-full flex items-center justify-center shadow-sm mb-4">
+                  <span className="font-bold text-ink-black text-sm">01</span>
                 </div>
-              )}
-
-            </div>
-          )}
-        </div>
-      </aside>
-
-      {/* Map Cockpit */}
-      <main className="flex-1 relative">
-        <MapCockpit />
-        
-        {/* Status Overlay */}
-        <div className="absolute bottom-6 right-6 bg-neutral-900/90 backdrop-blur border border-neutral-800 p-4 rounded-lg w-64 shadow-2xl">
-          <div className="flex items-center gap-2 mb-3 pb-2 border-b border-neutral-800">
-            <div className={`w-2 h-2 rounded-full ${isLoading ? 'bg-amber-500' : 'bg-forest-grove'} animate-pulse`}></div>
-            <span className="text-xs font-medium text-neutral-300">Meridian Core Engine</span>
-          </div>
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-neutral-500">Physics Engine:</span>
-              <span className="text-neutral-300">Active</span>
-            </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-neutral-500">Regulatory Engine:</span>
-              <span className="text-neutral-300">Active</span>
-            </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-neutral-500">Evidence Vault:</span>
-              <span className="text-forest-grove font-mono">SHA-256</span>
+                <h3 className="font-semibold text-ink-black mb-2">Air Corridor Data Module</h3>
+                <p className="text-xs text-graphite">Airline/route emissions, CORSIA and ReFuelEU mandate workflow integrated directly into Pace-X.</p>
+              </div>
+              <div className="border border-ink-black/10 p-5 rounded-2xl bg-mist-gray/30">
+                <div className="w-10 h-10 bg-pure-white rounded-full flex items-center justify-center shadow-sm mb-4">
+                  <span className="font-bold text-ink-black text-sm">02</span>
+                </div>
+                <h3 className="font-semibold text-ink-black mb-2">SAF Supply Evidence</h3>
+                <p className="text-xs text-graphite">MeridianMRV captures fuel production assets, certification (RSB/ISCC), and EUDR feedstock compliance.</p>
+              </div>
+              <div className="border border-ink-black/10 p-5 rounded-2xl bg-mist-gray/30">
+                <div className="w-10 h-10 bg-pure-white rounded-full flex items-center justify-center shadow-sm mb-4">
+                  <span className="font-bold text-ink-black text-sm">03</span>
+                </div>
+                <h3 className="font-semibold text-ink-black mb-2">Book & Claim Engine</h3>
+                <p className="text-xs text-graphite">Cryptographically secure issuance and retirement of SAF attributes for cargo buyers (Scope 3).</p>
+              </div>
             </div>
           </div>
         </div>
-      </main>
+      )}
     </div>
   );
 }
-
-

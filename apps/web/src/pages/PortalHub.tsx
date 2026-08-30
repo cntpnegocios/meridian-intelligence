@@ -1,6 +1,6 @@
 
 import { useNavigate } from 'react-router-dom';
-import { Anchor, Ship, Building2, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Anchor, Ship, Building2, ShieldCheck, ArrowRight, Plane } from 'lucide-react';
 import { usePortal, type PortalRole } from '../lib/portalContext';
 
 export default function PortalHub() {
@@ -100,6 +100,7 @@ export default function PortalHub() {
     </div>
   );
 }
+
 
 
 
