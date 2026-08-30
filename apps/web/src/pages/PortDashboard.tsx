@@ -1,178 +1,340 @@
-import { PageHeader } from '../components/ui/PageHeader';
+import { Ship, Anchor, TrendingUp, AlertTriangle } from 'lucide-react';
+
 import { MetricCard } from '../components/ui/MetricCard';
-import { Anchor, Ship, AlertTriangle, Wind, TrendingDown, Activity } from 'lucide-react';
+import { Badge } from '../components/ui/Badge';
+import { PageHeader } from '../components/ui/PageHeader';
 
-// ── Demo Port Data — Port of Santos ───────────────────────────
-const PORT = { name: 'Port of Santos', code: 'BRSSZ', country: 'Brazil', lat: -23.95, lon: -46.32 };
+interface VesselTraffic {
+  mmsi: string;
+  name: string;
+  type: string;
+  etaStatus: string;
+  fuelType: string;
+  eeoiRating: 'A' | 'B' | 'C' | 'D' | 'E';
+  portCO2Risk: 'Low' | 'Medium' | 'High';
+  eta?: string;
+  status?: string;
+}
 
-const VESSEL_CALLS = [
-  { mmsi: '219019216', name: 'MV MERIDIAN PIONEER', flag: '🇧🇷', type: 'Bulk Carrier', dwt: 85000, eta: 'Arrived 2h ago', status: 'BERTH', emissions_voyage: 2523, eeoi: 8.5, fuel: 'HFO', risk: 'MEDIUM' },
-  { mmsi: '538006765', name: 'MSC AURORA', flag: '🇵🇦', type: 'Container Ship', dwt: 140000, eta: 'ETA 14:30 UTC', status: 'INBOUND', emissions_voyage: 4120, eeoi: 12.1, fuel: 'VLSFO', risk: 'HIGH' },
-  { mmsi: '636018241', name: 'CORREDORA DO SUL', flag: '🇧🇷', type: 'Tanker', dwt: 60000, eta: 'Departing 16:00', status: 'OUTBOUND', emissions_voyage: 1890, eeoi: 7.2, fuel: 'LNG', risk: 'LOW' },
-  { mmsi: '477213100', name: 'ASIA FORTUNE', flag: '🇨🇳', type: 'Bulk Carrier', dwt: 95000, eta: 'ETA Tomorrow 08:00', status: 'INBOUND', emissions_voyage: 3340, eeoi: 9.8, fuel: 'HFO', risk: 'MEDIUM' },
+const vesselTrafficData: VesselTraffic[] = [
+  {
+    mmsi: '477824500',
+    name: 'MSC GULSUN',
+    type: 'Container Ship',
+    etaStatus: 'In Port',
+    fuelType: 'VLSFO',
+    eeoiRating: 'C',
+    portCO2Risk: 'High',
+    status: 'Berthed'
+  },
+  {
+    mmsi: '636019825',
+    name: 'VALE BRASIL',
+    type: 'Bulk Carrier',
+    etaStatus: 'ETA 14:30 UTC',
+    fuelType: 'LSMGO',
+    eeoiRating: 'B',
+    portCO2Risk: 'Medium',
+    eta: '14:30 UTC'
+  },
+  {
+    mmsi: '563872000',
+    name: 'MAERSK ESSEX',
+    type: 'Container Ship',
+    etaStatus: 'In Port',
+    fuelType: 'VLSFO',
+    eeoiRating: 'D',
+    portCO2Risk: 'High',
+    status: 'Loading'
+  },
+  {
+    mmsi: '229767000',
+    name: 'CMA CGM ANTOINE DE SAINT EXUPERY',
+    type: 'Container Ship',
+    etaStatus: 'ETA 22:15 UTC',
+    fuelType: 'LNG',
+    eeoiRating: 'A',
+    portCO2Risk: 'Low',
+    eta: '22:15 UTC'
+  },
+  {
+    mmsi: '371234000',
+    name: 'PACIFIC EXPLORER',
+    type: 'Tanker',
+    etaStatus: 'In Port',
+    fuelType: 'HFO',
+    eeoiRating: 'E',
+    portCO2Risk: 'High',
+    status: 'Discharging'
+  },
+  {
+    mmsi: '538009876',
+    name: 'COSCO SHIPPING UNIVERSE',
+    type: 'Container Ship',
+    etaStatus: 'ETA 08:45 UTC',
+    fuelType: 'VLSFO',
+    eeoiRating: 'C',
+    portCO2Risk: 'Medium',
+    eta: '08:45 UTC'
+  },
+  {
+    mmsi: '255806720',
+    name: 'ATLANTIC HARMONY',
+    type: 'Bulk Carrier',
+    etaStatus: 'In Port',
+    fuelType: 'LSMGO',
+    eeoiRating: 'B',
+    portCO2Risk: 'Low',
+    status: 'Anchored'
+  },
+  {
+    mmsi: '636092345',
+    name: 'IRON CHIEFTAIN',
+    type: 'Bulk Carrier',
+    etaStatus: 'ETA 16:00 UTC',
+    fuelType: 'VLSFO',
+    eeoiRating: 'C',
+    portCO2Risk: 'Medium',
+    eta: '16:00 UTC'
+  }
 ];
 
-const MONTHLY_PORT_EMISSIONS = [
-  { month: 'Mar', value: 12400 }, { month: 'Apr', value: 15800 }, { month: 'May', value: 13200 },
-  { month: 'Jun', value: 18900 }, { month: 'Jul', value: 14300 }, { month: 'Aug', value: 9100 },
-];
-const TOTAL_PORT_CO2 = MONTHLY_PORT_EMISSIONS.reduce((s, m) => s + m.value, 0);
+function getRiskColor(risk: string): string {
+  switch (risk) {
+    case 'High':
+      return 'text-[#d7b76c]';
+    case 'Medium':
+      return 'text-[#8da2b1]';
+    case 'Low':
+      return 'text-[#59bdb8]';
+    default:
+      return 'text-text-muted';
+  }
+}
 
-const RISK_STYLES: Record<string, string> = {
-  LOW: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
-  MEDIUM: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-  HIGH: 'text-red-400 bg-red-500/10 border-red-500/20',
-};
-const STATUS_DOT: Record<string, string> = {
-  BERTH: 'bg-emerald-400',
-  INBOUND: 'bg-cyan-400 animate-pulse',
-  OUTBOUND: 'bg-amber-400',
-};
+function getRiskBgColor(risk: string): string {
+  switch (risk) {
+    case 'High':
+      return 'bg-[#d7b76c]/10 border-[#d7b76c]/30';
+    case 'Medium':
+      return 'bg-[#8da2b1]/10 border-[#8da2b1]/30';
+    case 'Low':
+      return 'bg-[#59bdb8]/10 border-[#59bdb8]/30';
+    default:
+      return 'bg-bg-panel border-border-subtle';
+  }
+}
 
-function MiniBar({ data }: { data: { month: string; value: number }[] }) {
-  const max = Math.max(...data.map(d => d.value));
-  return (
-    <div className="flex items-end gap-1 h-12">
-      {data.map(d => (
-        <div key={d.month} className="flex-1 flex flex-col items-center gap-1">
-          <div className="w-full rounded-sm bg-blue-500/30 hover:bg-blue-500/60 transition-colors"
-            style={{ height: `${(d.value / max) * 100}%` }} title={`${d.value.toLocaleString()} tCO2`} />
-          <span className="text-[9px] text-neutral-500">{d.month}</span>
-        </div>
-      ))}
-    </div>
-  );
+function getEEOIColor(rating: string): string {
+  switch (rating) {
+    case 'A':
+      return 'text-[#59bdb8] bg-[#59bdb8]/10';
+    case 'B':
+      return 'text-[#59bdb8]/80 bg-[#59bdb8]/10';
+    case 'C':
+      return 'text-[#8da2b1] bg-[#8da2b1]/10';
+    case 'D':
+      return 'text-[#d7b76c] bg-[#d7b76c]/10';
+    case 'E':
+      return 'text-[#e07856] bg-[#e07856]/10';
+    default:
+      return 'text-text-muted bg-bg-panel';
+  }
 }
 
 export function PortDashboard() {
+  const vesselsInPort = vesselTrafficData.filter(v => v.status).length;
+  const inbound24h = vesselTrafficData.filter(v => v.eta).length;
+  const outbound24h = 3;
+  const geofenceEmissions = 1847.3;
+
   return (
-    <div className="flex flex-col h-full bg-bg-base">
-      <PageHeader
-        title={`${PORT.name} — Port Intelligence`}
-        subtitle={`${PORT.code} · GREEN PORT PROGRAMME`}
-        status="demo"
-      />
-      <div className="p-8 flex flex-col gap-6 flex-1 overflow-auto">
+    <div className="min-h-screen bg-bg-base">
+      <div className="mx-auto max-w-[1600px] px-6 py-8">
+        <PageHeader
+          title="Port Intelligence"
+          subtitle="PORT OF SANTOS (BRSSZ)"
+          status="demo"
+        />
 
-        {/* KPI Row */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <MetricCard
-            title="Vessels in Port / Inbound"
-            value={`${VESSEL_CALLS.filter(v => v.status !== 'OUTBOUND').length} / ${VESSEL_CALLS.length}`}
+            title="Vessels in Port"
+            value={vesselsInPort.toString()}
+            subtitle="Currently berthed or anchored"
             status="demo"
-            subtitle="Active traffic · DEMO"
-            icon={<Ship size={14} className="text-cyan-400" />}
+            icon={<Anchor className="h-5 w-5" />}
           />
           <MetricCard
-            title="YTD Port Emissions"
-            value={`${(TOTAL_PORT_CO2 / 1000).toFixed(0)}K tCO2`}
+            title="Inbound (24h)"
+            value={inbound24h.toString()}
+            subtitle="Expected arrivals"
             status="demo"
-            subtitle="Declared voyage emissions on arrival"
-            icon={<Activity size={14} className="text-text-muted" />}
+            icon={<Ship className="h-5 w-5" />}
+            trend={{ value: '12', direction: 'up' }}
           />
           <MetricCard
-            title="High-Risk Vessels"
-            value={VESSEL_CALLS.filter(v => v.risk === 'HIGH').length.toString()}
+            title="Outbound (24h)"
+            value={outbound24h.toString()}
+            subtitle="Scheduled departures"
             status="demo"
-            subtitle="Above Green Port threshold"
-            icon={<AlertTriangle size={14} className="text-red-400" />}
+            icon={<TrendingUp className="h-5 w-5" />}
+            trend={{ value: '8', direction: 'down' }}
           />
           <MetricCard
-            title="Green Berth Priority"
-            value="LNG / Methanol"
+            title="Geofence Emissions"
+            value={`${geofenceEmissions.toLocaleString()} tCO₂`}
+            subtitle="Last 24 hours"
             status="demo"
-            subtitle="Low-emission vessels get priority"
-            icon={<Wind size={14} className="text-emerald-400" />}
+            icon={<AlertTriangle className="h-5 w-5" />}
+            trend={{ value: '15', direction: 'up' }}
           />
-        </section>
-
-        {/* Emissions Chart + Ranking */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="col-span-2 border border-border-default rounded-xl p-6 bg-bg-panel">
-            <h3 className="text-sm font-semibold text-text-base uppercase tracking-wider mb-1">Monthly Port Emissions</h3>
-            <p className="text-xs text-text-muted mb-4">Declared CO2 from all vessel calls — 2026 YTD</p>
-            <MiniBar data={MONTHLY_PORT_EMISSIONS} />
-          </div>
-          <div className="border border-border-default rounded-xl p-6 bg-bg-panel">
-            <h3 className="text-sm font-semibold text-text-base uppercase tracking-wider mb-4 flex items-center gap-2">
-              <TrendingDown size={14} className="text-emerald-400" /> Green Ranking
-            </h3>
-            <div className="flex flex-col gap-2">
-              {[...VESSEL_CALLS].sort((a, b) => a.eeoi - b.eeoi).map((v, i) => (
-                <div key={v.mmsi} className="flex items-center gap-3 py-2 border-b border-border-subtle last:border-0">
-                  <span className={`text-lg font-bold w-6 ${i === 0 ? 'text-emerald-400' : i === 1 ? 'text-cyan-400' : 'text-text-muted'}`}>
-                    #{i + 1}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-text-base truncate">{v.name}</p>
-                    <p className="text-[10px] text-text-muted">{v.fuel} · {v.eeoi} gCO2/t·nm</p>
-                  </div>
-                  <span className={`text-[10px] px-2 py-0.5 rounded border font-medium ${RISK_STYLES[v.risk]}`}>{v.risk}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Vessel Calls Table */}
-        <section className="border border-border-default rounded-xl bg-bg-panel overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border-subtle">
-            <div>
-              <h3 className="text-sm font-semibold text-text-base uppercase tracking-wider">Traffic Monitor — Active Calls</h3>
-              <p className="text-xs text-text-muted mt-0.5">Geofence: {PORT.lat}°S, {Math.abs(PORT.lon)}°W · radius 10 NM</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs text-emerald-400 font-medium">Geofence Active</span>
-            </div>
-          </div>
-          <table className="w-full text-left text-sm">
-            <thead className="bg-bg-sidebar border-b border-border-subtle text-text-muted text-xs uppercase tracking-wider">
-              <tr>
-                <th className="px-6 py-3 font-medium">Vessel</th>
-                <th className="px-6 py-3 font-medium">Type / DWT</th>
-                <th className="px-6 py-3 font-medium">Status</th>
-                <th className="px-6 py-3 font-medium">ETA / ETD</th>
-                <th className="px-6 py-3 font-medium">Voyage CO2</th>
-                <th className="px-6 py-3 font-medium">EEOI</th>
-                <th className="px-6 py-3 font-medium">Fuel</th>
-                <th className="px-6 py-3 font-medium">Green Risk</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border-subtle">
-              {VESSEL_CALLS.map(v => (
-                <tr key={v.mmsi} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="font-medium text-text-base text-xs">{v.flag} {v.name}</div>
-                    <div className="text-[10px] text-text-muted">MMSI {v.mmsi}</div>
-                  </td>
-                  <td className="px-6 py-4 text-xs text-text-muted">
-                    {v.type}<br />{v.dwt.toLocaleString()} DWT
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`flex items-center gap-1.5 text-xs font-medium ${v.status === 'BERTH' ? 'text-emerald-400' : v.status === 'INBOUND' ? 'text-cyan-400' : 'text-amber-400'}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${STATUS_DOT[v.status]}`} />
-                      {v.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-xs text-text-muted">{v.eta}</td>
-                  <td className="px-6 py-4 font-mono text-xs text-cyan-300">{v.emissions_voyage.toLocaleString()} tCO2</td>
-                  <td className="px-6 py-4 font-mono text-xs text-text-base">{v.eeoi}</td>
-                  <td className="px-6 py-4 text-xs text-text-muted">{v.fuel}</td>
-                  <td className="px-6 py-4">
-                    <span className={`text-[10px] px-2 py-0.5 rounded border font-medium ${RISK_STYLES[v.risk]}`}>{v.risk}</span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-
-        <div className="text-xs text-text-muted border border-border-subtle rounded-lg p-3 bg-bg-panel">
-          <Anchor size={11} className="inline mr-1" />
-          <strong>Port Intelligence</strong> — Data sourced from Spire S-AIS and declared MRV reports. Vessel CO2 data is the declared voyage emission. Green Port ranking is based on EEOI (Energy Efficiency Operational Indicator). For authoritative data, consult the Evidence Vault.
         </div>
 
+        <div className="mt-8">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-text-base">
+                Vessel Traffic Emissions
+              </h2>
+              <p className="mt-1 text-sm text-text-muted">
+                Real-time emissions monitoring for port operations
+              </p>
+            </div>
+            <Badge variant="demo">Demo Data</Badge>
+          </div>
+
+          <div className="overflow-hidden rounded-lg border border-border-default bg-bg-panel">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border-subtle bg-bg-sidebar">
+                    <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-text-muted">
+                      MMSI / Name
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-text-muted">
+                      Type
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-text-muted">
+                      ETA / Status
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-text-muted">
+                      Fuel Type
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-text-muted">
+                      EEOI Rating
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-text-muted">
+                      Port CO₂ Risk
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border-subtle">
+                  {vesselTrafficData.map(vessel => (
+                    <tr
+                      key={vessel.mmsi}
+                      className={`transition-colors hover:bg-bg-sidebar ${
+                        vessel.portCO2Risk === 'High' ? 'bg-[#d7b76c]/5' : ''
+                      }`}
+                    >
+                      <td className="px-6 py-4">
+                        <a
+                          href={`/vessel/${vessel.mmsi}`}
+                          className="group block"
+                        >
+                          <div className="text-sm font-medium text-text-base group-hover:text-brand-primary">
+                            {vessel.name}
+                          </div>
+                          <div className="mt-0.5 font-mono text-xs text-text-muted">
+                            {vessel.mmsi}
+                          </div>
+                        </a>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="text-sm text-text-base">
+                          {vessel.type}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        {vessel.status ? (
+                          <div>
+                            <div className="text-sm font-medium text-text-base">
+                              {vessel.status}
+                            </div>
+                            <div className="mt-0.5 text-xs text-text-muted">
+                              In Port
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <div className="text-sm font-medium text-brand-primary">
+                              {vessel.eta}
+                            </div>
+                            <div className="mt-0.5 text-xs text-text-muted">
+                              Inbound
+                            </div>
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="inline-flex items-center rounded-md bg-bg-sidebar px-2.5 py-1 text-xs font-medium text-text-base">
+                          {vessel.fuelType}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span
+                          className={`inline-flex h-8 w-8 items-center justify-center rounded-md text-sm font-bold ${getEEOIColor(
+                            vessel.eeoiRating
+                          )}`}
+                        >
+                          {vessel.eeoiRating}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div
+                          className={`inline-flex items-center gap-2 rounded-md border px-3 py-1.5 ${getRiskBgColor(
+                            vessel.portCO2Risk
+                          )}`}
+                        >
+                          {vessel.portCO2Risk === 'High' && (
+                            <AlertTriangle className="h-3.5 w-3.5 text-[#d7b76c]" />
+                          )}
+                          <span
+                            className={`text-sm font-medium ${getRiskColor(
+                              vessel.portCO2Risk
+                            )}`}
+                          >
+                            {vessel.portCO2Risk}
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="mt-4 flex items-center justify-between text-sm text-text-muted">
+            <div>
+              Showing {vesselTrafficData.length} vessels
+            </div>
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-[#59bdb8]"></div>
+                <span>Low Risk</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-[#8da2b1]"></div>
+                <span>Medium Risk</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-[#d7b76c]"></div>
+                <span>High Risk</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

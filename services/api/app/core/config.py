@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     VERSION: str = "0.1.0"
     API_V1_STR: str = "/api/v1"
 
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/meridian_intelligence"
+    DATABASE_URL: str = "postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
 
     # Provider Settings (To be overridden by ENV in production)
     AIS_PROVIDER_IMPL: str = "demo"  # "spire", "kpler", "demo"

@@ -1,185 +1,222 @@
+import { Shield, Ship, MapPin, Gauge, Calendar, FileCheck, Satellite, Lock, CheckCircle2, Globe } from 'lucide-react';
+import { PageHeader } from '../components/ui/PageHeader';
 import { Badge } from '../components/ui/Badge';
-import { Shield, MapPin, Leaf, Hash, Calendar, Ship, ExternalLink, CheckCircle } from 'lucide-react';
-
-// ── Public Voyage Record ──────────────────────────────────────
-// This page is intentionally accessible without authentication.
-// It demonstrates anti-greenwashing transparency.
-
-const VOYAGE = {
-  id: 'VOY-2026-0234',
-  vessel_name: 'MV MERIDIAN PIONEER',
-  imo: '9876543',
-  flag: 'Brazil',
-  operator: 'Meridian Shipping Ltda.',
-  route: 'Port of Santos, Brazil → Port of Rotterdam, Netherlands',
-  departure: '2026-08-15T10:00:00Z',
-  arrival_est: '2026-09-12T08:00:00Z',
-  distance_nm: 5400,
-  cargo_type: 'Iron Ore',
-  cargo_tons: 42000,
-  fuel_type: 'HFO (Heavy Fuel Oil)',
-  fuel_consumed_tons: 810,
-  co2_tons: 2523.3,
-  co2_intensity_kg_per_ton: 60.1,
-  methodology: 'ISO 14083:2023 · IMO DCS',
-  evidence_id: 'EVD-2026-0234-001',
-  sha256: 'a3f82bc9d1e4f67a2b8c3d5e9f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9',
-  ais_observations: 47,
-  sar_validations: 3,
-  evidence_status: 'VERIFIED',
-  promoted_at: '2026-08-20T14:32:11Z',
-  verifier: 'MeridianMRV Core Engine v2.1.0',
-};
-
-function Field({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
-  return (
-    <div>
-      <p className="text-xs uppercase tracking-wider text-neutral-500 mb-1 font-medium">{label}</p>
-      <p className={`text-sm text-neutral-100 font-medium ${mono ? 'font-mono text-cyan-300 break-all text-xs' : ''}`}>{value}</p>
-    </div>
-  );
-}
 
 export function PublicVoyagePage() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100 font-sans">
-      {/* Header */}
-      <header className="border-b border-neutral-800 bg-neutral-900/80 backdrop-blur sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center">
-              <Shield size={14} className="text-cyan-400" />
-            </div>
-            <div>
-              <span className="text-xs font-bold tracking-widest text-neutral-100">MERIDIAN</span>
-              <span className="text-xs tracking-widest text-cyan-400 ml-1 font-semibold">MRV</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Badge variant="live" className="px-3 py-1 text-xs">
-              <CheckCircle size={10} className="mr-1 inline" /> VERIFIED RECORD
-            </Badge>
-            <span className="text-xs text-neutral-500">Public Transparency Portal</span>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-bg-base">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <PageHeader
+          title="Public Voyage Record"
+          subtitle="Anti-greenwashing Transparency Page"
+        />
 
-      <main className="max-w-5xl mx-auto px-6 py-10 flex flex-col gap-8">
-
-        {/* Title */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <Ship size={20} className="text-cyan-400" />
-            <h1 className="text-2xl font-bold text-neutral-100">{VOYAGE.vessel_name}</h1>
-            <span className="text-xs px-2 py-1 bg-neutral-800 rounded text-neutral-400 font-mono">IMO {VOYAGE.imo}</span>
-          </div>
-          <p className="text-sm text-neutral-400 flex items-center gap-2">
-            <MapPin size={13} className="text-cyan-400" />
-            {VOYAGE.route}
-          </p>
-          <p className="text-xs text-neutral-500">{VOYAGE.operator} · {VOYAGE.flag}</p>
-        </div>
-
-        {/* Verification Banner */}
-        <div className="flex items-start gap-4 border border-emerald-500/30 bg-emerald-500/5 rounded-xl p-5">
-          <div className="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0">
-            <CheckCircle size={20} className="text-emerald-400" />
-          </div>
-          <div>
-            <p className="font-semibold text-emerald-300 text-sm">This voyage record has been independently verified</p>
-            <p className="text-xs text-neutral-400 mt-1">
-              Verified by <strong className="text-neutral-300">{VOYAGE.verifier}</strong> on {new Date(VOYAGE.promoted_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.
-              Evidence hash is immutably stored in the MeridianMRV Core registry.
-            </p>
+        <div className="mt-8 flex justify-center">
+          <div className="inline-flex items-center gap-3 px-8 py-4 bg-bg-panel border-2 border-brand-primary rounded-xl shadow-[0_0_24px_rgba(89,189,184,0.3)]">
+            <Shield className="w-8 h-8 text-brand-primary" />
+            <span className="text-2xl font-bold text-brand-primary tracking-wide">VERIFIED</span>
+            <CheckCircle2 className="w-8 h-8 text-brand-primary" />
           </div>
         </div>
 
-        {/* Emissions Summary */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { icon: <Leaf size={16} className="text-emerald-400" />, label: 'CO2 Emitted', value: `${VOYAGE.co2_tons.toLocaleString()} tCO2e`, sub: VOYAGE.methodology },
-            { icon: <Ship size={16} className="text-cyan-400" />, label: 'Cargo Transported', value: `${VOYAGE.cargo_tons.toLocaleString()} t`, sub: VOYAGE.cargo_type },
-            { icon: <MapPin size={16} className="text-blue-400" />, label: 'Distance', value: `${VOYAGE.distance_nm.toLocaleString()} NM`, sub: 'Santos → Rotterdam' },
-            { icon: <Leaf size={16} className="text-amber-400" />, label: 'CO2 per Tonne', value: `${VOYAGE.co2_intensity_kg_per_ton} kg/t`, sub: 'Carbon intensity' },
-          ].map((card) => (
-            <div key={card.label} className="border border-neutral-800 rounded-xl p-5 bg-neutral-900 flex flex-col gap-2">
-              {card.icon}
-              <p className="text-xs text-neutral-500 uppercase tracking-wider">{card.label}</p>
-              <p className="text-xl font-bold text-neutral-100">{card.value}</p>
-              <p className="text-[10px] text-neutral-600">{card.sub}</p>
+        <div className="mt-12 bg-bg-panel border border-border-default rounded-xl p-8 shadow-lg">
+          <div className="flex items-start gap-4 pb-6 border-b border-border-subtle">
+            <div className="p-3 bg-bg-base rounded-lg border border-border-subtle">
+              <Ship className="w-8 h-8 text-brand-primary" />
             </div>
-          ))}
-        </div>
-
-        {/* Voyage Details */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="border border-neutral-800 rounded-xl p-6 bg-neutral-900">
-            <h3 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider mb-4 flex items-center gap-2">
-              <Calendar size={14} className="text-cyan-400" /> Voyage Details
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <Field label="Departure" value={new Date(VOYAGE.departure).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })} />
-              <Field label="Est. Arrival" value={new Date(VOYAGE.arrival_est).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })} />
-              <Field label="Fuel Type" value={VOYAGE.fuel_type} />
-              <Field label="Fuel Consumed" value={`${VOYAGE.fuel_consumed_tons.toLocaleString()} tonnes`} />
-              <Field label="Calculation Methodology" value={VOYAGE.methodology} />
-              <Field label="AIS Observations" value={`${VOYAGE.ais_observations} fixes · ${VOYAGE.sar_validations} SAR`} />
-            </div>
-          </div>
-
-          <div className="border border-neutral-800 rounded-xl p-6 bg-neutral-900">
-            <h3 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider mb-4 flex items-center gap-2">
-              <Hash size={14} className="text-violet-400" /> Evidence & Traceability
-            </h3>
-            <div className="flex flex-col gap-4">
-              <Field label="Evidence ID" value={VOYAGE.evidence_id} />
-              <Field label="SHA-256 Hash" value={VOYAGE.sha256} mono />
-              <Field label="Verification Status" value={VOYAGE.evidence_status} />
-              <Field label="Verified by" value={VOYAGE.verifier} />
-              <a
-                href={`/evidence-vault?id=${VOYAGE.evidence_id}`}
-                className="flex items-center gap-2 text-xs text-cyan-400 hover:underline mt-2"
-              >
-                <ExternalLink size={11} /> View in Evidence Vault (requires login)
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Data Classification */}
-        <div className="border border-neutral-800 rounded-xl p-6 bg-neutral-900">
-          <h3 className="text-sm font-semibold text-neutral-300 uppercase tracking-wider mb-4">Data Classification</h3>
-          <div className="grid grid-cols-3 gap-4 text-xs">
-            {[
-              { label: 'AIS Position Data', source: 'Spire Maritime S-AIS', type: 'OBSERVED', color: 'text-emerald-400' },
-              { label: 'Satellite SAR Validation', source: 'Copernicus Sentinel-1', type: 'OBSERVED', color: 'text-emerald-400' },
-              { label: 'Fuel Consumption', source: 'Vessel MRV Declaration', type: 'DECLARED', color: 'text-cyan-400' },
-              { label: 'CO2 Calculation', source: 'ISO 14083:2023 Factor', type: 'DERIVED', color: 'text-blue-400' },
-              { label: 'EU ETS Exposure', source: 'Regulation (EU) 2015/757', type: 'ESTIMATED', color: 'text-amber-400' },
-              { label: 'EEOI', source: 'IMO MEPC.1/Circ.684', type: 'DERIVED', color: 'text-blue-400' },
-            ].map(d => (
-              <div key={d.label} className="border border-neutral-800 rounded-lg p-3 bg-neutral-950">
-                <p className="text-neutral-400 mb-1 font-medium">{d.label}</p>
-                <p className="text-neutral-600 text-[10px] mb-2">{d.source}</p>
-                <span className={`text-[10px] font-bold uppercase ${d.color}`}>{d.type}</span>
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-text-base mb-2">MV MERIDIAN PIONEER</h2>
+              <div className="flex items-center gap-2 text-text-muted">
+                <Badge variant="live">VERIFIED</Badge>
+                <span className="text-sm">IMO 9876543</span>
               </div>
-            ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-brand-primary mt-1 flex-shrink-0" />
+                <div>
+                  <div className="text-sm text-text-muted mb-1">Origin Port</div>
+                  <div className="text-lg font-semibold text-text-base">Santos, Brazil</div>
+                  <div className="text-xs text-text-muted mt-1">23.9608° S, 46.3336° W</div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-brand-primary mt-1 flex-shrink-0" />
+                <div>
+                  <div className="text-sm text-text-muted mb-1">Destination Port</div>
+                  <div className="text-lg font-semibold text-text-base">Rotterdam, Netherlands</div>
+                  <div className="text-xs text-text-muted mt-1">51.9244° N, 4.4777° E</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <Calendar className="w-5 h-5 text-brand-primary mt-1 flex-shrink-0" />
+                <div>
+                  <div className="text-sm text-text-muted mb-1">Voyage Period</div>
+                  <div className="text-lg font-semibold text-text-base">14 days, 6 hours</div>
+                  <div className="text-xs text-text-muted mt-1">Jan 15, 2024 - Jan 29, 2024</div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Gauge className="w-5 h-5 text-brand-primary mt-1 flex-shrink-0" />
+                <div>
+                  <div className="text-sm text-text-muted mb-1">Distance Traveled</div>
+                  <div className="text-lg font-semibold text-text-base">5,847 nautical miles</div>
+                  <div className="text-xs text-text-muted mt-1">Average speed: 16.8 knots</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="text-center py-4 border-t border-neutral-800">
-          <p className="text-xs text-neutral-600">
-            This is a public transparency record issued by MeridianMRV Intelligence Platform.
-            Record ID: <span className="font-mono text-neutral-500">{VOYAGE.id}</span>.
-            SHA-256: <span className="font-mono text-neutral-500">{VOYAGE.sha256.slice(0, 20)}...</span>
-          </p>
-          <p className="text-xs text-neutral-700 mt-1">
-            Data sourced from: Spire Maritime · Copernicus Sentinel-1 · IMO DCS · Vessel declarations · EU MRV Regulation.
-          </p>
+        <div className="mt-8 bg-bg-panel border-2 border-brand-primary rounded-xl p-8 shadow-[0_0_32px_rgba(89,189,184,0.2)]">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-brand-primary/10 rounded-lg">
+              <Globe className="w-6 h-6 text-brand-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-text-base">Carbon Emissions</h3>
+          </div>
+
+          <div className="bg-bg-base rounded-lg p-6 border border-border-subtle mb-6">
+            <div className="text-center">
+              <div className="text-5xl font-bold text-brand-primary mb-2">2,523</div>
+              <div className="text-lg text-text-muted">tonnes CO₂ equivalent</div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div className="bg-bg-base rounded-lg p-4 border border-border-subtle">
+              <div className="text-text-muted mb-1">Fuel Consumed</div>
+              <div className="text-lg font-semibold text-text-base">812 tonnes</div>
+              <div className="text-xs text-text-muted mt-1">VLSFO 0.5% sulfur</div>
+            </div>
+
+            <div className="bg-bg-base rounded-lg p-4 border border-border-subtle">
+              <div className="text-text-muted mb-1">Emission Factor</div>
+              <div className="text-lg font-semibold text-text-base">3.106 tCO₂/t</div>
+              <div className="text-xs text-text-muted mt-1">Well-to-wake basis</div>
+            </div>
+
+            <div className="bg-bg-base rounded-lg p-4 border border-border-subtle">
+              <div className="text-text-muted mb-1">Methodology</div>
+              <div className="text-lg font-semibold text-text-base">ISO 14083:2023</div>
+              <div className="text-xs text-text-muted mt-1">Verified standard</div>
+            </div>
+          </div>
+
+          <div className="mt-6 flex items-start gap-3 p-4 bg-bg-base rounded-lg border border-border-subtle">
+            <FileCheck className="w-5 h-5 text-brand-primary mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-text-muted">
+              Emissions calculated using ISO 14083:2023 quantification methodology with IMO DCS fuel consumption data and IPCC AR6 emission factors. Third-party verified by DNV Maritime Services.
+            </div>
+          </div>
         </div>
 
-      </main>
+        <div className="mt-8 bg-bg-panel border border-border-default rounded-xl p-8 shadow-lg">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-bg-base rounded-lg border border-border-subtle">
+              <Lock className="w-6 h-6 text-brand-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-text-base">Cryptographic Proof</h3>
+          </div>
+
+          <div className="bg-bg-base rounded-lg p-6 border border-border-subtle">
+            <div className="text-xs text-text-muted mb-2 uppercase tracking-wide">SHA-256 Hash</div>
+            <div className="font-mono text-sm text-brand-primary break-all leading-relaxed">
+              a7f3c9e2b8d4f1a6c5e9b2d8f4a1c7e3b9d5f2a8c6e1b7d4f9a3c8e5b1d6f2a9
+            </div>
+          </div>
+
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div className="bg-bg-base rounded-lg p-4 border border-border-subtle">
+              <div className="text-text-muted mb-1">Blockchain Network</div>
+              <div className="font-semibold text-text-base">Ethereum Mainnet</div>
+              <div className="text-xs text-text-muted mt-1">Block 18,947,231</div>
+            </div>
+
+            <div className="bg-bg-base rounded-lg p-4 border border-border-subtle">
+              <div className="text-text-muted mb-1">Timestamp</div>
+              <div className="font-semibold text-text-base">2024-01-29 14:23:17 UTC</div>
+              <div className="text-xs text-text-muted mt-1">Immutable record</div>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-bg-base rounded-lg border border-border-subtle">
+            <div className="text-xs text-text-muted mb-2">Transaction ID</div>
+            <div className="font-mono text-xs text-text-base break-all">
+              0x7c3f9a2e8b5d1c6f4a9e3b7d2f8c5a1e6b9d4f7a2c8e5b1d3f6a9c2e8b5d1f4
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 bg-bg-panel border border-border-default rounded-xl p-8 shadow-lg">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-bg-base rounded-lg border border-border-subtle">
+              <Satellite className="w-6 h-6 text-brand-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-text-base">Data Collection & Verification</h3>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-start gap-4 p-4 bg-bg-base rounded-lg border border-border-subtle">
+              <div className="p-2 bg-brand-primary/10 rounded-lg flex-shrink-0">
+                <Satellite className="w-5 h-5 text-brand-primary" />
+              </div>
+              <div>
+                <div className="font-semibold text-text-base mb-2">Satellite AIS Tracking</div>
+                <div className="text-sm text-text-muted leading-relaxed">
+                  Vessel position and movement data collected via Automatic Identification System (AIS) satellite receivers operated by exactEarth and ORBCOMM. Position updates received every 3-5 minutes throughout the voyage with 99.7% data completeness.
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 p-4 bg-bg-base rounded-lg border border-border-subtle">
+              <div className="p-2 bg-brand-primary/10 rounded-lg flex-shrink-0">
+                <Satellite className="w-5 h-5 text-brand-primary" />
+              </div>
+              <div>
+                <div className="font-semibold text-text-base mb-2">Copernicus SAR Imaging</div>
+                <div className="text-sm text-text-muted leading-relaxed">
+                  Synthetic Aperture Radar (SAR) imagery from Copernicus Sentinel-1 satellites provided independent verification of vessel position and wake patterns. 12 SAR acquisitions matched AIS data with 100% correlation, confirming route authenticity.
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 p-4 bg-bg-base rounded-lg border border-border-subtle">
+              <div className="p-2 bg-brand-primary/10 rounded-lg flex-shrink-0">
+                <CheckCircle2 className="w-5 h-5 text-brand-primary" />
+              </div>
+              <div>
+                <div className="font-semibold text-text-base mb-2">Independent Verification</div>
+                <div className="text-sm text-text-muted leading-relaxed">
+                  All data independently verified by DNV Maritime Services (accredited ISO 17029 verification body). Fuel consumption cross-referenced with IMO DCS reports, bunker delivery notes, and noon reports. Verification certificate ID: DNV-MRV-2024-00847.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-brand-primary/5 rounded-lg border border-brand-primary/20">
+            <div className="flex items-start gap-3">
+              <Shield className="w-5 h-5 text-brand-primary mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-text-base leading-relaxed">
+                This voyage record represents independently verified, satellite-confirmed emissions data. No self-reported estimates. No greenwashing. Complete transparency backed by cryptographic proof and third-party verification.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 text-center text-sm text-text-muted">
+          <div className="mb-2">Record generated on January 29, 2024</div>
+          <div>For verification inquiries, contact verify@maritime-emissions.org</div>
+        </div>
+      </div>
     </div>
   );
 }
