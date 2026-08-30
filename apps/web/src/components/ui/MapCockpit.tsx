@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import DeckGL from '@deck.gl/react';
-import { ScatterplotLayer, ArcLayer, LineLayer } from '@deck.gl/layers';
+import { ScatterplotLayer, ArcLayer, PathLayer } from '@deck.gl/layers';
 import { Map as MapLibreMap } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -45,6 +45,16 @@ interface LayerState {
   maritimeRoute: boolean;
   aviationRoute: boolean;
   liveAssets: boolean;
+}
+
+interface RouteResult {
+  distance_nm: number;
+  duration_hours: number;
+  route_type: string;
+  geometry: {
+    type: 'LineString';
+    coordinates: [number, number][];
+  };
 }
 
 const INITIAL_VIEW_STATE = {
@@ -95,6 +105,11 @@ export function MapCockpit() {
   const [originNode, setOriginNode] = useState<TransportNode | null>(null);
   const [destinationNode, setDestinationNode] = useState<TransportNode | null>(null);
 
+  // ── Route state ──────────────────────────────────────────────────────────
+  const [routeResult, setRouteResult] = useState<RouteResult | null>(null);
+  const [routeLoading, setRouteLoading] = useState(false);
+  const [routeError, setRouteError] = useState<string | null>(null);
+
   // ── Fetch real nodes from API ────────────────────────────────────────────
   useEffect(() => {
     const fetchNodes = async () => {
@@ -106,7 +121,7 @@ export function MapCockpit() {
         if (layers.airports) types.push('AIRPORT');
         if (types.length === 0) { setNodes([]); setNodesLoading(false); return; }
 
-        const url = `http://localhost:8000/api/v1/nodes?node_type=${types.join(',')}&limit=5000`;
+        const url = `/api/v1/nodes?node_type=${types.join(',')}&limit=5000`;
         const res = await fetch(url);
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         const data: GeoJsonResult = await res.json();
@@ -121,6 +136,47 @@ export function MapCockpit() {
     };
     fetchNodes();
   }, [layers.seaports, layers.airports]);
+
+  // ── Calculate route via API ──────────────────────────────────────────────
+  const calculateRoute = useCallback(async () => {
+    if (!originNode || !destinationNode) return;
+    setRouteLoading(true);
+    setRouteError(null);
+    setRouteResult(null);
+    try {
+      const routeType =
+        originNode.node_type === 'PORT' && destinationNode.node_type === 'PORT'
+          ? 'MARITIME'
+          : 'AVIATION';
+
+      const res = await fetch('/api/v1/routes/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          origin_lon: originNode.longitude,
+          origin_lat: originNode.latitude,
+          dest_lon: destinationNode.longitude,
+          dest_lat: destinationNode.latitude,
+          route_type: routeType,
+          origin_code: originNode.unlocode ?? originNode.iata ?? '',
+          dest_code: destinationNode.unlocode ?? destinationNode.iata ?? '',
+        }),
+      });
+      if (!res.ok) throw new Error(`Route API error: ${res.status}`);
+      const data: RouteResult = await res.json();
+      setRouteResult(data);
+    } catch (e) {
+      setRouteError(e instanceof Error ? e.message : 'Route calculation failed');
+    } finally {
+      setRouteLoading(false);
+    }
+  }, [originNode, destinationNode]);
+
+  // Clear route when origin/destination change
+  useEffect(() => {
+    setRouteResult(null);
+    setRouteError(null);
+  }, [originNode, destinationNode]);
 
   // ── deck.gl layers ────────────────────────────────────────────────────────
   const deckLayers = useMemo(() => {
@@ -153,65 +209,106 @@ export function MapCockpit() {
       );
     }
 
-    // Maritime route — flat LineLayer on ocean surface
-    if (layers.maritimeRoute && originNode && destinationNode &&
-        originNode.node_type === 'PORT' && destinationNode.node_type === 'PORT') {
+    // Maritime route — real PathLayer from API GeoJSON
+    if (
+      layers.maritimeRoute &&
+      routeResult &&
+      routeResult.route_type === 'MARITIME' &&
+      routeResult.geometry.coordinates.length > 1
+    ) {
       result.push(
-        new LineLayer({
-          id: 'maritime-route',
-          data: [{ source: [originNode.longitude, originNode.latitude] as [number, number],
-                   target: [destinationNode.longitude, destinationNode.latitude] as [number, number] }],
-          getSourcePosition: (d: { source: [number, number] }) => d.source,
-          getTargetPosition: (d: { target: [number, number] }) => d.target,
-          getColor: [0, 255, 128, 200] as [number, number, number, number],
+        new PathLayer({
+          id: 'maritime-route-real',
+          data: [{ path: routeResult.geometry.coordinates as [number, number][] }],
+          getPath: (d: { path: [number, number][] }) => d.path,
+          getColor: [0, 255, 128, 220] as [number, number, number, number],
           getWidth: 3,
+          widthMinPixels: 2,
         })
       );
-    } else if (layers.maritimeRoute) {
-      // Default route: Santos → Rotterdam
+    } else if (
+      layers.maritimeRoute &&
+      originNode &&
+      destinationNode &&
+      originNode.node_type === 'PORT' &&
+      destinationNode.node_type === 'PORT' &&
+      !routeResult
+    ) {
+      // Pending straight line before route is calculated
       result.push(
-        new LineLayer({
+        new PathLayer({
+          id: 'maritime-route-pending',
+          data: [{
+            path: [
+              [originNode.longitude, originNode.latitude] as [number, number],
+              [destinationNode.longitude, destinationNode.latitude] as [number, number],
+            ],
+          }],
+          getPath: (d: { path: [number, number][] }) => d.path,
+          getColor: [0, 255, 128, 100] as [number, number, number, number],
+          getWidth: 2,
+          widthMinPixels: 1,
+        })
+      );
+    } else if (layers.maritimeRoute && !originNode && !destinationNode) {
+      // Default Santos → Rotterdam
+      result.push(
+        new PathLayer({
           id: 'maritime-route-default',
-          data: [{ source: [-46.2936, -23.9744] as [number, number],
-                   target: [4.2867, 51.885] as [number, number] }],
-          getSourcePosition: (d: { source: [number, number] }) => d.source,
-          getTargetPosition: (d: { target: [number, number] }) => d.target,
+          data: [{ path: [[-46.2936, -23.9744], [4.2867, 51.885]] as [number, number][] }],
+          getPath: (d: { path: [number, number][] }) => d.path,
           getColor: [0, 255, 128, 180] as [number, number, number, number],
           getWidth: 2,
+          widthMinPixels: 1,
         })
       );
     }
 
-    // Aviation route — ArcLayer with altitude
+    // Aviation route — PathLayer if real data, else ArcLayer fallback
     if (layers.aviationRoute) {
-      const origin: [number, number] = originNode?.node_type === 'AIRPORT'
-        ? [originNode.longitude, originNode.latitude]
-        : [-46.473, -23.4355]; // GRU default
-      const dest: [number, number] = destinationNode?.node_type === 'AIRPORT'
-        ? [destinationNode.longitude, destinationNode.latitude]
-        : [8.5705, 50.0333]; // FRA default
+      if (routeResult && routeResult.route_type === 'AVIATION' && routeResult.geometry.coordinates.length > 1) {
+        result.push(
+          new PathLayer({
+            id: 'aviation-route-real',
+            data: [{ path: routeResult.geometry.coordinates as [number, number][] }],
+            getPath: (d: { path: [number, number][] }) => d.path,
+            getColor: [0, 191, 255, 220] as [number, number, number, number],
+            getWidth: 3,
+            widthMinPixels: 2,
+          })
+        );
+      } else {
+        const origin: [number, number] = originNode?.node_type === 'AIRPORT'
+          ? [originNode.longitude, originNode.latitude]
+          : [-46.473, -23.4355]; // GRU default
+        const dest: [number, number] = destinationNode?.node_type === 'AIRPORT'
+          ? [destinationNode.longitude, destinationNode.latitude]
+          : [8.5705, 50.0333]; // FRA default
 
-      result.push(
-        new ArcLayer({
-          id: 'aviation-route',
-          data: [{ source: origin, target: dest }],
-          getSourcePosition: (d: { source: [number, number] }) => d.source,
-          getTargetPosition: (d: { target: [number, number] }) => d.target,
-          getSourceColor: [0, 191, 255, 200] as [number, number, number, number],
-          getTargetColor: [0, 191, 255, 200] as [number, number, number, number],
-          getWidth: 3,
-          getHeight: 0.3,
-        })
-      );
+        result.push(
+          new ArcLayer({
+            id: 'aviation-route',
+            data: [{ source: origin, target: dest }],
+            getSourcePosition: (d: { source: [number, number] }) => d.source,
+            getTargetPosition: (d: { target: [number, number] }) => d.target,
+            getSourceColor: [0, 191, 255, 200] as [number, number, number, number],
+            getTargetColor: [0, 191, 255, 200] as [number, number, number, number],
+            getWidth: 3,
+            getHeight: 0.3,
+          })
+        );
+      }
     }
 
     return result;
-  }, [nodes, layers, originNode, destinationNode]);
+  }, [nodes, layers, originNode, destinationNode, routeResult]);
 
 
   const toggleLayer = useCallback((key: keyof LayerState) => {
     setLayers(s => ({ ...s, [key]: !s[key] }));
   }, []);
+
+  const canCalculate = !!(originNode && destinationNode && !routeLoading);
 
   return (
     <div className="relative w-full h-[600px] bg-[#07131f] rounded-xl overflow-hidden border border-[#1b2b39]">
@@ -327,22 +424,65 @@ export function MapCockpit() {
 
       {/* Route context bar */}
       {(originNode || destinationNode) && (
-        <div className="absolute bottom-4 left-4 right-4 bg-[#091923]/90 backdrop-blur-md p-3 rounded-lg border border-[#1b2b39] shadow-2xl flex items-center gap-4">
-          <div className="flex-1 text-xs">
-            <span className="text-[#8da2b1] text-[10px]">ORIGIN</span>
-            <div className="text-emerald-400 font-bold">{originNode ? `${originNode.unlocode ?? originNode.iata ?? '—'} ${originNode.name}` : '—'}</div>
+        <div className="absolute bottom-4 left-4 right-4 bg-[#091923]/90 backdrop-blur-md p-3 rounded-lg border border-[#1b2b39] shadow-2xl z-10">
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex-1 text-xs min-w-0">
+              <span className="text-[#8da2b1] text-[10px]">ORIGIN</span>
+              <div className="text-emerald-400 font-bold truncate">{originNode ? `${originNode.unlocode ?? originNode.iata ?? '—'} ${originNode.name}` : '—'}</div>
+            </div>
+            <div className="text-[#8da2b1]">→</div>
+            <div className="flex-1 text-xs min-w-0">
+              <span className="text-[#8da2b1] text-[10px]">DESTINATION</span>
+              <div className="text-blue-400 font-bold truncate">{destinationNode ? `${destinationNode.unlocode ?? destinationNode.iata ?? '—'} ${destinationNode.name}` : '—'}</div>
+            </div>
+
+            {/* Route metrics */}
+            {routeResult && (
+              <>
+                <div className="text-xs text-center">
+                  <div className="text-[#8da2b1] text-[10px]">DISTANCE</div>
+                  <div className="text-[#00bcd4] font-mono font-bold">{routeResult.distance_nm.toLocaleString()} nm</div>
+                </div>
+                <div className="text-xs text-center">
+                  <div className="text-[#8da2b1] text-[10px]">DURATION</div>
+                  <div className="text-[#00bcd4] font-mono font-bold">{routeResult.duration_hours.toFixed(1)} h</div>
+                </div>
+              </>
+            )}
+
+            {routeLoading && (
+              <span className="text-[10px] text-yellow-400 animate-pulse whitespace-nowrap">CALCULATING…</span>
+            )}
+            {routeError && (
+              <span className="text-[10px] text-red-400 whitespace-nowrap" title={routeError}>ROUTE ERR</span>
+            )}
+
+            {/* Calculate Route button (shown when both nodes set and no result yet) */}
+            {canCalculate && !routeResult && (
+              <button
+                onClick={calculateRoute}
+                className="text-[10px] font-bold text-[#00bcd4] hover:text-white px-3 py-1.5 rounded border border-[#00bcd4]/50 hover:bg-[#00bcd4]/10 transition-colors whitespace-nowrap"
+              >
+                CALCULATE ROUTE
+              </button>
+            )}
+
+            {routeResult && (
+              <button
+                onClick={() => setRouteResult(null)}
+                className="text-[10px] text-[#8da2b1] hover:text-white px-2 py-1 rounded border border-[#1b2b39] whitespace-nowrap"
+              >
+                CLEAR ROUTE
+              </button>
+            )}
+
+            <button
+              onClick={() => { setOriginNode(null); setDestinationNode(null); setRouteResult(null); setRouteError(null); }}
+              className="text-[10px] text-[#8da2b1] hover:text-white px-2 py-1 rounded border border-[#1b2b39]"
+            >
+              CLEAR
+            </button>
           </div>
-          <div className="text-[#8da2b1]">→</div>
-          <div className="flex-1 text-xs">
-            <span className="text-[#8da2b1] text-[10px]">DESTINATION</span>
-            <div className="text-blue-400 font-bold">{destinationNode ? `${destinationNode.unlocode ?? destinationNode.iata ?? '—'} ${destinationNode.name}` : '—'}</div>
-          </div>
-          <button
-            onClick={() => { setOriginNode(null); setDestinationNode(null); }}
-            className="text-[10px] text-[#8da2b1] hover:text-white px-2 py-1 rounded border border-[#1b2b39]"
-          >
-            CLEAR
-          </button>
         </div>
       )}
     </div>

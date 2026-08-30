@@ -1,27 +1,115 @@
+import { useState, useEffect } from 'react';
 import { PageHeader } from '../components/ui/PageHeader';
 import { MetricCard } from '../components/ui/MetricCard';
 import { Badge } from '../components/ui/Badge';
 import { MapCockpit } from "../components/ui/MapCockpit";
 
+// ── Types ──────────────────────────────────────────────────────────────────
+interface Voyage {
+  id: string;
+  vessel_name?: string;
+  imo?: string;
+  origin_port?: string;
+  dest_port?: string;
+  departure_at?: string;
+  arrival_at?: string;
+  distance_nm?: number;
+  status?: string;
+}
+
+interface VoyagesResponse {
+  voyages?: Voyage[];
+  items?: Voyage[];
+  data?: Voyage[];
+}
+
 export function VoyageIntelligence() {
+  const [voyages, setVoyages] = useState<Voyage[]>([]);
+  const [voyagesLoading, setVoyagesLoading] = useState(true);
+  const [voyagesError, setVoyagesError] = useState<string | null>(null);
+
+  // ── Fetch real voyages from API ─────────────────────────────────────────
+  useEffect(() => {
+    const fetchVoyages = async () => {
+      setVoyagesLoading(true);
+      setVoyagesError(null);
+      try {
+        const res = await fetch('/api/v1/voyages');
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const data: VoyagesResponse | Voyage[] = await res.json();
+        // Handle various response shapes
+        const list = Array.isArray(data)
+          ? (data as Voyage[])
+          : (data as VoyagesResponse).voyages
+            ?? (data as VoyagesResponse).items
+            ?? (data as VoyagesResponse).data
+            ?? [];
+        setVoyages(list);
+      } catch (e) {
+        setVoyagesError(e instanceof Error ? e.message : 'Failed to load voyages');
+        setVoyages([]);
+      } finally {
+        setVoyagesLoading(false);
+      }
+    };
+    fetchVoyages();
+  }, []);
+
+  const firstVoyage = voyages[0];
+
   return (
     <div className="flex flex-col h-full bg-bg-base">
       <PageHeader 
         title="Voyage Intelligence" 
         subtitle="MARITIME & REGULATORY INTELLIGENCE" 
-        status="demo"
+        status={voyagesLoading ? 'demo' : voyagesError ? 'demo' : voyages.length > 0 ? 'live' : 'demo'}
       />
       <div className="p-8 flex flex-col gap-6 flex-1 overflow-auto">
         <section className="mb-6">
           <MapCockpit />
         </section>
 
+        {/* Voyage loading / error / empty states */}
+        {voyagesLoading && (
+          <div className="flex items-center gap-3 text-sm text-text-muted px-1">
+            <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse inline-block" />
+            Loading voyages…
+          </div>
+        )}
+        {!voyagesLoading && voyagesError && (
+          <div className="rounded-lg border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-400">
+            Could not load voyages: {voyagesError}
+          </div>
+        )}
+        {!voyagesLoading && !voyagesError && voyages.length === 0 && (
+          <div className="rounded-lg border border-border-default bg-bg-panel px-6 py-8 text-center">
+            <div className="text-3xl mb-3">🛳️</div>
+            <p className="text-sm font-medium text-text-base mb-1">No voyages recorded yet</p>
+            <p className="text-xs text-text-muted">AIS tracking will populate this view once vessels are reporting.</p>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="col-span-2 flex flex-col gap-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <MetricCard title="Vessel" value="DEMO" status="demo" subtitle="IMO: 9876543" />
-              <MetricCard title="Last AIS Fix" value="—" status="unavailable" subtitle="No provider data" />
-              <MetricCard title="Speed (SOG)" value="—" status="unavailable" subtitle="knots" />
+              <MetricCard
+                title="Vessel"
+                value={firstVoyage?.vessel_name ?? 'DEMO'}
+                status={firstVoyage ? 'live' : 'demo'}
+                subtitle={firstVoyage?.imo ? `IMO: ${firstVoyage.imo}` : 'IMO: 9876543'}
+              />
+              <MetricCard
+                title="Last AIS Fix"
+                value="—"
+                status="unavailable"
+                subtitle="No provider data"
+              />
+              <MetricCard
+                title="Speed (SOG)"
+                value="—"
+                status="unavailable"
+                subtitle="knots"
+              />
               <MetricCard title="ETA" value="—" status="unavailable" subtitle="Destination" />
             </div>
             

@@ -1,0 +1,16 @@
+# Ignore backend — deployed separately (Railway/Render)
+services/
+api/
+scripts/
+database/
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.egg-info/
+
+# Dev files
+*.log
+.DS_Store
