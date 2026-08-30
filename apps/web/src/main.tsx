@@ -10,6 +10,7 @@ import LandingPage from './pages/LandingPage';
 import Onboarding from './pages/Onboarding';
 import PortalHub from './pages/PortalHub';
 import RegulatoryFramework from './pages/RegulatoryFramework';
+import LegalPage from './pages/LegalPage';
 import { PublicVoyagePage } from './pages/PublicVoyagePage';
 
 // ── App Pages ─────────────────────────────────────────────────
@@ -40,6 +41,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/login" element={<Onboarding />} />
           <Route path="/hub" element={<PortalHub />} />
           <Route path="/regulatory" element={<RegulatoryFramework />} />
+          <Route path="/legal/:document" element={<LegalPage />} />
 
           {/* ── Public voyage — no auth, no shell ── */}
           <Route path="/public/voyage/:id" element={<PublicVoyagePage />} />
@@ -70,5 +72,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </PortalProvider>
   </React.StrictMode>
 );
+
 
 
