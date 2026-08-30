@@ -26,10 +26,11 @@ class Settings(BaseSettings):
     # Token format: blnk_c5... (Personal Access Token from Settings → Tokens de Acesso)
     BLINK_PROJECT_TOKEN: str = "blnk_c5UMQp21VYI0u47p"
 
+    DATABASE_URL_DIRECT: str = ""  # Direct connection (may not resolve from all networks)
+
     class Config:
         env_file = ".env"
-        # PRODUCTION: override BLINK_AI_KEY and BLINK_PROJECT_TOKEN via env vars
-        # NEVER commit real keys; use env injection in CI/CD
+        extra = "ignore"  # Ignore unknown env vars (e.g. GITHUB_REPO etc.)
 
 settings = Settings()
 
