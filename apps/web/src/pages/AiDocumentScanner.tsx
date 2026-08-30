@@ -69,7 +69,7 @@ Signature: __________`;
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold text-white mb-2">Faça o Upload do BDN</h3>
+            <h3 className="text-xl font-semibold text-ink-black mb-2">Faça o Upload do BDN</h3>
             <p className="text-sm text-text-muted max-w-sm">
               Arraste o PDF escaneado ou a foto do papel físico do porto. Nossa IA extrairá a matemática e auditará as emissões.
             </p>
@@ -78,7 +78,7 @@ Signature: __________`;
           <button 
             onClick={handleSimulateScan}
             disabled={loading}
-            className="w-full max-w-xs bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-6 rounded-lg transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
+            className="w-full max-w-xs bg-blue-600 hover:bg-blue-500 text-ink-black font-medium py-3 px-6 rounded-lg transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
           >
             {loading ? (
               <span className="flex items-center gap-2 animate-pulse">
@@ -93,9 +93,9 @@ Signature: __________`;
             )}
           </button>
 
-          <div className="mt-4 p-4 bg-slate-900 border border-slate-800 rounded-lg text-left w-full">
+          <div className="mt-4 p-4 bg-mist-gray border border-ink-black/10 rounded-lg text-left w-full">
             <span className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-2 block">Texto Sujo Simulado (Câmera)</span>
-            <pre className="text-xs text-slate-400 font-mono overflow-hidden whitespace-pre-wrap">
+            <pre className="text-xs text-slate-mid font-mono overflow-hidden whitespace-pre-wrap">
               {DEMO_OCR_TEXT}
             </pre>
           </div>
@@ -105,18 +105,18 @@ Signature: __________`;
         <div className="bg-bg-panel border border-border-default rounded-xl overflow-hidden shadow-xl flex flex-col">
           <div className="p-6 border-b border-border-subtle bg-bg-surface flex justify-between items-center">
             <h3 className="font-semibold text-text-base flex items-center gap-2">
-              <FileCheck className="h-5 w-5 text-emerald-400" />
+              <FileCheck className="h-5 w-5 text-forest-grove" />
               Resultado Estruturado (JSON)
             </h3>
             {result && (
-              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-bold flex items-center gap-1">
+              <span className="px-3 py-1 bg-forest-grove/20 text-forest-grove border border-emerald-500/30 rounded-full text-xs font-bold flex items-center gap-1">
                 <CheckCircle2 className="h-3 w-3" />
                 VERIFICADO
               </span>
             )}
           </div>
           
-          <div className="p-6 flex-1 bg-slate-950">
+          <div className="p-6 flex-1 bg-pure-white">
             {!result && !loading && (
               <div className="h-full flex flex-col items-center justify-center text-slate-600 space-y-4">
                 <ScanText className="h-12 w-12 opacity-20" />
@@ -134,29 +134,29 @@ Signature: __________`;
             {result && (
               <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 
-                <div className="flex justify-between items-center pb-4 border-b border-slate-800">
-                  <div className="text-sm text-slate-400">Nível de Confiança da IA</div>
-                  <div className={`text-xl font-bold font-mono ${result.ocr_confidence > 90 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                <div className="flex justify-between items-center pb-4 border-b border-ink-black/10">
+                  <div className="text-sm text-slate-mid">Nível de Confiança da IA</div>
+                  <div className={`text-xl font-bold font-mono ${result.ocr_confidence > 90 ? 'text-forest-grove' : 'text-amber-400'}`}>
                     {result.ocr_confidence}%
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-slate-900 rounded-lg border border-slate-800">
+                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10">
                     <div className="text-xs text-slate-500 mb-1">Combustível Detectado</div>
-                    <div className="font-mono text-white text-lg">{result.fuel_type}</div>
+                    <div className="font-mono text-ink-black text-lg">{result.fuel_type}</div>
                   </div>
-                  <div className="p-4 bg-slate-900 rounded-lg border border-slate-800">
+                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10">
                     <div className="text-xs text-slate-500 mb-1">Quantidade Entregue</div>
                     <div className="font-mono text-amber-400 text-lg font-bold">{result.quantity_mt.toLocaleString('pt-BR')} MT</div>
                   </div>
-                  <div className="p-4 bg-slate-900 rounded-lg border border-slate-800">
+                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10">
                     <div className="text-xs text-slate-500 mb-1">Enxofre (Sulfur)</div>
-                    <div className="font-mono text-white text-lg">{result.sulfur_content_pct} %</div>
+                    <div className="font-mono text-ink-black text-lg">{result.sulfur_content_pct} %</div>
                   </div>
-                  <div className="p-4 bg-slate-900 rounded-lg border border-slate-800">
+                  <div className="p-4 bg-mist-gray rounded-lg border border-ink-black/10">
                     <div className="text-xs text-slate-500 mb-1">Porto de Origem</div>
-                    <div className="font-mono text-white text-lg">{result.bunker_port}</div>
+                    <div className="font-mono text-ink-black text-lg">{result.bunker_port}</div>
                   </div>
                 </div>
 
@@ -174,3 +174,4 @@ Signature: __________`;
     </div>
   );
 }
+

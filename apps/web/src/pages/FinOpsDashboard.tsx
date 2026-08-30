@@ -32,7 +32,7 @@ export default function FinOpsDashboard() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-text-base flex items-center gap-3">
-          <DollarSign className="h-8 w-8 text-emerald-400" />
+          <DollarSign className="h-8 w-8 text-forest-grove" />
           FinOps & ERP Integration
         </h1>
         <p className="text-text-muted mt-2">
@@ -45,9 +45,9 @@ export default function FinOpsDashboard() {
         <div className="bg-bg-panel border border-border-default rounded-xl p-6 shadow-sm">
           <div className="text-text-muted text-sm font-medium mb-2 flex justify-between">
             Passivo ETS Total Acumulado
-            <TrendingUp className="h-4 w-4 text-emerald-400" />
+            <TrendingUp className="h-4 w-4 text-forest-grove" />
           </div>
-          <div className="text-3xl font-bold text-white">
+          <div className="text-3xl font-bold text-ink-black">
             € {totalLiability.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
           <div className="text-xs text-text-muted mt-2">Baseado na cotação EUA atual</div>
@@ -58,7 +58,7 @@ export default function FinOpsDashboard() {
             Faturas Abertas (ERP)
             <FileText className="h-4 w-4 text-brand-primary" />
           </div>
-          <div className="text-3xl font-bold text-white">{invoices.length}</div>
+          <div className="text-3xl font-bold text-ink-black">{invoices.length}</div>
           <div className="text-xs text-text-muted mt-2">Aguardando liquidação / Hedging</div>
         </div>
 
@@ -67,8 +67,8 @@ export default function FinOpsDashboard() {
             Custo Global de Carbono (EUA)
             <Building2 className="h-4 w-4 text-blue-400" />
           </div>
-          <div className="text-3xl font-bold text-white">€ 85,50 <span className="text-sm font-normal text-text-muted">/ Ton</span></div>
-          <div className="text-xs text-emerald-400 mt-2 flex items-center gap-1">
+          <div className="text-3xl font-bold text-ink-black">€ 85,50 <span className="text-sm font-normal text-text-muted">/ Ton</span></div>
+          <div className="text-xs text-forest-grove mt-2 flex items-center gap-1">
             Mercado Europeu (Spot)
           </div>
         </div>
@@ -105,11 +105,11 @@ export default function FinOpsDashboard() {
                 invoices.map((inv) => (
                   <tr key={inv.id} className="hover:bg-bg-surface transition-colors">
                     <td className="px-6 py-4 font-mono text-text-muted">{inv.date}</td>
-                    <td className="px-6 py-4 font-medium text-white">{inv.vessel_name}</td>
+                    <td className="px-6 py-4 font-medium text-ink-black">{inv.vessel_name}</td>
                     <td className="px-6 py-4 text-right font-mono text-amber-400">
                       {inv.co2_mt.toLocaleString('pt-BR')} T
                     </td>
-                    <td className="px-6 py-4 text-right font-mono font-bold text-emerald-400">
+                    <td className="px-6 py-4 text-right font-mono font-bold text-forest-grove">
                       € {inv.total_eur.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </td>
                     <td className="px-6 py-4 text-center">
@@ -135,3 +135,4 @@ export default function FinOpsDashboard() {
     </div>
   );
 }
+

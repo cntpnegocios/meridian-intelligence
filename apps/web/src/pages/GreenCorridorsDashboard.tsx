@@ -58,7 +58,7 @@ export default function GreenCorridorsDashboard() {
       {/* Sidebar - Financial Twin */}
       <aside className="w-[450px] border-r border-neutral-800 flex flex-col shrink-0 z-10 bg-neutral-950">
         <div className="p-5 border-b border-neutral-800">
-          <h1 className="text-xl font-semibold text-emerald-400 tracking-tight">Green Corridors</h1>
+          <h1 className="text-xl font-semibold text-forest-grove tracking-tight">Green Corridors</h1>
           <p className="text-xs text-neutral-400 mt-1">Investment & Regulatory Twin (Phase 9)</p>
         </div>
         
@@ -92,7 +92,7 @@ export default function GreenCorridorsDashboard() {
                      <div className="text-xs text-neutral-500">VLSFO • {conventionalData.speed_knots} kts</div>
                   </div>
                   <div>
-                     <div className="text-[10px] text-emerald-500 uppercase tracking-wider">Green Corridor</div>
+                     <div className="text-[10px] text-forest-grove uppercase tracking-wider">Green Corridor</div>
                      <div className="text-xs text-neutral-300 truncate">{greenData.vessel_name}</div>
                      <div className="text-xs text-neutral-500">Methanol • {greenData.speed_knots} kts</div>
                   </div>
@@ -106,14 +106,14 @@ export default function GreenCorridorsDashboard() {
                     <tr className="border-b border-neutral-800 text-neutral-500 bg-neutral-950/50">
                       <th className="p-3 font-medium text-left">Metric</th>
                       <th className="p-3 font-medium text-neutral-400">Baseline</th>
-                      <th className="p-3 font-medium text-emerald-400">Green</th>
+                      <th className="p-3 font-medium text-forest-grove">Green</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-neutral-800/50">
                     <tr className="hover:bg-neutral-800/20">
                       <td className="p-3 text-left text-neutral-400">TTW CO₂e</td>
                       <td className="p-3 font-mono">{conventionalData.ttw_co2_tonnes.toLocaleString()} t</td>
-                      <td className="p-3 font-mono text-emerald-400">{greenData.ttw_co2_tonnes.toLocaleString()} t</td>
+                      <td className="p-3 font-mono text-forest-grove">{greenData.ttw_co2_tonnes.toLocaleString()} t</td>
                     </tr>
                     <tr className="hover:bg-neutral-800/20">
                       <td className="p-3 text-left text-neutral-400">Fuel Cost</td>
@@ -123,17 +123,17 @@ export default function GreenCorridorsDashboard() {
                     <tr className="hover:bg-neutral-800/20">
                       <td className="p-3 text-left text-neutral-400">EU ETS Cost</td>
                       <td className="p-3 font-mono text-amber-500/80">{formatEur(conventionalData.regulatory.eu_ets_cost_eur)}</td>
-                      <td className="p-3 font-mono text-emerald-500">{formatEur(greenData.regulatory.eu_ets_cost_eur)}</td>
+                      <td className="p-3 font-mono text-forest-grove">{formatEur(greenData.regulatory.eu_ets_cost_eur)}</td>
                     </tr>
                     <tr className="hover:bg-neutral-800/20">
                       <td className="p-3 text-left text-neutral-400">FuelEU Penalty</td>
                       <td className="p-3 font-mono text-amber-500/80">{formatEur(conventionalData.regulatory.fueleu_penalty_eur)}</td>
-                      <td className="p-3 font-mono text-emerald-500">Compliant</td>
+                      <td className="p-3 font-mono text-forest-grove">Compliant</td>
                     </tr>
                     <tr className="bg-neutral-800/30 font-medium">
                       <td className="p-3 text-left">Total (Fuel + Reg)</td>
                       <td className="p-3 font-mono text-lg">{formatMoney(conventionalData.fuel_cost_usd + (conventionalData.regulatory.total_regulatory_cost_eur * 1.1))}</td>
-                      <td className="p-3 font-mono text-lg text-emerald-400">{formatMoney(greenData.fuel_cost_usd + (greenData.regulatory.total_regulatory_cost_eur * 1.1))}</td>
+                      <td className="p-3 font-mono text-lg text-forest-grove">{formatMoney(greenData.fuel_cost_usd + (greenData.regulatory.total_regulatory_cost_eur * 1.1))}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -142,14 +142,14 @@ export default function GreenCorridorsDashboard() {
               {/* TCO Highlights */}
               {conventionalData && greenData && (
                 <div className="bg-emerald-900/10 border border-emerald-900/30 p-4 rounded-lg">
-                  <h3 className="text-xs font-semibold text-emerald-500 uppercase tracking-wider mb-2">Investor Summary</h3>
+                  <h3 className="text-xs font-semibold text-forest-grove uppercase tracking-wider mb-2">Investor Summary</h3>
                   <p className="text-sm text-neutral-300 leading-relaxed">
                     By switching to the Bio-Methanol Green Corridor, despite higher raw fuel costs, regulatory savings (ETS/FuelEU) yield a net reduction in Total Cost of Ownership (TCO).
                   </p>
                   <div className="mt-3 grid grid-cols-2 gap-2">
                      <div className="bg-neutral-900/50 p-2 rounded">
                         <div className="text-[10px] text-neutral-500">CO2e Reduction</div>
-                        <div className="text-sm font-semibold text-emerald-400">
+                        <div className="text-sm font-semibold text-forest-grove">
                           -{((1 - (greenData.ttw_co2_tonnes / conventionalData.ttw_co2_tonnes)) * 100).toFixed(1)}%
                         </div>
                      </div>
@@ -175,7 +175,7 @@ export default function GreenCorridorsDashboard() {
         {/* Status Overlay */}
         <div className="absolute bottom-6 right-6 bg-neutral-900/90 backdrop-blur border border-neutral-800 p-4 rounded-lg w-64 shadow-2xl">
           <div className="flex items-center gap-2 mb-3 pb-2 border-b border-neutral-800">
-            <div className={`w-2 h-2 rounded-full ${isLoading ? 'bg-amber-500' : 'bg-emerald-500'} animate-pulse`}></div>
+            <div className={`w-2 h-2 rounded-full ${isLoading ? 'bg-amber-500' : 'bg-forest-grove'} animate-pulse`}></div>
             <span className="text-xs font-medium text-neutral-300">Meridian Core Engine</span>
           </div>
           <div className="space-y-1.5">
@@ -189,7 +189,7 @@ export default function GreenCorridorsDashboard() {
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-neutral-500">Evidence Vault:</span>
-              <span className="text-emerald-500 font-mono">SHA-256</span>
+              <span className="text-forest-grove font-mono">SHA-256</span>
             </div>
           </div>
         </div>
@@ -197,3 +197,4 @@ export default function GreenCorridorsDashboard() {
     </div>
   );
 }
+

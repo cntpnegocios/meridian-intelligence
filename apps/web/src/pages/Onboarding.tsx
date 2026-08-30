@@ -21,7 +21,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020817] flex flex-col items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-pure-white flex flex-col items-center justify-center relative overflow-hidden">
       {/* Grade de Fundo Sci-Fi */}
       <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
       <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-brand-primary opacity-20 blur-[100px]"></div>
@@ -31,14 +31,14 @@ export default function Onboarding() {
           <div className="h-16 w-16 bg-bg-panel border border-brand-primary/30 rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(30,195,179,0.3)]">
             <Anchor className="h-8 w-8 text-brand-primary" />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Meridian Intelligence</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-ink-black mb-2">Meridian Intelligence</h1>
           <p className="text-text-muted text-center text-sm">
             Platform for Maritime & Aviation Decarbonization, Regulatory Compliance, and FinOps.
           </p>
         </div>
 
         <div className="bg-bg-panel border border-border-default rounded-2xl shadow-2xl p-8">
-          <h2 className="text-xl font-semibold text-white mb-4">Corporate Sign In</h2>
+          <h2 className="text-xl font-semibold text-ink-black mb-4">Corporate Sign In</h2>
           
           {/* Aviso de Demo Aberta */}
           <div className="mb-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-start gap-3">
@@ -108,7 +108,7 @@ export default function Onboarding() {
           </form>
 
           <div className="mt-6 border-t border-border-subtle pt-6">
-            <div className="flex items-center justify-center gap-2 text-xs text-emerald-400/80 bg-emerald-400/10 py-2 px-3 rounded-md">
+            <div className="flex items-center justify-center gap-2 text-xs text-forest-grove/80 bg-emerald-400/10 py-2 px-3 rounded-md">
               <ShieldCheck className="h-4 w-4" />
               <span>Protected by Meridian Tenant Isolation (SSO)</span>
             </div>
@@ -123,3 +123,4 @@ export default function Onboarding() {
     </div>
   );
 }
+

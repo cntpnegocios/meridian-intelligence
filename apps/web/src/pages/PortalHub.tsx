@@ -25,9 +25,9 @@ export default function PortalHub() {
       role: 'SHIPPER' as PortalRole,
       title: 'Shipper Intelligence',
       description: 'CO2 per cargo, Scope 3 reporting, ESG certificates, booking tracking.',
-      icon: <Building2 className="h-10 w-10 text-emerald-400" />,
+      icon: <Building2 className="h-10 w-10 text-forest-grove" />,
       color: 'border-emerald-500/30 hover:border-emerald-400',
-      bg: 'bg-emerald-500/10 hover:bg-emerald-500/20'
+      bg: 'bg-forest-grove/10 hover:bg-forest-grove/20'
     },
     {
       role: 'PORT' as PortalRole,
@@ -48,7 +48,7 @@ export default function PortalHub() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#020817] flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-pure-white flex flex-col relative overflow-hidden">
       {/* Background FX */}
       <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
       
@@ -56,18 +56,18 @@ export default function PortalHub() {
       <header className="w-full p-6 z-10 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Anchor className="h-6 w-6 text-brand-primary" />
-          <span className="font-bold tracking-widest text-lg text-white">MERIDIAN</span>
+          <span className="font-bold tracking-widest text-lg text-ink-black">MERIDIAN</span>
         </div>
-        <div className="text-sm text-slate-400">
-          Bem-vindo, <strong className="text-white">Enterprise Admin</strong>
+        <div className="text-sm text-slate-mid">
+          Bem-vindo, <strong className="text-ink-black">Enterprise Admin</strong>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center p-6 z-10">
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">Escolha seu Ambiente de Trabalho</h1>
-          <p className="text-slate-400 text-lg">
+          <h1 className="text-3xl md:text-5xl font-bold text-ink-black mb-4">Escolha seu Ambiente de Trabalho</h1>
+          <p className="text-slate-mid text-lg">
             Selecione o portal corporativo desejado. O sistema carregará as ferramentas, <br/> mapas e dashboards específicos para o seu papel (Role).
           </p>
         </div>
@@ -80,17 +80,17 @@ export default function PortalHub() {
               onClick={() => handleSelectPortal(env.role)}
               className={`group flex flex-col items-start p-8 rounded-2xl border ${env.color} ${env.bg} backdrop-blur-sm transition-all duration-300 text-left`}
             >
-              <div className="mb-6 p-4 rounded-xl bg-slate-900/50 border border-slate-700/50 shadow-inner">
+              <div className="mb-6 p-4 rounded-xl bg-mist-gray/50 border border-ink-black/10/50 shadow-inner">
                 {env.icon}
               </div>
-              <h2 className="text-2xl font-bold text-white mb-2 group-hover:text-brand-primary transition-colors">
+              <h2 className="text-2xl font-bold text-ink-black mb-2 group-hover:text-brand-primary transition-colors">
                 {env.title}
               </h2>
-              <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-1">
+              <p className="text-slate-mid text-sm leading-relaxed mb-6 flex-1">
                 {env.description}
               </p>
               
-              <div className="mt-auto flex items-center gap-2 text-sm font-semibold text-white group-hover:text-brand-primary transition-colors">
+              <div className="mt-auto flex items-center gap-2 text-sm font-semibold text-ink-black group-hover:text-brand-primary transition-colors">
                 Acessar Workspace <ArrowRight className="h-4 w-4 transform group-hover:translate-x-2 transition-transform" />
               </div>
             </button>
@@ -100,3 +100,4 @@ export default function PortalHub() {
     </div>
   );
 }
+
