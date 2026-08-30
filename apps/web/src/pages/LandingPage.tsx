@@ -45,7 +45,7 @@ export default function LandingPage() {
             
             {/* Hero Subhead */}
             <p className="text-[18px] md:text-[20px] font-medium text-ink-black leading-[1.25] max-w-[520px] mb-10">
-              A plataforma definitiva de gêmeos digitais. Emissões MRV, Auditoria Criptográfica, Roteamento Preditivo e FinOps Tributário em um único ecossistema.
+              The ultimate digital twin platform. MRV Emissions, Cryptographic Audit, Predictive Routing, and Tax FinOps in a single ecosystem.
             </p>
             
             <div className="flex items-center gap-4">
@@ -70,10 +70,10 @@ export default function LandingPage() {
               <div className="absolute top-6 left-6 text-xs text-pure-white/80 font-mono tracking-wider uppercase flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-forest-grove animate-pulse"></span> Satellite Tracker</div>
               <div className="space-y-4 w-full">
                 <div className="bg-mist-gray text-ink-black p-4 rounded-[20px] rounded-bl-none text-[16px] leading-[1.5] w-3/4">
-                  Analisei a Nota de Bunker. 4.500 Toneladas de VLSFO detectadas.
+                  Bunker Delivery Note analyzed. 4,500 Tons of VLSFO detected.
                 </div>
                 <div className="bg-forest-grove text-pure-white p-4 rounded-[20px] rounded-br-none text-[16px] leading-[1.5] w-3/4 self-end ml-auto shadow-sm">
-                  Prossiga com a taxação EU ETS.
+                  Proceed with EU ETS taxation assessment.
                 </div>
               </div>
             </div>
@@ -85,22 +85,23 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-[10px] mt-[80px] max-w-[1200px] w-full z-10">
           <div className="bg-mist-gray p-[24px] rounded-[20px]">
             <ShieldCheck className="h-8 w-8 text-forest-grove mb-4" />
-            <h3 className="text-[20px] font-semibold text-ink-black mb-2">Compliance Oficial</h3>
-            <p className="text-graphite text-[14px] leading-[1.5]">Geração automática de relatórios MRV e DCS. Auditoria in-loco protegida por criptografia SHA-256.</p>
+            <h3 className="text-[20px] font-semibold text-ink-black mb-2">Official Compliance</h3>
+            <p className="text-graphite text-[14px] leading-[1.5]">Automated generation of MRV and DCS reports. On-site auditing protected by SHA-256 cryptography.</p>
           </div>
           <div className="bg-mist-gray p-[24px] rounded-[20px]">
             <Cpu className="h-8 w-8 text-forest-grove mb-4" />
             <h3 className="text-[20px] font-semibold text-ink-black mb-2">Document Intelligence</h3>
-            <p className="text-graphite text-[14px] leading-[1.5]">IA que lê notas físicas de combustível (BDN) nos portos para prevenir fraudes de densidade e enxofre.</p>
+            <p className="text-graphite text-[14px] leading-[1.5]">AI that reads physical Bunker Delivery Notes (BDN) at ports to prevent density and sulfur fraud.</p>
           </div>
           <div className="bg-mist-gray p-[24px] rounded-[20px]">
             <Globe2 className="h-8 w-8 text-forest-grove mb-4" />
-            <h3 className="text-[20px] font-semibold text-ink-black mb-2">FinOps Tributário</h3>
-            <p className="text-graphite text-[14px] leading-[1.5]">Tradução em tempo real de emissões para faturas em Euros baseadas no mercado de carbono Europeu.</p>
+            <h3 className="text-[20px] font-semibold text-ink-black mb-2">Tax FinOps</h3>
+            <p className="text-graphite text-[14px] leading-[1.5]">Real-time translation of emissions into Euro invoices based on the European carbon market.</p>
           </div>
         </div>
       </main>
     </div>
   );
 }
+
 

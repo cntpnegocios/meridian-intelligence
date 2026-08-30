@@ -45,7 +45,7 @@ export default function Onboarding() {
             <Info className="h-5 w-5 text-forest-grove shrink-0 mt-0.5" />
             <div className="text-sm text-graphite">
               <strong className="text-blue-100">Interactive Demo Mode</strong><br/>
-              As credenciais de demonstração já estão preenchidas. Clique em Sign In para acessar os ambientes.
+              Demo credentials are pre-filled. Click Sign In to access the environments.
             </div>
           </div>
           
@@ -123,5 +123,6 @@ export default function Onboarding() {
     </div>
   );
 }
+
 
 

@@ -59,14 +59,14 @@ export default function PortalHub() {
           <span className="font-bold tracking-widest text-lg text-ink-black">MERIDIAN</span>
         </div>
         <div className="text-sm text-slate-mid">
-          Bem-vindo, <strong className="text-ink-black">Enterprise Admin</strong>
+          Welcome, <strong className="text-ink-black">Enterprise Admin</strong>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center p-6 z-10">
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-5xl font-bold text-ink-black mb-4">Escolha seu Ambiente de Trabalho</h1>
+          <h1 className="text-3xl md:text-5xl font-bold text-ink-black mb-4">Select Your Workspace</h1>
           <p className="text-slate-mid text-lg">
             Selecione o portal corporativo desejado. O sistema carregará as ferramentas, <br/> mapas e dashboards específicos para o seu papel (Role).
           </p>
@@ -91,7 +91,7 @@ export default function PortalHub() {
               </p>
               
               <div className="mt-auto flex items-center gap-2 text-sm font-semibold text-ink-black group-hover:text-brand-primary transition-colors">
-                Acessar Workspace <ArrowRight className="h-4 w-4 transform group-hover:translate-x-2 transition-transform" />
+                Enter Workspace <ArrowRight className="h-4 w-4 transform group-hover:translate-x-2 transition-transform" />
               </div>
             </button>
           ))}
@@ -100,4 +100,5 @@ export default function PortalHub() {
     </div>
   );
 }
+
 
