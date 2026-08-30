@@ -70,3 +70,24 @@ class AISObservationResponse(AISObservationBase):
     id: UUID
     created_at: datetime
     model_config = ConfigDict(from_attributes=True)
+
+
+class VoyageSimulationRequest(BaseModel):
+    vessel_id: UUID
+    distance_nm: float
+    target_speed_knots: Optional[float] = None
+
+class VoyageSimulationResponse(BaseModel):
+    vessel_imo: str
+    vessel_name: str
+    route_distance_nm: float
+    speed_knots: float
+    time_hours: float
+    time_days: float
+    engine_load_pct: float
+    power_required_kw: float
+    fuel_type: str
+    fuel_consumed_tonnes: float
+    energy_consumed_mj: float
+    ttw_co2_tonnes: float
+    fuel_cost_usd: float
