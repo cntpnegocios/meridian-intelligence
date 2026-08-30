@@ -14,8 +14,8 @@ import { Overview } from './pages/Overview';
 import { VoyageIntelligence } from './pages/VoyageIntelligence';
 import { MaritimeIntelligence } from './pages/MaritimeIntelligence';
 import { RegulatoryRadar } from './pages/RegulatoryRadar';
-import { EuEts }  from './pages/EuEtsPage';
-import { FuelEuPage } from './pages/FuelEuPage';
+import { EuEtsCalculator }  from './pages/EuEtsCalculator';
+import { FuelEuScore } from './pages/FuelEuScore';
 import GreenCorridorsDashboard from './pages/GreenCorridorsDashboard';
 import { ShipperPortal } from './pages/ShipperPortal';
 import { PortDashboard } from './pages/PortDashboard';
@@ -43,8 +43,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 <Route path="/voyage-intelligence"   element={<VoyageIntelligence />} />
                 <Route path="/maritime-intelligence" element={<MaritimeIntelligence />} />
                 <Route path="/regulatory-radar"      element={<RegulatoryRadar />} />
-                <Route path="/eu-ets"                element={<EuEts />} />
-                <Route path="/fueleu"                element={<FuelEuPage />} />
+                <Route path="/eu-ets"                element={<EuEtsCalculator />} />
+                <Route path="/fueleu"                element={<FuelEuScore />} />
                 <Route path="/green-corridors"       element={<GreenCorridorsDashboard />} />
                 <Route path="/shipper"               element={<ShipperPortal />} />
                 <Route path="/port"                  element={<PortDashboard />} />
