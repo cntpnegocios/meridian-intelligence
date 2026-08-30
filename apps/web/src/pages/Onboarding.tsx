@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Anchor, ArrowRight, ShieldCheck, KeyRound, Building } from 'lucide-react';
-
+import { Anchor, ArrowRight, ShieldCheck, KeyRound, Building, Info } from 'lucide-react';
 
 export default function Onboarding() {
   const navigate = useNavigate();
   
-  
-  const [email, setEmail] = useState('');
+  // Pré-preenchido para a Demo Pública
+  const [email, setEmail] = useState('investor@meridianmrv.com');
+  const [password, setPassword] = useState('demo-access-token-2026');
   const [loading, setLoading] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
@@ -27,7 +27,7 @@ export default function Onboarding() {
       <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-brand-primary opacity-20 blur-[100px]"></div>
 
       <div className="z-10 w-full max-w-md px-6">
-        <div className="flex flex-col items-center mb-10">
+        <div className="flex flex-col items-center mb-8">
           <div className="h-16 w-16 bg-bg-panel border border-brand-primary/30 rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(30,195,179,0.3)]">
             <Anchor className="h-8 w-8 text-brand-primary" />
           </div>
@@ -38,7 +38,16 @@ export default function Onboarding() {
         </div>
 
         <div className="bg-bg-panel border border-border-default rounded-2xl shadow-2xl p-8">
-          <h2 className="text-xl font-semibold text-white mb-6">Corporate Sign In</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">Corporate Sign In</h2>
+          
+          {/* Aviso de Demo Aberta */}
+          <div className="mb-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-start gap-3">
+            <Info className="h-5 w-5 text-blue-400 shrink-0 mt-0.5" />
+            <div className="text-sm text-blue-200">
+              <strong className="text-blue-100">Interactive Demo Mode</strong><br/>
+              As credenciais de demonstração já estão preenchidas. Clique em Sign In para acessar os ambientes.
+            </div>
+          </div>
           
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
@@ -71,6 +80,8 @@ export default function Onboarding() {
                 <input
                   type="password"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="block w-full pl-10 pr-3 py-2.5 border border-border-default rounded-lg leading-5 bg-bg-surface text-text-base placeholder-text-muted focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors sm:text-sm"
                 />
