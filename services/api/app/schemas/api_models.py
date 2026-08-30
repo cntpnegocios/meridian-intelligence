@@ -6,13 +6,47 @@ from app.models.domain import DataGovernanceStatus, ConfidenceLevel, AISCollecti
 
 class VesselBase(BaseModel):
     imo_number: str
+    mmsi: Optional[str] = None
     name: str
     flag: str
     vessel_type: str
+    build_year: Optional[int] = None
+    gross_tonnage: Optional[float] = None
+    dwt: Optional[float] = None
+    length_m: Optional[float] = None
+    beam_m: Optional[float] = None
+    max_draft_m: Optional[float] = None
+    engine_type: Optional[str] = None
+    engine_power_kw: Optional[float] = None
+    primary_fuel_type: Optional[str] = None
+    service_speed_knots: Optional[float] = None
+    design_speed_knots: Optional[float] = None
+    eexi: Optional[float] = None
+    cii_rating: Optional[str] = None
 
 class VesselResponse(VesselBase):
     id: UUID
     created_at: datetime
+    model_config = ConfigDict(from_attributes=True)
+
+class AircraftBase(BaseModel):
+    tail_number: str
+    icao_type_code: str
+    manufacturer: Optional[str] = None
+    model: Optional[str] = None
+    build_year: Optional[int] = None
+    mtow_kg: Optional[float] = None
+    max_range_nm: Optional[float] = None
+    cruise_speed_knots: Optional[float] = None
+    fuel_capacity_liters: Optional[float] = None
+    primary_fuel_type: str = "Jet A-1"
+    engine_type: Optional[str] = None
+    engine_count: Optional[int] = None
+
+class AircraftResponse(AircraftBase):
+    id: UUID
+    created_at: datetime
+    updated_at: datetime
     model_config = ConfigDict(from_attributes=True)
 
 class AISObservationBase(BaseModel):

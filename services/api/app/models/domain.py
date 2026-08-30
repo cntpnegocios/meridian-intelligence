@@ -24,10 +24,42 @@ class Vessel(Base):
     __tablename__ = "vessels"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     imo_number = Column(String, unique=True)
+    mmsi = Column(String, unique=True)
     name = Column(String)
     flag = Column(String)
     vessel_type = Column(String)
+    build_year = Column(Float) # using Float/Integer mapping
+    gross_tonnage = Column(Float)
+    dwt = Column(Float)
+    length_m = Column(Float)
+    beam_m = Column(Float)
+    max_draft_m = Column(Float)
+    engine_type = Column(String)
+    engine_power_kw = Column(Float)
+    primary_fuel_type = Column(String)
+    service_speed_knots = Column(Float)
+    design_speed_knots = Column(Float)
+    eexi = Column(Float)
+    cii_rating = Column(String)
     created_at = Column(DateTime, server_default=text("now()"))
+
+class Aircraft(Base):
+    __tablename__ = "aircraft"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    tail_number = Column(String, unique=True, nullable=False)
+    icao_type_code = Column(String, nullable=False)
+    manufacturer = Column(String)
+    model = Column(String)
+    build_year = Column(Float)
+    mtow_kg = Column(Float)
+    max_range_nm = Column(Float)
+    cruise_speed_knots = Column(Float)
+    fuel_capacity_liters = Column(Float)
+    primary_fuel_type = Column(String, default="Jet A-1")
+    engine_type = Column(String)
+    engine_count = Column(Float)
+    created_at = Column(DateTime, server_default=text("now()"))
+    updated_at = Column(DateTime, server_default=text("now()"))
 
 class Voyage(Base):
     __tablename__ = "voyages"
