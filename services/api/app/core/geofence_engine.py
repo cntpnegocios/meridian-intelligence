@@ -1,50 +1,54 @@
-import math
-from typing import Tuple
+from sqlalchemy.orm import Session
+from sqlalchemy import text
+from typing import List, Dict, Any
 
 class GeofenceEngine:
-    """
-    Core logic for calculating geofence breaches.
-    In a real production environment, this could be offloaded to PostGIS (ST_DWithin).
-    """
-    
     @staticmethod
-    def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-        """
-        Calculate the great circle distance between two points 
-        on the earth (specified in decimal degrees) in meters.
-        """
-        R = 6371000  # radius of Earth in meters
-        
-        phi1 = math.radians(lat1)
-        phi2 = math.radians(lat2)
-        delta_phi = math.radians(lat2 - lat1)
-        delta_lambda = math.radians(lon2 - lon1)
-        
-        a = math.sin(delta_phi/2.0)**2 + \
-            math.cos(phi1) * math.cos(phi2) * \
-            math.sin(delta_lambda/2.0)**2
+    def process_ping(db: Session, vessel_id: str, lat: float, lon: float) -> List[Dict[str, Any]]:
+        # 1. Find which zones the vessel is currently inside
+        query_inside = text("""
+            SELECT id, name, zone_type 
+            FROM regulatory_zones 
+            WHERE ST_Contains(geom, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326))
+        """)
+        current_zones = db.execute(query_inside, {"lon": lon, "lat": lat}).fetchall()
+        current_zone_ids = set([str(z[0]) for z in current_zones])
+
+        # 3. Look up last known state
+        query_state = text("""
+            SELECT DISTINCT ON (zone_id) zone_id, event_type
+            FROM geofence_events
+            WHERE vessel_id = :v_id
+            ORDER BY zone_id, event_time DESC
+        """)
+        last_events = db.execute(query_state, {"v_id": vessel_id}).fetchall()
+        active_zone_ids = set([str(e[0]) for e in last_events if e[1] == 'ENTER'])
+
+        new_events = []
+
+        # 4. Deltas
+        entered_zones = current_zone_ids - active_zone_ids
+        exited_zones = active_zone_ids - current_zone_ids
+
+        # 5. ENTER
+        for z_id in entered_zones:
+            db.execute(text("""
+                INSERT INTO geofence_events (vessel_id, zone_id, event_type, latitude, longitude)
+                VALUES (:v_id, :z_id, 'ENTER', :lat, :lon)
+            """), {"v_id": vessel_id, "z_id": z_id, "lat": lat, "lon": lon})
             
-        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-        return R * c
+            zone_info = next(z for z in current_zones if str(z[0]) == z_id)
+            new_events.append({"type": "ENTER", "zone_name": zone_info[1], "zone_type": zone_info[2]})
 
-    @classmethod
-    def check_port_arrival(cls, vessel_lat: float, vessel_lon: float, port_lat: float, port_lon: float, radius_meters: int) -> bool:
-        """
-        Check if a vessel is inside a port's geofence.
-        """
-        distance = cls.haversine(vessel_lat, vessel_lon, port_lat, port_lon)
-        return distance <= radius_meters
+        # 6. EXIT
+        for z_id in exited_zones:
+            db.execute(text("""
+                INSERT INTO geofence_events (vessel_id, zone_id, event_type, latitude, longitude)
+                VALUES (:v_id, :z_id, 'EXIT', :lat, :lon)
+            """), {"v_id": vessel_id, "z_id": z_id, "lat": lat, "lon": lon})
+            new_events.append({"type": "EXIT", "zone_id": z_id})
 
-    @classmethod
-    def process_ais_observation(cls, db_session, ais_observation) -> None:
-        """
-        Workflow:
-        1. Query active voyage for this vessel.
-        2. Get destination port coordinates.
-        3. If check_port_arrival() is true:
-           - Mark voyage leg as COMPLETED
-           - Create PortCall
-           - Trigger Notification / Event
-        """
-        # Placeholder for Sprint 4 implementation
-        pass
+        if new_events:
+            db.commit()
+
+        return new_events
