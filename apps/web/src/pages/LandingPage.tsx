@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Anchor, ArrowRight, BarChart3, Target, Calculator, Coins, Satellite, Ship, Plane, Activity, Globe } from 'lucide-react';
+import { Anchor, Cloud, ArrowRight, BarChart3, Target, Calculator, Coins, Satellite, Ship, Plane, Activity, Globe } from 'lucide-react';
 
 const GdprBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -304,15 +304,23 @@ export default function LandingPage() {
 
         </div>
 
-        <div className="max-w-[1200px] mx-auto mt-20 pt-8 border-t border-pure-white/10 text-[12px] text-pure-white/40 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p>© 2026 MeridianMRV Limited. Registration No. 1475892. Built for Climate Change Ventures.</p>
+                <div className="max-w-[1200px] mx-auto mt-20 pt-8 border-t border-pure-white/10 text-[12px] text-pure-white/40 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <p>© 2026 MeridianMRV Limited. Registration No. 1475892.</p>
+            <div className="hidden md:block w-1 h-1 bg-pure-white/20 rounded-full"></div>
+            <div className="flex items-center gap-2">
+              <Cloud size={14} className="text-[#F38020]" />
+              <span className="text-[10px] font-mono uppercase tracking-widest text-pure-white/60">Protected by Cloudflare Enterprise</span>
+            </div>
+          </div>
           <div className="flex gap-8 font-medium">
             <Link to="/legal/privacy" className="hover:text-pure-white transition-colors">Privacy</Link>
             <Link to="/legal/terms" className="hover:text-pure-white transition-colors">Terms</Link>
-            <Link to="/legal/security" className="hover:text-pure-white transition-colors">Cookies</Link>
+            <Link to="/legal/security" className="hover:text-pure-white transition-colors">Security</Link>
           </div>
         </div>
       </footer>
     </div>
   );
 }
+
