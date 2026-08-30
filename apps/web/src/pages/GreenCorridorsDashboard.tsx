@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Globe2, ArrowRight, ShieldCheck, Ship, Plane, Leaf, Zap, BarChart3 } from 'lucide-react';
+import { useState } from 'react';
+import { ShieldCheck, Ship, Plane, Leaf, Zap, BarChart3 } from 'lucide-react';
 
-export function GreenCorridorsDashboard() {
+export default function GreenCorridorsDashboard() {
   const [activeTab, setActiveTab] = useState<'SEA' | 'AIR'>('SEA');
 
   return (
@@ -17,13 +17,13 @@ export function GreenCorridorsDashboard() {
         <div className="flex gap-4">
           <button 
             onClick={() => setActiveTab('SEA')}
-            className={px-6 py-2 rounded-full text-sm font-semibold transition-all  + (activeTab === 'SEA' ? 'bg-ink-black text-pure-white shadow-md' : 'bg-pure-white text-graphite border border-ink-black/10 hover:bg-mist-gray')}
+            className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'SEA' ? 'bg-ink-black text-pure-white shadow-md' : 'bg-pure-white text-graphite border border-ink-black/10 hover:bg-mist-gray'}`}
           >
             Sea Corridors
           </button>
           <button 
             onClick={() => setActiveTab('AIR')}
-            className={px-6 py-2 rounded-full text-sm font-semibold transition-all  + (activeTab === 'AIR' ? 'bg-ink-black text-pure-white shadow-md' : 'bg-pure-white text-graphite border border-ink-black/10 hover:bg-mist-gray')}
+            className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'AIR' ? 'bg-ink-black text-pure-white shadow-md' : 'bg-pure-white text-graphite border border-ink-black/10 hover:bg-mist-gray'}`}
           >
             Air Corridors (SAF)
           </button>

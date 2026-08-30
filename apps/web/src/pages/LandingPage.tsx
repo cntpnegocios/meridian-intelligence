@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Anchor, ShieldCheck, Cpu, Globe2, ArrowRight, BarChart3, Target, Calculator, Coins } from 'lucide-react';
+import { Anchor, ArrowRight, BarChart3, Target, Calculator, Coins } from 'lucide-react';
 
 export default function LandingPage() {
   return (
@@ -58,7 +58,7 @@ export default function LandingPage() {
             <div 
               className="rounded-[20px] p-6 shadow-[0_0_1px_rgba(0,0,0,0.35),0_1px_2px_rgba(0,0,0,0.25)_inset] border border-mist-gray h-[450px] relative overflow-hidden flex flex-col justify-end"
               style={{
-                backgroundImage: linear-gradient(to bottom, rgba(28,43,39,0.3), rgba(28,43,39,0.7)), url("https://images.unsplash.com/photo-1580674684081-7767dc31d8f5?q=80&w=1000&auto=format&fit=crop"),
+                backgroundImage: `linear-gradient(to bottom, rgba(28,43,39,0.3), rgba(28,43,39,0.7)), url("https://images.unsplash.com/photo-1580674684081-7767dc31d8f5?q=80&w=1000&auto=format&fit=crop")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center"
               }}
@@ -105,3 +105,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
