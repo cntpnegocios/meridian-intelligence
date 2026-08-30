@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from app.core.config import settings
 from app.api.endpoints import (
     vessels, voyages, evidence, ports, corridors,
-    ai_intelligence, nodes, routes, vessels_live, source_registry,
+    ai_intelligence, nodes, routes, vessels_live, source_registry, engines, risk
 )
 
 app = FastAPI(
@@ -22,14 +22,16 @@ app.add_middleware(
 )
 
 # ── Phase 1: Transport Nodes ─────────────────────────────────
-app.include_router(nodes.router,           prefix=f"{settings.API_V1_STR}",               tags=["nodes"])
+app.include_router(nodes.router, prefix="/api/v1/nodes", tags=["Nodes"])
 
 # ── Phase 2: Route Intelligence ──────────────────────────────
-app.include_router(routes.router,          prefix=f"{settings.API_V1_STR}/routes",         tags=["routes"])
+app.include_router(routes.router, prefix="/api/v1/routes", tags=["Routes"])
 
 # ── Phase 3: AIS Vessel Tracking ────────────────────────────
-app.include_router(vessels_live.router,    prefix=f"{settings.API_V1_STR}/vessels",        tags=["vessels-live"])
-app.include_router(vessels.router,         prefix=f"{settings.API_V1_STR}/vessels",        tags=["vessels"])
+app.include_router(vessels_live.router, prefix="/api/v1/vessels", tags=["Live Vessels"])
+app.include_router(vessels.router, prefix="/api/v1/assets/vessels", tags=["Assets"])
+app.include_router(engines.router, prefix="/api/v1/engines", tags=["Engines"])
+app.include_router(risk.router, prefix="/api/v1/risk", tags=["Risk Intelligence"])
 
 # ── Core Domain ──────────────────────────────────────────────
 app.include_router(voyages.router,         prefix=f"{settings.API_V1_STR}/voyages",        tags=["voyages"])
