@@ -1,5 +1,5 @@
 import { cn } from '../lib/utils';
-import { Anchor, Route, Ship, Radar, Scale, Waves, Globe2, Archive, Database, Building2, Eye, ChevronDown } from 'lucide-react';
+import { Anchor, Route, Ship, Radar, Scale, Waves, Globe2, Archive, Database, Building2, Eye, ChevronDown, FileText, ScanText } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { usePortal, PORTAL_CONFIGS, type PortalRole } from '../lib/portalContext';
 import { useState, type ReactNode } from 'react';
@@ -14,9 +14,11 @@ const NAV_ITEMS: NavItem[] = [
   { name: 'Regulatory Radar',    icon: <Radar size={18} />,    path: '/app/regulatory-radar',   roles: ['OPERATOR','REGULATOR'] },
   { name: 'EU ETS',              icon: <Scale size={18} />,    path: '/app/eu-ets',              roles: ['OPERATOR','SHIPPER','REGULATOR'] },
   { name: 'FuelEU',              icon: <Waves size={18} />,    path: '/app/fueleu',              roles: ['OPERATOR','REGULATOR'] },
+  { name: 'FinOps (ETS Faturamento)',icon: <FileText size={18} />,path: '/app/finops',           roles: ['OPERATOR'] },
   { name: 'Green Corridors',     icon: <Globe2 size={18} />,   path: '/app/green-corridors',    roles: ['OPERATOR','PORT'] },
   { name: 'Shipper Portal',      icon: <Building2 size={18} />,path: '/app/shipper',             roles: ['SHIPPER'] },
   { name: 'Port Dashboard',      icon: <Anchor size={18} />,   path: '/app/port',                roles: ['PORT'] },
+  { name: 'AI Document Scanner', icon: <ScanText size={18} />, path: '/app/document-intelligence',roles: ['OPERATOR', 'PORT'] },
   { name: 'Evidence Vault',      icon: <Archive size={18} />,  path: '/app/evidence-vault',      roles: ['OPERATOR','REGULATOR'] },
   { name: 'Source Registry',     icon: <Database size={18} />, path: '/app/source-registry',     roles: ['OPERATOR','REGULATOR'] },
   { name: 'Configurações',       icon: <Anchor size={18} />,   path: '/app/admin',               roles: ['OPERATOR','REGULATOR'] },

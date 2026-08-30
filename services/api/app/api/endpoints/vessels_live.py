@@ -9,11 +9,14 @@ from app.models.domain import AISObservation, Vessel
 
 router = APIRouter()
 
+from app.core.geofence_engine import GeofenceEngine
+
 @router.post("/webhook")
 def receive_ais_ping(ping: AISObservationBase, db: Session = Depends(get_db)):
     """
     Webhook to receive live satellite pings (e.g. from Spire/MarineTraffic).
     Stores the ping in the evidence-grade ais_observations table.
+    Triggers Geofence logic (IHO / ECA).
     """
     # Verify vessel exists
     vessel = db.query(Vessel).filter(Vessel.id == ping.vessel_id).first()
@@ -24,7 +27,20 @@ def receive_ais_ping(ping: AISObservationBase, db: Session = Depends(get_db)):
     db.add(obs)
     db.commit()
     db.refresh(obs)
-    return {"status": "success", "recorded_id": obs.id}
+    
+    # Run Geofence intersections (Phase 5)
+    geofence_alerts = GeofenceEngine.process_ping(
+        db=db, 
+        vessel_id=str(vessel.id), 
+        lat=ping.latitude, 
+        lon=ping.longitude
+    )
+
+    return {
+        "status": "success", 
+        "recorded_id": obs.id,
+        "geofence_alerts": geofence_alerts
+    }
 
 
 @router.get("/live")

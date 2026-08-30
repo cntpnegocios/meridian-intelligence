@@ -22,6 +22,8 @@ import { PortDashboard } from './pages/PortDashboard';
 import { EvidenceVault } from './pages/EvidenceVault';
 import { SourceRegistry } from './pages/SourceRegistry';
 import AdminSettings from './pages/AdminSettings';
+import FinOpsDashboard from './pages/FinOpsDashboard';
+import AiDocumentScanner from './pages/AiDocumentScanner';
 
 import './styles.css';
 
@@ -46,9 +48,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 <Route path="regulatory-radar"       element={<RegulatoryRadar />} />
                 <Route path="eu-ets"                 element={<EuEtsCalculator />} />
                 <Route path="fueleu"                 element={<FuelEuScore />} />
+                <Route path="finops"                 element={<FinOpsDashboard />} />
                 <Route path="green-corridors"        element={<GreenCorridorsDashboard />} />
                 <Route path="shipper"                element={<ShipperPortal />} />
                 <Route path="port"                   element={<PortDashboard />} />
+                <Route path="document-intelligence"  element={<AiDocumentScanner />} />
                 <Route path="evidence-vault"         element={<EvidenceVault />} />
                 <Route path="source-registry"        element={<SourceRegistry />} />
                 <Route path="admin"                  element={<AdminSettings />} />

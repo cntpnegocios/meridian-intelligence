@@ -1,104 +1,114 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Anchor, ArrowRight, ShieldCheck, KeyRound, Building } from 'lucide-react';
+import { usePortal } from '../lib/portalContext';
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
-  const [profile, setProfile] = useState("");
-  const [goal, setGoal] = useState("");
+  const { setRole } = usePortal();
+  
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleComplete = () => {
-    // In a real app, save to context or backend
-    localStorage.setItem("meridian_client_profile", profile);
-    localStorage.setItem("meridian_client_goal", goal);
-    navigate("/app");
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    // Simula validação Enterprise SSO 
+    setTimeout(() => {
+      // Define a conta corporativa (Tenant Isolation B2B Phase 13 mock)
+      setRole('OPERATOR');
+      navigate('/app/');
+    }, 1200);
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex flex-col justify-center items-center text-neutral-100 font-sans p-6">
-      
-      {/* Background aesthetics */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-900/20 blur-[100px] rounded-full mix-blend-screen"></div>
-         <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-sky-900/20 blur-[100px] rounded-full mix-blend-screen"></div>
-      </div>
+    <div className="min-h-screen bg-[#020817] flex flex-col items-center justify-center relative overflow-hidden">
+      {/* Grade de Fundo Sci-Fi */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-brand-primary opacity-20 blur-[100px]"></div>
 
-      <div className="max-w-2xl w-full bg-neutral-900/50 backdrop-blur-xl border border-neutral-800 rounded-2xl p-10 z-10 shadow-2xl relative overflow-hidden">
-        
-        {/* Header */}
-        <div className="mb-10 text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Welcome to Meridian Intelligence</h1>
-          <p className="text-neutral-400">Configure your digital twin environment</p>
+      <div className="z-10 w-full max-w-md px-6">
+        <div className="flex flex-col items-center mb-10">
+          <div className="h-16 w-16 bg-bg-panel border border-brand-primary/30 rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(30,195,179,0.3)]">
+            <Anchor className="h-8 w-8 text-brand-primary" />
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Meridian Intelligence</h1>
+          <p className="text-text-muted text-center text-sm">
+            Platform for Maritime & Aviation Decarbonization, Regulatory Compliance, and FinOps.
+          </p>
         </div>
 
-        {/* Step 1: Profile */}
-        {step === 1 && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h2 className="text-lg font-medium text-emerald-400 mb-4 text-center uppercase tracking-widest text-xs">Step 1: Identify your role</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              
-              <button onClick={() => { setProfile("shipowner"); setStep(2); }} className="p-6 bg-neutral-950 border border-neutral-800 rounded-xl hover:border-emerald-500 hover:bg-neutral-900 transition-all group text-center">
-                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">🚢</div>
-                <h3 className="font-semibold text-neutral-200">Shipowner</h3>
-                <p className="text-xs text-neutral-500 mt-2">Manage vessel fleets and emissions compliance.</p>
-              </button>
-              
-              <button onClick={() => { setProfile("charterer"); setStep(2); }} className="p-6 bg-neutral-950 border border-neutral-800 rounded-xl hover:border-emerald-500 hover:bg-neutral-900 transition-all group text-center">
-                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">📦</div>
-                <h3 className="font-semibold text-neutral-200">Charterer</h3>
-                <p className="text-xs text-neutral-500 mt-2">Optimize cargo voyages and track Scope 3.</p>
-              </button>
-              
-              <button onClick={() => { setProfile("port"); setStep(2); }} className="p-6 bg-neutral-950 border border-neutral-800 rounded-xl hover:border-emerald-500 hover:bg-neutral-900 transition-all group text-center">
-                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">⚓</div>
-                <h3 className="font-semibold text-neutral-200">Port / Terminal</h3>
-                <p className="text-xs text-neutral-500 mt-2">Monitor congestion, shore power, and green corridors.</p>
-              </button>
+        <div className="bg-bg-panel border border-border-default rounded-2xl shadow-2xl p-8">
+          <h2 className="text-xl font-semibold text-white mb-6">Corporate Sign In</h2>
+          
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-xs font-medium text-text-muted mb-2 uppercase tracking-wider">
+                Work Email
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Building className="h-4 w-4 text-text-muted" />
+                </div>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@maersk.com"
+                  className="block w-full pl-10 pr-3 py-2.5 border border-border-default rounded-lg leading-5 bg-bg-surface text-text-base placeholder-text-muted focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors sm:text-sm"
+                />
+              </div>
+            </div>
 
+            <div>
+              <label className="block text-xs font-medium text-text-muted mb-2 uppercase tracking-wider">
+                Password / SSO Token
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <KeyRound className="h-4 w-4 text-text-muted" />
+                </div>
+                <input
+                  type="password"
+                  required
+                  placeholder="••••••••"
+                  className="block w-full pl-10 pr-3 py-2.5 border border-border-default rounded-lg leading-5 bg-bg-surface text-text-base placeholder-text-muted focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-bg-surface bg-brand-primary hover:bg-brand-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-all disabled:opacity-70 mt-6"
+            >
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <div className="h-4 w-4 border-2 border-bg-surface border-t-transparent rounded-full animate-spin"></div>
+                  Authenticating...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  Sign In to Enterprise Workspace
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 border-t border-border-subtle pt-6">
+            <div className="flex items-center justify-center gap-2 text-xs text-emerald-400/80 bg-emerald-400/10 py-2 px-3 rounded-md">
+              <ShieldCheck className="h-4 w-4" />
+              <span>Protected by Meridian Tenant Isolation (SSO)</span>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* Step 2: Goal */}
-        {step === 2 && (
-          <div className="animate-in fade-in slide-in-from-right-8 duration-500">
-            <h2 className="text-lg font-medium text-emerald-400 mb-4 text-center uppercase tracking-widest text-xs">Step 2: Primary Objective</h2>
-            <div className="grid grid-cols-1 gap-3 mb-8">
-              
-              <button onClick={() => setGoal("compliance")} className={`p-4 rounded-lg border text-left transition-all ${goal === 'compliance' ? 'border-emerald-500 bg-emerald-900/20' : 'border-neutral-800 bg-neutral-950 hover:bg-neutral-900'}`}>
-                <h3 className="font-medium text-neutral-200">EU ETS & FuelEU Compliance</h3>
-                <p className="text-xs text-neutral-500 mt-1">Calculate financial exposure and manage allowances.</p>
-              </button>
-
-              <button onClick={() => setGoal("green_corridors")} className={`p-4 rounded-lg border text-left transition-all ${goal === 'green_corridors' ? 'border-emerald-500 bg-emerald-900/20' : 'border-neutral-800 bg-neutral-950 hover:bg-neutral-900'}`}>
-                <h3 className="font-medium text-neutral-200">Green Corridor Simulation</h3>
-                <p className="text-xs text-neutral-500 mt-1">Simulate alternative fuels and acquire carbon credits for offsets.</p>
-              </button>
-
-              <button onClick={() => setGoal("voyage_optimization")} className={`p-4 rounded-lg border text-left transition-all ${goal === 'voyage_optimization' ? 'border-emerald-500 bg-emerald-900/20' : 'border-neutral-800 bg-neutral-950 hover:bg-neutral-900'}`}>
-                <h3 className="font-medium text-neutral-200">Voyage Optimization</h3>
-                <p className="text-xs text-neutral-500 mt-1">Find the optimal route and speed to minimize Total Cost of Ownership.</p>
-              </button>
-            </div>
-
-            <div className="flex justify-between items-center mt-6 pt-6 border-t border-neutral-800">
-              <button onClick={() => setStep(1)} className="text-sm text-neutral-400 hover:text-white px-4 py-2">Back</button>
-              <button 
-                onClick={handleComplete} 
-                disabled={!goal}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded font-medium disabled:opacity-50 transition-colors"
-              >
-                Access Platform →
-              </button>
-            </div>
-          </div>
-        )}
-
-      </div>
-      
-      <div className="mt-8 text-xs text-neutral-600 flex gap-4">
-         <span>© 2026 Meridian MRV</span>
-         <Link to="/app" className="hover:text-neutral-400">Skip to Dashboard</Link>
+        <p className="mt-8 text-center text-xs text-text-muted">
+          &copy; 2026 Meridian MRV Ltd. All rights reserved. <br/>
+          SOC 2 Type II Certified | ISO 27001
+        </p>
       </div>
     </div>
   );
