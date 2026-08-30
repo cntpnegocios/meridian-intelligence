@@ -58,9 +58,16 @@ export default function LandingPage() {
 
           {/* Floating Product Mockup Card */}
           <div className="flex-1 w-full max-w-lg">
-            <div className="bg-pure-white rounded-[20px] p-6 shadow-[0_0_1px_rgba(0,0,0,0.35),0_1px_2px_rgba(0,0,0,0.25)_inset] border border-mist-gray h-[450px] relative overflow-hidden flex flex-col justify-end">
+            <div 
+              className="rounded-[20px] p-6 shadow-[0_0_1px_rgba(0,0,0,0.35),0_1px_2px_rgba(0,0,0,0.25)_inset] border border-mist-gray h-[450px] relative overflow-hidden flex flex-col justify-end"
+              style={{
+                backgroundImage: `linear-gradient(to bottom, rgba(28,43,39,0.3), rgba(28,43,39,0.7)), url("https://images.unsplash.com/photo-1580674684081-7767dc31d8f5?q=80&w=1000&auto=format&fit=crop")`,
+                backgroundSize: "cover",
+                backgroundPosition: "center"
+              }}
+            >
               {/* Fake UI inside the card */}
-              <div className="absolute top-6 left-6 text-xs text-graphite font-mono tracking-wider uppercase">Live Terminal</div>
+              <div className="absolute top-6 left-6 text-xs text-pure-white/80 font-mono tracking-wider uppercase flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-forest-grove animate-pulse"></span> Satellite Tracker</div>
               <div className="space-y-4 w-full">
                 <div className="bg-mist-gray text-ink-black p-4 rounded-[20px] rounded-bl-none text-[16px] leading-[1.5] w-3/4">
                   Analisei a Nota de Bunker. 4.500 Toneladas de VLSFO detectadas.
@@ -96,3 +103,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
