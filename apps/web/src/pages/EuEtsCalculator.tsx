@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 
-import { AlertTriangle, Info, Ship, Fuel, DollarSign, Calendar, Calculator, Anchor } from 'lucide-react';
+import { AlertTriangle, Info, Ship, Fuel, DollarSign, Calendar, Calculator, Anchor, Navigation } from 'lucide-react';
 import { PageHeader } from '../components/ui/PageHeader';
 import { MetricCard } from '../components/ui/MetricCard';
 import { Badge } from '../components/ui/Badge';
@@ -25,6 +25,13 @@ const PHASE_IN_SCHEDULE = [
 
 const EUA_PRICE = 65;
 
+// ── Route response type ────────────────────────────────────────────────────
+interface RouteCalcResponse {
+  distance_nm: number;
+  duration_hours: number;
+  route_type: string;
+}
+
 export function EuEtsCalculator() {
   const [distance, setDistance] = useState<string>('4200');
   const [cargo, setCargo] = useState<string>('45000');
@@ -32,6 +39,48 @@ export function EuEtsCalculator() {
   const [fuelType, setFuelType] = useState<string>('VLSFO');
   const [euScope, setEuScope] = useState<string>('50');
   const [selectedYear, setSelectedYear] = useState<number>(2025);
+
+  // ── Port-pair route fetch ─────────────────────────────────────────────────
+  const [originCode, setOriginCode] = useState<string>('');
+  const [destCode, setDestCode] = useState<string>('');
+  const [routeLoading, setRouteLoading] = useState(false);
+  const [routeError, setRouteError] = useState<string | null>(null);
+  const [routeDistanceNm, setRouteDistanceNm] = useState<number | null>(null);
+
+  const fetchRouteDistance = useCallback(async () => {
+    if (!originCode.trim() || !destCode.trim()) return;
+    setRouteLoading(true);
+    setRouteError(null);
+    try {
+      const res = await fetch('/api/v1/routes/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          origin_lon: 0, origin_lat: 0, // coords not required when codes provided
+          dest_lon: 0, dest_lat: 0,
+          route_type: 'MARITIME',
+          origin_code: originCode.trim().toUpperCase(),
+          dest_code: destCode.trim().toUpperCase(),
+        }),
+      });
+      if (!res.ok) throw new Error(`Route API error: ${res.status}`);
+      const data: RouteCalcResponse = await res.json();
+      setRouteDistanceNm(data.distance_nm);
+      setDistance(String(Math.round(data.distance_nm)));
+    } catch (e) {
+      setRouteError(e instanceof Error ? e.message : 'Route lookup failed');
+    } finally {
+      setRouteLoading(false);
+    }
+  }, [originCode, destCode]);
+
+  // Auto-fetch when both codes are filled (debounced by blur)
+  useEffect(() => {
+    if (originCode.trim().length >= 4 && destCode.trim().length >= 4) {
+      fetchRouteDistance();
+    }
+  }, [originCode, destCode, fetchRouteDistance]);
+
 
   const calculations = useMemo(() => {
     const fuelAmount = parseFloat(fuelConsumption) || 0;
@@ -95,6 +144,57 @@ export function EuEtsCalculator() {
               </div>
 
               <div className="space-y-5">
+              <div className="rounded-lg border border-brand-primary/20 bg-brand-primary/5 p-4 mb-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Navigation className="h-4 w-4 text-brand-primary" />
+                    <span className="text-sm font-medium text-text-base">Auto-fill Distance from Route API</span>
+                    {routeDistanceNm !== null && (
+                      <Badge variant="live">Route Loaded</Badge>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="mb-1 block text-xs font-medium text-text-muted">Origin Port (UN/LOCODE)</label>
+                      <input
+                        type="text"
+                        value={originCode}
+                        onChange={(e) => setOriginCode(e.target.value)}
+                        className="w-full rounded-lg border border-border-default bg-bg-base px-3 py-2 text-text-base placeholder-text-muted focus:border-brand-primary focus:outline-none text-sm uppercase"
+                        placeholder="e.g. BRSSZ"
+                        maxLength={6}
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-1 block text-xs font-medium text-text-muted">Destination Port (UN/LOCODE)</label>
+                      <input
+                        type="text"
+                        value={destCode}
+                        onChange={(e) => setDestCode(e.target.value)}
+                        className="w-full rounded-lg border border-border-default bg-bg-base px-3 py-2 text-text-base placeholder-text-muted focus:border-brand-primary focus:outline-none text-sm uppercase"
+                        placeholder="e.g. NLRTM"
+                        maxLength={6}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center gap-3">
+                    <button
+                      onClick={fetchRouteDistance}
+                      disabled={routeLoading || !originCode.trim() || !destCode.trim()}
+                      className="text-xs font-bold text-brand-primary hover:text-white px-3 py-1.5 rounded border border-brand-primary/50 hover:bg-brand-primary/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {routeLoading ? 'Calculating…' : 'Fetch Route Distance'}
+                    </button>
+                    {routeDistanceNm !== null && (
+                      <span className="text-xs text-emerald-400 font-mono">
+                        ✓ {routeDistanceNm.toLocaleString()} nm auto-filled
+                      </span>
+                    )}
+                    {routeError && (
+                      <span className="text-xs text-red-400">{routeError}</span>
+                    )}
+                  </div>
+                </div>
+
                 <div>
                   <label className="mb-2 block text-sm font-medium text-text-base">
                     Distance (Nautical Miles)
@@ -107,6 +207,7 @@ export function EuEtsCalculator() {
                     placeholder="4200"
                   />
                 </div>
+
 
                 <div>
                   <label className="mb-2 block text-sm font-medium text-text-base">
