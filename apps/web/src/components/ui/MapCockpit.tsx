@@ -88,7 +88,28 @@ export function MapCockpit() {
         layers={layers}
       >
         <MapLibreMap 
-          mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+          mapStyle={{
+            version: 8,
+            sources: {
+              'satellite': {
+                type: 'raster',
+                tiles: [
+                  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+                ],
+                tileSize: 256,
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+              }
+            },
+            layers: [
+              {
+                id: 'satellite-layer',
+                type: 'raster',
+                source: 'satellite',
+                minzoom: 0,
+                maxzoom: 22
+              }
+            ]
+          }}
         />
       </DeckGL>
       
