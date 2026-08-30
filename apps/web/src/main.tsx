@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppShell } from './layouts/AppShell';
 import { PortalProvider } from './lib/portalContext';
+import { AccessibilityWidget } from './components/ui/AccessibilityWidget';
 import './i18n';
 
 // ── Landing & Public ──────────────────────────────────────────
@@ -37,6 +38,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <PortalProvider>
       <BrowserRouter>
+          <AccessibilityWidget />
         <Routes>
           {/* ── Fluxo Público e Funil de Vendas ── */}
           <Route path="/" element={<LandingPage />} />
@@ -76,6 +78,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </PortalProvider>
   </React.StrictMode>
 );
+
 
 
 

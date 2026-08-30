@@ -141,3 +141,33 @@
   outline-offset: 2px;
   border-radius: var(--radius-inputs);
 }
+
+/* Accessibility Utility Classes */
+html.a11y-large-text {
+  font-size: 115% !important;
+}
+
+html.a11y-dyslexic * {
+  font-family: "Comic Sans MS", "Arial", sans-serif !important;
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.1em !important;
+}
+
+html.a11y-spaced * {
+  letter-spacing: 0.12em !important;
+  line-height: 1.8 !important;
+}
+
+html.a11y-grayscale {
+  filter: grayscale(100%) !important;
+}
+
+html.a11y-high-contrast {
+  filter: contrast(160%) saturate(120%) !important;
+}
+
+/* Colorblindness SVG Filters applied to body */
+html.a11y-protanopia { filter: url('#protanopia') !important; }
+html.a11y-deuteranopia { filter: url('#deuteranopia') !important; }
+html.a11y-tritanopia { filter: url('#tritanopia') !important; }
+
