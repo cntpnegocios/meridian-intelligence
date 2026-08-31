@@ -1,21 +1,23 @@
 import { useParams } from 'react-router-dom';
 import { ShieldCheck } from 'lucide-react';
-import { useEffect } from 'react';
+
 
 export default function EuMrvReport() {
   const { id } = useParams();
 
-  // Trigger print dialog on load
-  useEffect(() => {
-    // A small delay to let styles apply
-    const timer = setTimeout(() => {
-      window.print();
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="min-h-screen bg-white text-black font-sans print:bg-white print:m-0 print:p-0">
+    <div className="min-h-screen bg-white text-black font-sans print:bg-white print:m-0 print:p-0 relative">
+      {/* Floating Print Action (Hidden during print) */}
+      <div className="fixed top-6 right-6 print:hidden z-50">
+        <button 
+          onClick={() => window.print()}
+          className="flex items-center gap-2 bg-[#003399] hover:bg-[#002266] text-white px-6 py-3 rounded-lg font-bold shadow-lg transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Save Official PDF
+        </button>
+      </div>
+
       <div className="max-w-[800px] mx-auto p-12 bg-white print:p-0 print:max-w-none">
         
         {/* EU Header */}
@@ -118,4 +120,6 @@ export default function EuMrvReport() {
     </div>
   );
 }
+
+
 
