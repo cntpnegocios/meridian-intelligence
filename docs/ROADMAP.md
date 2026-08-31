@@ -23,3 +23,10 @@ Somente após estabilização dos dados estruturados e proveniência.
 
 ## Fase 8 — CBAM Intelligence
 Novo domínio regulatório dentro do Meridian Intelligence.
+
+## Fase 12 — Physical/Weather Predictive Engine (Greensee AI)
+Delegação do motor preditivo (tempo, ondas, correntes, consumo projetado) para a Greensee AI.
+O Meridian Intelligence atua como integrador focado em Geofencing, Conformidade MRV e FinOps.
+
+## Fase 14 — Official EU MRV Report Generator
+Geração de relatório otimizado para impressão (PDF simulado via window.print) padronizado segundo as exigências da Comissão Europeia.
