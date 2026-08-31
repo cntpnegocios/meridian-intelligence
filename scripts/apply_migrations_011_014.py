@@ -1,8 +1,9 @@
+import os
 #!/usr/bin/env python3
 """Apply migrations 011-014 to Supabase."""
 import psycopg2
 
-DB = "postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
+DB = os.getenv("DATABASE_URL")
 
 MIGRATIONS = {
     "011_geofence_events": """
@@ -86,3 +87,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

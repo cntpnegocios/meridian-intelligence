@@ -1,3 +1,4 @@
+import os
 #!/usr/bin/env python3
 """
 Meridian Intelligence — Global Transport Node Ingestor v2
@@ -15,7 +16,7 @@ from datetime import datetime, timezone
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 log = logging.getLogger("ingest")
 
-DB_URL = "postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
+DB_URL = os.getenv("DATABASE_URL")
 
 # ── Source URLs (all public domain / open government) ──────────────────────
 LOCODE_CSV_URL   = "https://raw.githubusercontent.com/datasets/un-locode/main/data/code-list.csv"
@@ -329,3 +330,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

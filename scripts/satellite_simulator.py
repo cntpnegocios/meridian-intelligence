@@ -1,3 +1,4 @@
+import os
 import requests
 import psycopg2
 from datetime import datetime, timezone
@@ -17,7 +18,7 @@ def run_satellite_feed():
     print("📡 Starting Spire/ExactEarth Satellite AIS Feed Simulator...")
     
     # 1. Get Vessel IDs from the Registry
-    conn = psycopg2.connect("postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
     cur = conn.cursor()
     
     cur.execute("SELECT id, name FROM vessels WHERE imo_number IN ('9321483', '9944546')")
@@ -75,3 +76,4 @@ def run_satellite_feed():
 
 if __name__ == "__main__":
     run_satellite_feed()
+

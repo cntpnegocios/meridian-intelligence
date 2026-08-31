@@ -3,7 +3,7 @@ import os
 
 def apply_migration():
     print("Applying Migration 016: Green Corridors Registry...")
-    conn = psycopg2.connect("postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
     cur = conn.cursor()
     
     with open("database/016_green_corridors_registry.sql", "r") as f:
@@ -16,3 +16,4 @@ def apply_migration():
 
 if __name__ == "__main__":
     apply_migration()
+

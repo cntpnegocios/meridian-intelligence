@@ -1,8 +1,9 @@
+import os
 import psycopg2
 
 def apply_migration():
     print("Applying Migration 017: Regulatory Geofences (PostGIS)...")
-    conn = psycopg2.connect("postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
     cur = conn.cursor()
     
     with open("database/017_regulatory_geofences.sql", "r") as f:
@@ -15,3 +16,4 @@ def apply_migration():
 
 if __name__ == "__main__":
     apply_migration()
+

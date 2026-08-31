@@ -8,4 +8,5 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: DATABASE_URL
-        value: postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres
+        value: postgresql://postgres.nrvinsjtkmqkcqztkfam:YOUR_SUPABASE_PASSWORD@aws-0-us-east-2.pooler.supabase.com:6543/postgres
+

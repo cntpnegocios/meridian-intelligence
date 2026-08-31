@@ -1,3 +1,4 @@
+import os
 #!/usr/bin/env python3
 """Fix schema and re-run ingest with correct parsers."""
 import psycopg2, psycopg2.extras, io, csv, requests, logging
@@ -6,7 +7,7 @@ from datetime import datetime, timezone
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 log = logging.getLogger("fix")
 
-DB = "postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
+DB = os.getenv("DATABASE_URL")
 
 EU_ISO = {'AT','BE','BG','CY','CZ','DE','DK','EE','ES','FI','FR','HR',
           'HU','IE','IT','LT','LU','LV','MT','NL','PL','PT','RO','SE','SI','SK'}
@@ -191,3 +192,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

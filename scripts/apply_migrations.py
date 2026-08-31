@@ -1,6 +1,7 @@
+import os
 import psycopg2
 
-DB_URL = 'postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres'
+DB_URL = os.getenv("DATABASE_URL")
 
 conn = psycopg2.connect(DB_URL)
 conn.autocommit = True
@@ -28,3 +29,4 @@ print('Tables in DB:', tables)
 
 cur.close()
 conn.close()
+

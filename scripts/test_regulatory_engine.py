@@ -4,7 +4,7 @@ from app.core.regulatory_engine import RegulatoryEngine, EvidenceVault
 import psycopg2
 
 def run_local_test():
-    conn = psycopg2.connect("postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
     cur = conn.cursor()
     
     class MockVessel:
@@ -63,3 +63,4 @@ if __name__ == "__main__":
     os.chdir("services/api")
     sys.path.append(os.getcwd())
     run_local_test()
+

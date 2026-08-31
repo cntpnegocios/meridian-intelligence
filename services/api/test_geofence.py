@@ -5,12 +5,12 @@ from app.core.geofence_engine import GeofenceEngine
 import os
 
 def run_test():
-    engine = create_engine('postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres')
+    engine = create_engine(os.getenv("DATABASE_URL"))
     SessionLocal = sessionmaker(bind=engine)
     db = SessionLocal()
 
     # Get ID for MSC ROTTERDAM (for testing)
-    conn = psycopg2.connect('postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres')
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
     cur = conn.cursor()
     cur.execute("SELECT id FROM vessels WHERE imo_number = '9321483'")
     vid = str(cur.fetchone()[0])
@@ -32,3 +32,4 @@ def run_test():
 
 if __name__ == "__main__":
     run_test()
+

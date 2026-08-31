@@ -3,7 +3,7 @@ import psycopg2
 from psycopg2.extras import execute_values
 import uuid
 
-DB_URL = "postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
+DB_URL = os.getenv("DATABASE_URL")
 
 def run_migration():
     print("Connecting to DB...")
@@ -134,3 +134,4 @@ def run_migration():
 
 if __name__ == "__main__":
     run_migration()
+

@@ -4,7 +4,7 @@ import asyncio
 async def test_engine():
     # We fetch Emma Maersk ID first (IMO 9321483)
     import psycopg2
-    conn = psycopg2.connect("postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
     cur = conn.cursor()
     cur.execute("SELECT id FROM vessels WHERE imo_number = '9321483'")
     emma_id = cur.fetchone()[0]
@@ -16,7 +16,7 @@ async def test_engine():
     from app.core.emissions_engine import EmissionsEngine
     from app.models.domain import Vessel
 
-    conn = psycopg2.connect("postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
     cur = conn.cursor()
     # Mocking the sqlalchemy model using raw dict for fast test
     class MockVessel:
@@ -52,3 +52,4 @@ if __name__ == "__main__":
     import sys
     sys.path.append(os.getcwd())
     asyncio.run(test_engine())
+

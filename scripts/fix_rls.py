@@ -1,8 +1,9 @@
+import os
 #!/usr/bin/env python3
 """Apply migration 009 — revoke PostgREST access to PostGIS system tables."""
 import psycopg2
 
-DB = "postgresql://postgres.nrvinsjtkmqkcqztkfam:WpGwXYcK2qtfa31H@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
+DB = os.getenv("DATABASE_URL")
 
 conn = psycopg2.connect(DB, connect_timeout=20)
 conn.autocommit = True
@@ -29,3 +30,4 @@ print("Security Advisory 'rls_disabled_in_public' will be resolved.")
 
 cur.close()
 conn.close()
+
