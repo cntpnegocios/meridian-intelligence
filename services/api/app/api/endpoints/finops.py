@@ -46,3 +46,17 @@ def get_invoices(db: Session = Depends(get_db)):
         })
         
     return {"status": "success", "invoices": invoices}
+
+
+class CprRequest(BaseModel):
+    booking_reference: str
+    total_co2e: float
+
+@router.post("/cpr-verde/issue")
+def issue_cpr_verde(request: CprRequest):
+    """
+    Emits a CPR Verde (Green Rural Product Note) for offsetting multimodal emissions.
+    """
+    token = FinopsEngine.generate_cpr_verde(request.booking_reference, request.total_co2e)
+    return {"status": "success", "cpr_token": token}
+

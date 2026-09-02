@@ -54,3 +54,30 @@ class FinopsEngine:
             "currency": "EUR",
             "erp_integration_ready": True
         }
+
+    @staticmethod
+    def generate_cpr_verde(booking_ref: str, total_co2e: float) -> Dict[str, Any]:
+        """
+        Generates a CPR Verde (Cédula de Produto Rural Verde) instrument
+        for agricultural multimodal transport compensation in Brazil.
+        """
+        import uuid
+        import datetime
+        
+        # Baseline price for Brazilian CPR Verde carbon equivalent (e.g., 45 BRL per ton)
+        cpr_price_brl = 45.0
+        total_value_brl = total_co2e * cpr_price_brl
+        
+        cpr_token = {
+            "token_id": f"CPR-BR-{str(uuid.uuid4())[:8].upper()}",
+            "instrument": "CPR_VERDE",
+            "issue_date": datetime.datetime.utcnow().isoformat(),
+            "booking_reference": booking_ref,
+            "underlying_asset": "Multimodal CO2e Abatement",
+            "volume_mt": total_co2e,
+            "unit_price_brl": cpr_price_brl,
+            "total_value_brl": round(total_value_brl, 2),
+            "status": "AVAILABLE_FOR_OFFSET"
+        }
+        return cpr_token
+
