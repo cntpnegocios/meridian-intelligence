@@ -107,3 +107,31 @@ class VoyageSimulationResponse(BaseModel):
     fuel_cost_usd: float
     regulatory: RegulatoryResult
     evidence: EvidenceProof
+
+class LegRequest(BaseModel):
+    mode: str  # 'TRUCK', 'VESSEL', 'AIR'
+    origin: str
+    destination: str
+    distance_km: float
+    asset_id: Optional[UUID] = None
+
+class MultimodalRouteRequest(BaseModel):
+    booking_reference: str
+    cargo_weight_tonnes: float
+    legs: List[LegRequest]
+
+class LegResult(BaseModel):
+    mode: str
+    co2_tonnes: float
+    data_source: str  # e.g., 'meridian_estimate', 'greensee_ai'
+    distance_km: float
+
+class MultimodalRouteResponse(BaseModel):
+    booking_reference: str
+    terrestrial_co2: float
+    maritime_co2: float
+    air_co2: float
+    total_co2e: float
+    cpr_verde_eligible: bool
+    legs: List[LegResult]
+    evidence_hash: str
