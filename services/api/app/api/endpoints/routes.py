@@ -1,4 +1,4 @@
-"""Routes endpoint — Phase 2: Real maritime + aviation route calculations."""
+"""Routes endpoint - Phase 2 & 3: Real maritime + aviation + multimodal route calculations."""
 import json
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
@@ -6,6 +6,8 @@ from sqlalchemy import text
 from pydantic import BaseModel
 from app.db.session import get_db
 from app.core.route_engine import calculate_maritime_route, calculate_aviation_route
+from app.core.multimodal_engine import MultimodalEngine
+from app.schemas.api_models import MultimodalRouteRequest, MultimodalRouteResponse
 
 router = APIRouter()
 
@@ -46,7 +48,7 @@ def calculate_route(req: RouteRequest, db: Session = Depends(get_db)):
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Route calculation failed: {exc}") from exc
 
-    # Cache result in DB (best-effort, don't fail if cache insert fails)
+    # Cache result in DB (best-effort)
     try:
         db.execute(
             text("""
@@ -81,29 +83,34 @@ def calculate_route(req: RouteRequest, db: Session = Depends(get_db)):
     }
 
 
-@router.get("/cached")
-def get_cached_route(
-    origin: str, destination: str,
-    route_type: str = "MARITIME",
-    db: Session = Depends(get_db),
-):
-    """Return the last cached route for an origin-destination pair."""
-    row = db.execute(
-        text("""
-            SELECT id, origin_unlocode, destination_unlocode, route_type,
-                   distance_nm, distance_km, duration_hours,
-                   geojson_route, waypoints, source, confidence, calculated_at
-            FROM route_calculations
-            WHERE origin_unlocode = :org
-              AND destination_unlocode = :dst
-              AND route_type = :rt
-            ORDER BY calculated_at DESC
-            LIMIT 1
-        """),
-        {"org": origin, "dst": destination, "rt": route_type},
-    ).fetchone()
-
-    if not row:
-        raise HTTPException(status_code=404, detail="No cached route found for this pair")
-
-    return dict(row._mapping)
+@router.post("/multimodal/simulate", response_model=MultimodalRouteResponse)
+def simulate_multimodal_route(req: MultimodalRouteRequest, db: Session = Depends(get_db)):
+    """
+    Simulates a multimodal journey end-to-end.
+    Automatically orchestrates requests to Greensee AI for maritime legs
+    and calculates terrestrial/aviation legs natively.
+    """
+    try:
+        response = MultimodalEngine.simulate_multimodal_journey(req)
+        
+        # Save the multimodal certificate stub in DB
+        db.execute(
+            text("""
+                INSERT INTO evidence
+                (id, source_url, sha256_hash, data_type, cpr_verde_eligible, multimodal_total_co2e)
+                VALUES
+                (gen_random_uuid(), :url, :hash, 'MULTIMODAL_CERTIFICATE', :cpr, :co2)
+            """),
+            {
+                "url": f"internal://booking/{req.booking_reference}",
+                "hash": response.evidence_hash,
+                "cpr": response.cpr_verde_eligible,
+                "co2": response.total_co2e
+            }
+        )
+        db.commit()
+        
+        return response
+    except Exception as exc:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Multimodal simulation failed: {exc}") from exc
