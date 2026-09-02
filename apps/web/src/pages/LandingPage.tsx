@@ -212,10 +212,10 @@ export default function LandingPage() {
           
           <div className="flex-1">
             <h1 className="text-[56px] md:text-[76px] font-libre-caslon-text leading-[1.05] tracking-[-0.015em] text-ink-black mb-6">
-              The Engine for <br/><span className="text-forest-grove">Air & Sea</span><br/> Green Corridors.
+              Multimodal <br/><span className="text-forest-grove">FinOps</span><br/> Orchestrator.
             </h1>
             <p className="text-[18px] md:text-[20px] font-medium text-graphite leading-[1.4] max-w-[500px] mb-10">
-              Merging physical fleet optimization with immutable DLT provenance. Deploy SAF aviation routes and maritime pathways with 100% auditability.
+              Convert physical ocean, air, and land emissions into CBAM and CPR Verde financial instruments. Orchestrating multimodal scope 3 with 100% auditability.</p><div className="flex items-center gap-3 bg-mist-gray/80 border border-ink-black/10 rounded-full px-4 py-2 mb-10 w-fit backdrop-blur-sm shadow-sm"><Satellite size={16} className="text-forest-grove animate-pulse" /><span className="text-xs font-bold text-ink-black uppercase tracking-wider">Maritime Predictive Physics by <span className="text-forest-grove">Greensee AI</span></span></div><p className="hidden">
             </p>
             <div className="flex items-center gap-4">
               <Link to="/login" className="px-8 py-4 bg-ink-black text-pure-white rounded-full font-semibold text-[15px] flex items-center gap-2 shadow-lg hover:bg-forest-grove hover:shadow-xl transition-all duration-300">
@@ -324,5 +324,7 @@ export default function LandingPage() {
     </div>
   );
 }
+
+
 
 

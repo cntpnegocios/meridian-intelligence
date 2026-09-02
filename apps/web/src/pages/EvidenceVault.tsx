@@ -1,4 +1,4 @@
-import { Shield, Hash, CheckCircle, Clock, FileText, Anchor, MapPin } from 'lucide-react';
+import { Satellite, Shield, Hash, CheckCircle, Clock, FileText, Anchor, MapPin } from 'lucide-react';
 import { useState } from 'react';
 import { MetricCard } from '../components/ui/MetricCard';
 import { Badge } from '../components/ui/Badge';
@@ -16,6 +16,7 @@ interface EvidenceRecord {
   aiConfidence: number;
   aisFixesCount: number;
   sarValidationCount: number;
+  dataSource: 'Greensee AI Enriched' | 'Meridian Estimate';
 }
 
 const EVIDENCE_RECORDS: EvidenceRecord[] = [
@@ -30,7 +31,8 @@ const EVIDENCE_RECORDS: EvidenceRecord[] = [
     parserVersion: 'meridian-parser-v2.1.0',
     aiConfidence: 98.4,
     aisFixesCount: 1247,
-    sarValidationCount: 34
+    sarValidationCount: 34,
+    dataSource: 'Greensee AI Enriched'
   },
   {
     id: 'EVD-2024-002',
@@ -43,7 +45,8 @@ const EVIDENCE_RECORDS: EvidenceRecord[] = [
     parserVersion: 'meridian-parser-v2.1.0',
     aiConfidence: 96.7,
     aisFixesCount: 2103,
-    sarValidationCount: 47
+    sarValidationCount: 47,
+    dataSource: 'Greensee AI Enriched'
   },
   {
     id: 'EVD-2024-003',
@@ -56,7 +59,8 @@ const EVIDENCE_RECORDS: EvidenceRecord[] = [
     parserVersion: 'meridian-parser-v2.1.0',
     aiConfidence: 94.2,
     aisFixesCount: 876,
-    sarValidationCount: 19
+    sarValidationCount: 19,
+    dataSource: 'Meridian Estimate'
   },
   {
     id: 'EVD-2024-004',
@@ -69,7 +73,8 @@ const EVIDENCE_RECORDS: EvidenceRecord[] = [
     parserVersion: 'meridian-parser-v2.0.8',
     aiConfidence: 87.1,
     aisFixesCount: 543,
-    sarValidationCount: 12
+    sarValidationCount: 12,
+    dataSource: 'Meridian Estimate'
   }
 ];
 
@@ -252,6 +257,18 @@ export function EvidenceVault() {
 
               <div>
                 <span className="text-xs font-medium text-[#8da2b1] uppercase tracking-wider block mb-2">
+                  Data Provenance
+                </span>
+                <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border mb-6 ${selectedRecord.dataSource === 'Greensee AI Enriched' ? 'bg-[#0b835c]/10 border-[#0b835c]/30' : 'bg-[#d7b76c]/10 border-[#d7b76c]/30'}`}>
+                  <Satellite className={`w-4 h-4 ${selectedRecord.dataSource === 'Greensee AI Enriched' ? 'text-[#0b835c]' : 'text-[#d7b76c]'}`} />
+                  <span className={`text-xs font-bold uppercase tracking-wide ${selectedRecord.dataSource === 'Greensee AI Enriched' ? 'text-[#0b835c]' : 'text-[#d7b76c]'}`}>
+                    {selectedRecord.dataSource}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-xs font-medium text-[#8da2b1] uppercase tracking-wider block mb-2">
                   Full SHA-256 Hash
                 </span>
                 <div className="bg-[#08111a] border border-[#1d3341] rounded p-3">
@@ -311,5 +328,8 @@ export function EvidenceVault() {
     </div>
   );
 }
+
+
+
 
 
